@@ -1,0 +1,33 @@
+{
+  "files.associations": {
+    "**/vendor/**/.php_cs": "plaintext",
+    "**/vendor/**/.php_cs.dist": "plaintext",
+    "**/vendor/**/.php-cs-fixer.php": "plaintext",
+    "**/vendor/**/.php-cs-fixer.dist.php": "plaintext"
+  },
+  "intelephense.files.exclude": [
+    "**/vendor/**/.php_cs",
+    "**/vendor/**/.php_cs.dist",
+    "**/vendor/**/.php-cs-fixer.php",
+    "**/vendor/**/.php-cs-fixer.dist.php",
+    "**/vendor/**/tests/**",
+    "**/vendor/**/Tests/**",
+    "**/vendor/**/test/**"
+  ],
+  "intelephense.environment.includePaths": ["vendor"],
+  "intelephense.diagnostics.memberAccess": false,
+  "intelephense.diagnostics.severity": {
+    "P1056": false
+  },
+  "intelephense.diagnostics.exclude": {
+    "**/vendor/composer/autoload_static.php": ["P1056"],
+    "**/vendor/composer/semver/**/*.php": ["P1007"],
+    "**/vendor/**/.php_cs": ["*"],
+    "**/vendor/**/.php_cs.dist": ["*"],
+    "**/vendor/**/.php-cs-fixer.php": ["*"],
+    "**/vendor/**/.php-cs-fixer.dist.php": ["*"],
+    "**/vendor/**/tests/**": ["*"],
+    "**/vendor/**/Tests/**": ["*"],
+    "**/vendor/**/test/**": ["*"]
+  }
+}

@@ -38,7 +38,7 @@
         $response = curl_exec($ch);
         $code = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $err = curl_error($ch);
-        curl_close($ch);
+        unset($ch);
 
         if ($response === false || $code !== 200) {
             error_log('KOACH360 login fallo HTTP ' . $code . ' ' . $err . ' ' . (string) $response);
@@ -88,7 +88,7 @@
         $response = curl_exec($ch);
         $http = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $cerr = curl_error($ch);
-        curl_close($ch);
+        unset($ch);
 
         if ($response === false) {
             return ['ok' => false, 'http' => $http, 'body' => '', 'error' => $cerr];

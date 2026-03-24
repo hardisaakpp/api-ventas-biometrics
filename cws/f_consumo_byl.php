@@ -138,13 +138,13 @@
 
         if (curl_errno($curl)) {
             $error = curl_error($curl);
-            curl_close($curl);
+            unset($curl);
             escribirLogError("Error cURL consumirApiRemoto: $error");
             throw new Exception("Error cURL: $error");
         }
 
         echo $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-        curl_close($curl);
+        unset($curl);
 
         escribirLogError("API consumida. HTTP code: $httpCode. Response: $response");
 

@@ -43,7 +43,7 @@
 
             return $data;
         } catch (Exception $e) { error_log("Error al consumir datos de V-Count: " . $e->getMessage()); return null;
-        } finally { curl_close($curl); }
+        } finally { unset($curl); }
     }
 
     /** Conteo diario V-Count (mismo contrato POST, otro endpoint). */

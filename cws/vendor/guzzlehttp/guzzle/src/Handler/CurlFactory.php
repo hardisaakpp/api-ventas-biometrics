@@ -125,7 +125,10 @@ class CurlFactory implements CurlFactoryInterface
         unset($easy->handle);
 
         if (\count($this->handles) >= $this->maxHandles) {
-            \curl_close($resource);
+            if (PHP_VERSION_ID < 80000) {
+                $curlClose = 'curl_close';
+                $curlClose($resource);
+            }
         } else {
             // Remove all callback functions as they can hold onto references
             // and are not cleaned up by curl_reset. Using curl_setopt_array
@@ -729,7 +732,11 @@ class CurlFactory implements CurlFactoryInterface
     public function __destruct()
     {
         foreach ($this->handles as $id => $handle) {
-            \curl_close($handle);
+            if (PHP_VERSION_ID < 80000) {
+                $curlClose = 'curl_close';
+                $curlClose($handle);
+            }
+
             unset($this->handles[$id]);
         }
     }

@@ -4,8 +4,8 @@
 	 */
 	if (!function_exists('cws_load_dotenv')) {
 		function cws_load_dotenv(string $envDir): void {
-			if (class_exists(\Dotenv\Dotenv::class)) {
-				\Dotenv\Dotenv::createImmutable($envDir)->safeLoad();
+			if (class_exists('Dotenv\\Dotenv')) {
+				call_user_func(['Dotenv\\Dotenv', 'createImmutable'], $envDir)->safeLoad();
 				return;
 			}
 			$path = $envDir . DIRECTORY_SEPARATOR . '.env';

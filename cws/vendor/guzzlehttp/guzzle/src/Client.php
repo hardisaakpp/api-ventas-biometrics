@@ -444,12 +444,13 @@ class Client implements ClientInterface, \Psr\Http\Client\ClientInterface
         }
 
         $request = Psr7\Utils::modifyRequest($request, $modify);
-        if ($request->getBody() instanceof Psr7\MultipartStream) {
+        $body = $request->getBody();
+        if ($body instanceof Psr7\MultipartStream) {
             // Use a multipart/form-data POST if a Content-Type is not set.
             // Ensure that we don't have the header in different case and set the new value.
             $options['_conditional'] = Psr7\Utils::caselessRemove(['Content-Type'], $options['_conditional']);
             $options['_conditional']['Content-Type'] = 'multipart/form-data; boundary='
-                .$request->getBody()->getBoundary();
+                .$body->getBoundary();
         }
 
         // Merge in conditional headers if they are not present.

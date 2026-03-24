@@ -88,6 +88,7 @@ function default_user_agent(): string
  */
 function default_ca_bundle(): string
 {
+    /** @disregard P1007 */
     return Utils::defaultCaBundle();
 }
 

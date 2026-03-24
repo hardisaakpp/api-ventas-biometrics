@@ -42,7 +42,7 @@
 		}catch(Exception $e){
 			error_log("Error al obtener el token: " . $e->getMessage());
 			return null;
-		} finally { curl_close($curl); }
+		} finally { unset($curl); }
 	}
 
 	function consumo_tiendas($token,$cod_negocio,$link=STORES){
@@ -75,7 +75,7 @@
 			return $data;
 		}
 		catch(Exception $e){ echo "Error al realizar la solicitud: " . $e->getMessage(); }
-		finally{ curl_close($curl); }
+		finally{ unset($curl); }
 	}
 
 	function consumo_arqueo_caja_date($token,$cod_negocio,$cod_tienda,$num_terminal,$date,$link=ARQUEO){
@@ -110,7 +110,7 @@
 		}catch(Exception $e){
 			error_log("Error al consultar arqueo de caja: " . $e->getMessage());
 			return null;
-		}finally{ curl_close($curl); }
+		}finally{ unset($curl); }
 	}
 
 	function get_token($tiendaCica, $db, $userName) {  //codtiendaCICA - servicio=Hitell
@@ -209,7 +209,7 @@
 			error_log("Error al consultar arqueo de caja: " . $e->getMessage());
 			return null;
 		} finally {
-			curl_close($curl);
+			unset($curl);
 		}
 	}
 	
@@ -270,7 +270,7 @@
 			error_log("Error al consultar arqueo de caja: " . $e->getMessage());
 			return null;
 		} finally {
-			curl_close($curl);
+			unset($curl);
 		}
 	}
 ?>
