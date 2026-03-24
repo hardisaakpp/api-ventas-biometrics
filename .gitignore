@@ -1,0 +1,5 @@
+# Secretos locales (copiar desde .env.example)
+.env
+
+# Logs de tareas (opcional; quitar esta línea si quieres versionar logs de ejemplo)
+tareas/logs/*.log
