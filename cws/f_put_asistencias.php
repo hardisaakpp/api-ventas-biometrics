@@ -50,7 +50,7 @@
         return $out;
     }
 
-    function generarAsistenciasJson(
+    function generarAsistenciasRealesKoach360Json(
         array $asistencias,
         $cliente_id = CLI_ASISTENCIAS
     ) {
@@ -66,7 +66,14 @@
         return $json;
     }
 
-    function enviarAsistenciasKliente(
+    /**
+     * @deprecated Usar generarAsistenciasRealesKoach360Json
+     */
+    function generarAsistenciasJson(array $asistencias, $cliente_id = CLI_ASISTENCIAS) {
+        return generarAsistenciasRealesKoach360Json($asistencias, $cliente_id);
+    }
+
+    function enviarAsistenciasRealesKoach360(
         array $asistencias,
         $url = null,
         $cliente_id = CLI_ASISTENCIAS
@@ -89,4 +96,11 @@
             return 'KOACH360 asistencias HTTP ' . $res['http'] . ' ' . ($res['error'] ?: $res['body']);
         }
         return $res['body'];
+    }
+
+    /**
+     * @deprecated Usar enviarAsistenciasRealesKoach360
+     */
+    function enviarAsistenciasKliente(array $asistencias, $url = null, $cliente_id = CLI_ASISTENCIAS) {
+        return enviarAsistenciasRealesKoach360($asistencias, $url, $cliente_id);
     }

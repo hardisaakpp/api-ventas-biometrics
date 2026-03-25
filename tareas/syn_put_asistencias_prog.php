@@ -88,7 +88,7 @@
         $asistencias_programadas = [];
     }
     // Enviar las asistencias programadas a Kliente
-    $resp = enviarAsistenciasProgramadas($asistencias_programadas);
+    $resp = enviarAsistenciasProgramadasKoach360($asistencias_programadas);
     $logLine = date('Y-m-d H:i:s') . ' - prog bloques=' . count($asistencias_programadas) . ' resp=' . (is_string($resp) ? substr(preg_replace('/\s+/', ' ', $resp), 0, 500) : '') . "\n";
     file_put_contents(tareas_log_path('syn_put_asistencias_prog.log'), $logLine, FILE_APPEND);
 

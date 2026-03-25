@@ -60,7 +60,7 @@
         return $out;
     }
 
-    function generarAsistenciasProgramadasJson(
+    function generarAsistenciasProgramadasKoach360Json(
         array $registros,
         $cliente_id = CLI_ASISTENCIAS_PROGRAMADAS
     ) {
@@ -77,7 +77,14 @@
         return $json;
     }
 
-    function enviarAsistenciasProgramadas(
+    /**
+     * @deprecated Usar generarAsistenciasProgramadasKoach360Json
+     */
+    function generarAsistenciasProgramadasJson(array $registros, $cliente_id = CLI_ASISTENCIAS_PROGRAMADAS) {
+        return generarAsistenciasProgramadasKoach360Json($registros, $cliente_id);
+    }
+
+    function enviarAsistenciasProgramadasKoach360(
         array $registros,
         $url = null,
         $cliente_id = CLI_ASISTENCIAS_PROGRAMADAS
@@ -105,4 +112,11 @@
             return 'KOACH360 asistencias programadas HTTP ' . $res['http'] . ' ' . ($res['error'] ?: $res['body']);
         }
         return $res['body'];
+    }
+
+    /**
+     * @deprecated Usar enviarAsistenciasProgramadasKoach360
+     */
+    function enviarAsistenciasProgramadas(array $registros, $url = null, $cliente_id = CLI_ASISTENCIAS_PROGRAMADAS) {
+        return enviarAsistenciasProgramadasKoach360($registros, $url, $cliente_id);
     }

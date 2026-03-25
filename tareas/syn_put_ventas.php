@@ -4,7 +4,7 @@
      * Recurrencia sugerida: cada hora en horario laboral (cron / Task Scheduler).
      */
     require_once(__DIR__ . '/../cx/bd_scs.php'); // debe contener la función cx() para conectar
-    require_once(__DIR__ . '/../cws/f_put_ventas.php'); // debe contener la función generarFacturasJson()
+    require_once(__DIR__ . '/../cws/f_put_ventas.php'); // enviarVentasKoach360()
     require_once('f_tareas.php');
     require_once __DIR__ . '/ventas_query_helpers.php';
     date_default_timezone_set('America/Guayaquil');
@@ -75,7 +75,7 @@
         $ventas = [];
     }
     // enviar ventas a KOACH360 (días completos únicamente: Fecha < hoy en SQL)
-    $resp = enviarFacturasKliente($ventas);
+    $resp = enviarVentasKoach360($ventas);
     $logLine = date('Y-m-d H:i:s') . ' - ventas filas=' . count($ventas) . ' resp=' . (is_string($resp) ? substr(preg_replace('/\s+/', ' ', $resp), 0, 500) : '') . "\n";
     file_put_contents(tareas_log_path('syn_put_ventas.log'), $logLine, FILE_APPEND);
 ?>

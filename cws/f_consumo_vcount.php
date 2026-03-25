@@ -33,17 +33,28 @@
 
         try {
             $response = curl_exec($curl);
-            if ($response === false) { throw new Exception('Error de cURL: ' . curl_error($curl)); }
+            if ($response === false) {
+                throw new Exception('cURL: ' . curl_error($curl));
+            }
 
-            $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-            if ($httpCode !== 200) { throw new Exception("Error HTTP $httpCode. Respuesta: $response"); }
+            $httpCode = (int) curl_getinfo($curl, CURLINFO_HTTP_CODE);
+            if ($httpCode !== 200) {
+                $body = cws_truncate_for_log((string) $response);
+                throw new Exception("HTTP {$httpCode} url={$url} body={$body}");
+            }
 
             $data = json_decode($response, true);
-            if (json_last_error() !== JSON_ERROR_NONE) { throw new Exception('Error al decodificar JSON: ' . json_last_error_msg()); }
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                throw new Exception('JSON: ' . json_last_error_msg() . ' snippet=' . cws_truncate_for_log((string) $response, 512));
+            }
 
             return $data;
-        } catch (Exception $e) { error_log("Error al consumir datos de V-Count: " . $e->getMessage()); return null;
-        } finally { unset($curl); }
+        } catch (Exception $e) {
+            error_log('V-Count: ' . $e->getMessage());
+            return null;
+        } finally {
+            unset($curl);
+        }
     }
 
     /** Conteo diario V-Count (mismo contrato POST, otro endpoint). */

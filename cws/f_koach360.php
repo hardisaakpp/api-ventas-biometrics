@@ -41,7 +41,9 @@
         unset($ch);
 
         if ($response === false || $code !== 200) {
-            error_log('KOACH360 login fallo HTTP ' . $code . ' ' . $err . ' ' . (string) $response);
+            error_log(
+                'KOACH360 login HTTP ' . $code . ' curl=' . $err . ' body=' . cws_truncate_for_log((string) $response)
+            );
             return null;
         }
 
@@ -94,5 +96,13 @@
             return ['ok' => false, 'http' => $http, 'body' => '', 'error' => $cerr];
         }
 
-        return ['ok' => $http >= 200 && $http < 300, 'http' => $http, 'body' => (string) $response, 'error' => ''];
+        $body = (string) $response;
+        $ok = $http >= 200 && $http < 300;
+        if (!$ok) {
+            error_log(
+                'KOACH360 POST ' . $path . ' HTTP ' . $http . ' body=' . cws_truncate_for_log($body)
+            );
+        }
+
+        return ['ok' => $ok, 'http' => $http, 'body' => $body, 'error' => ''];
     }

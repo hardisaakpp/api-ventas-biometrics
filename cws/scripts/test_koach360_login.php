@@ -9,6 +9,7 @@
  *   php "C:\ruta\completa\klienteV1\cws\scripts\test_koach360_login.php"
  *
  * Carga .env desde la raíz del repo vía dat_cws (igual que el resto de cws).
+ * Antes, opcional: php cws/scripts/check_env.php
  */
 declare(strict_types=1);
 
@@ -18,7 +19,7 @@ $token = koach360_obtener_token();
 
 if ($token === null || $token === '') {
     fwrite(STDERR, "KOACH360: no se obtuvo token (HTTP != 200, credenciales o respuesta sin campo token).\n");
-    fwrite(STDERR, "Revisa KOACH360_USUARIO / KOACH360_PASSWORD (o US_PVENTAS / PS_PVENTAS) en .env en la raíz del repo.\n");
+    fwrite(STDERR, "Revisa KOACH360_USUARIO / KOACH360_PASSWORD (o US_PVENTAS / PS_PVENTAS) en .env; php cws/scripts/check_env.php\n");
     exit(1);
 }
 

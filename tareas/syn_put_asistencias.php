@@ -1,6 +1,6 @@
 <?php
     require_once(__DIR__ . '/../cx/bd_scs.php'); // debe contener la función cx() para conectar
-    require_once(__DIR__ . '/../cws/f_put_asistencias.php'); // debe contener la función generarAsistenciasJson()
+    require_once(__DIR__ . '/../cws/f_put_asistencias.php'); // enviarAsistenciasRealesKoach360()
     require_once('f_tareas.php');
     date_default_timezone_set('America/Guayaquil');
 
@@ -156,7 +156,7 @@
     if ($asistencias === []) {
         $resp = 'sin_registros';
     } else {
-        $resp = enviarAsistenciasKliente($asistencias);
+        $resp = enviarAsistenciasRealesKoach360($asistencias);
     }
     $logLine = date('Y-m-d H:i:s') . ' - asistencias filas=' . count($asistencias) . ' resp=' . (is_string($resp) ? substr(preg_replace('/\s+/', ' ', $resp), 0, 500) : '') . "\n";
     file_put_contents(tareas_log_path('syn_put_asistencias.log'), $logLine, FILE_APPEND);

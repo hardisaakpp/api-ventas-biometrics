@@ -65,6 +65,20 @@
 		}
 	}
 
+	if (!function_exists('cws_truncate_for_log')) {
+		/** Recorta texto para logs (respuestas HTTP largas). */
+		function cws_truncate_for_log(string $s, int $maxBytes = 4096): string {
+			if ($maxBytes < 64) {
+				$maxBytes = 64;
+			}
+			$len = strlen($s);
+			if ($len <= $maxBytes) {
+				return $s;
+			}
+			return substr($s, 0, $maxBytes) . '… [truncado, ' . $len . ' bytes]';
+		}
+	}
+
 	// V-Count BoostBI (manual API)
 
 		if (!defined('US_VCOUNT')) { define('US_VCOUNT', cws_env('US_VCOUNT')); }

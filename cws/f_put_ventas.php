@@ -60,7 +60,7 @@
         return $out;
     }
 
-    function generarFacturasJson(array $facturasBase, $cliente_id = CLI_PVENTAS) {
+    function generarVentasKoach360Json(array $facturasBase, $cliente_id = CLI_PVENTAS) {
         $cid = (int) $cliente_id;
         $payload = mapear_ventas_koach360($facturasBase, $cid);
         $json = json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
@@ -74,9 +74,16 @@
     }
 
     /**
-     * Envía ventas a KOACH360 (POST + JWT). Solo días completos deben venir en $facturas (filtrar en SQL).
+     * @deprecated Usar generarVentasKoach360Json
      */
-    function enviarFacturasKliente(array $facturas, $url = null, $cliente_id = CLI_PVENTAS) {
+    function generarFacturasJson(array $facturasBase, $cliente_id = CLI_PVENTAS) {
+        return generarVentasKoach360Json($facturasBase, $cliente_id);
+    }
+
+    /**
+     * POST /api/Ventas/cargaVentasV1 con JWT. $facturas deben ser días completos (filtrar en SQL).
+     */
+    function enviarVentasKoach360(array $facturas, $url = null, $cliente_id = CLI_PVENTAS) {
         unset($url);
 
         $cid = (int) $cliente_id;
@@ -95,4 +102,11 @@
             return 'KOACH360 ventas HTTP ' . $res['http'] . ' ' . ($res['error'] ?: $res['body']);
         }
         return $res['body'];
+    }
+
+    /**
+     * @deprecated Usar enviarVentasKoach360
+     */
+    function enviarFacturasKliente(array $facturas, $url = null, $cliente_id = CLI_PVENTAS) {
+        return enviarVentasKoach360($facturas, $url, $cliente_id);
     }

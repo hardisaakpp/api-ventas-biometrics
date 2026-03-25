@@ -70,6 +70,6 @@
     if (!is_array($ventas)) {
         $ventas = [];
     }
-    $resp = enviarFacturasKliente($ventas);
+    $resp = enviarVentasKoach360($ventas);
     $logLine = date('Y-m-d H:i:s') . ' [retro7] ventas filas=' . count($ventas) . ' resp=' . (is_string($resp) ? substr(preg_replace('/\s+/', ' ', $resp), 0, 500) : '') . "\n";
     file_put_contents(tareas_log_path('syn_put_ventas_retro7.log'), $logLine, FILE_APPEND);

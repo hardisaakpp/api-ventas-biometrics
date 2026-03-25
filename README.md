@@ -28,10 +28,19 @@ Integraciones retiradas del árbol (vivían en el mismo repo antes): Snapp/Hitel
 2. Rellenar `SQL_SCS_*`, `KOACH360_USUARIO`, `KOACH360_PASSWORD`, `KOACH360_CLIENT_ID` (o `CLI_PVENTAS`), `US_VCOUNT` / `PS_VCOUNT` cuando aplique.
 3. Si `KOACH360_USUARIO` / `KOACH360_PASSWORD` están vacíos, aún se pueden usar `US_PVENTAS` / `PS_PVENTAS` como respaldo (compatibilidad).
 
+### Comprobar `.env` (sin ejecutar las tareas)
+
+Valida que existan `SQL_SCS_*` y credenciales KOACH360 (no llama a la API):
+
+```bash
+php cws/scripts/check_env.php
+```
+
 ## Ejecución (desde la raíz del repo)
 
 ```powershell
 Set-Location "C:\ruta\klienteV1"
+php cws/scripts/check_env.php
 php cws/scripts/test_koach360_login.php
 php tareas/syn_put_ventas.php
 php tareas/syn_put_ventas_retro7.php
@@ -66,11 +75,26 @@ Ver `.env.example`. Principales:
 
 ## Extensiones SQL en Windows (XAMPP)
 
-Si aparecen avisos `Unable to load dynamic library 'php_sqlsrv_...'` o *already loaded*, revisar `php.ini`: una sola línea por extensión y DLL que exista. Scripts solo KOACH360 (`test_koach360_login.php`) no necesitan SQL.
+Si aparecen avisos `Unable to load dynamic library 'php_sqlsrv_...'` o *already loaded*, revisar `php.ini`: una sola línea por extensión y DLL que exista. `test_koach360_login.php` no necesita SQL; `check_env.php` solo lee variables (tampoco abre SQL).
+
+## Observabilidad
+
+- **V-Count:** errores HTTP o JSON inválido se registran con `error_log`, incluyendo URL y cuerpo de respuesta **truncado** (~4 KB) vía `cws_truncate_for_log()` en `dat_cws.php`.
+- **KOACH360:** fallos de login y respuestas HTTP no exitosas en `koach360_post_json` también se registran con cuerpo truncado.
+- Las tareas `syn_*` siguen escribiendo en `tareas/logs/*.log` y JSON en `tareas/json/`.
+
+## Funciones PHP (envío KOACH360)
+
+| Uso | Función principal | Alias antiguo (`@deprecated`) |
+|-----|-------------------|-------------------------------|
+| Ventas | `enviarVentasKoach360`, `generarVentasKoach360Json` | `enviarFacturasKliente`, `generarFacturasJson` |
+| Asistencias reales | `enviarAsistenciasRealesKoach360`, `generarAsistenciasRealesKoach360Json` | `enviarAsistenciasKliente`, `generarAsistenciasJson` |
+| Asistencias programadas | `enviarAsistenciasProgramadasKoach360`, `generarAsistenciasProgramadasKoach360Json` | `enviarAsistenciasProgramadas`, `generarAsistenciasProgramadasJson` |
 
 ## Archivos clave en `cws/`
 
-- `dat_cws.php` — `.env` + constantes KOACH360 / V-Count.
+- `dat_cws.php` — `.env` + constantes KOACH360 / V-Count + `cws_truncate_for_log`.
 - `f_koach360.php` — JWT y POST autenticados.
 - `f_put_ventas.php`, `f_put_asistencias.php`, `f_put_asistencias_prog.php` — mapeo al contrato del manual.
 - `f_consumo_vcount.php` — cliente BoostBI.
+- `scripts/check_env.php` — validación mínima de `.env`.
