@@ -1,13 +1,27 @@
 <?php
     require_once __DIR__ . '/dat_cws.php';
 
+    if (!function_exists('koach360_retry_sleep_ms')) {
+        function koach360_retry_sleep_ms(int $attempt, int $baseMs = 400): void {
+            $delayMs = $baseMs * (2 ** max(0, $attempt - 1));
+            usleep($delayMs * 1000);
+        }
+    }
+
+    if (!function_exists('koach360_http_should_retry')) {
+        function koach360_http_should_retry(int $httpCode): bool {
+            return $httpCode === 429 || ($httpCode >= 500 && $httpCode <= 599);
+        }
+    }
+
     /**
      * Obtiene JWT para KOACH360. Cache en memoria ~46 min (token ~1 h).
      */
     function koach360_obtener_token(
         ?string $usuario = null,
         ?string $password = null,
-        ?string $baseUrl = null
+        ?string $baseUrl = null,
+        bool $forceRefresh = false
     ): ?string {
         static $cacheToken = null;
         static $cacheTime = 0;
@@ -16,34 +30,48 @@
         $password = $password ?? KOACH360_PASSWORD;
         $baseUrl = rtrim($baseUrl ?? KOACH360_BASE_URL, '/');
 
-        if ($cacheToken !== null && (time() - $cacheTime) < 2760) {
+        if (!$forceRefresh && $cacheToken !== null && (time() - $cacheTime) < 2760) {
             return $cacheToken;
         }
 
         $url = $baseUrl . KOACH360_PATH_LOGIN;
         $body = json_encode(['usuario' => $usuario, 'password' => $password], JSON_UNESCAPED_UNICODE);
+        $timeout = (int) cws_env('KOACH360_HTTP_TIMEOUT', '120');
+        $connectTimeout = (int) cws_env('KOACH360_CONNECT_TIMEOUT', '20');
+        $maxAttempts = max(1, (int) cws_env('KOACH360_RETRY_MAX', '3'));
 
-        $ch = curl_init($url);
-        curl_setopt_array($ch, [
-            CURLOPT_POST => true,
-            CURLOPT_POSTFIELDS => $body,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_HTTPHEADER => [
-                'Content-Type: application/json',
-                'Accept: application/json',
-            ],
-            CURLOPT_TIMEOUT => 60,
-        ]);
+        $response = '';
+        $code = 0;
+        $err = '';
+        for ($attempt = 1; $attempt <= $maxAttempts; $attempt++) {
+            $ch = curl_init($url);
+            curl_setopt_array($ch, [
+                CURLOPT_POST => true,
+                CURLOPT_POSTFIELDS => $body,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_HTTPHEADER => [
+                    'Content-Type: application/json',
+                    'Accept: application/json',
+                ],
+                CURLOPT_TIMEOUT => $timeout,
+                CURLOPT_CONNECTTIMEOUT => $connectTimeout,
+            ]);
 
-        $response = curl_exec($ch);
-        $code = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        $err = curl_error($ch);
-        unset($ch);
+            $response = curl_exec($ch);
+            $code = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            $err = curl_error($ch);
+            unset($ch);
+
+            $transient = ($response === false) || koach360_http_should_retry($code);
+            if (!$transient || $attempt === $maxAttempts) {
+                break;
+            }
+            error_log("KOACH360 login retry {$attempt}/{$maxAttempts} HTTP {$code} curl={$err}");
+            koach360_retry_sleep_ms($attempt);
+        }
 
         if ($response === false || $code !== 200) {
-            error_log(
-                'KOACH360 login HTTP ' . $code . ' curl=' . $err . ' body=' . cws_truncate_for_log((string) $response)
-            );
+            error_log('KOACH360 login HTTP ' . $code . ' curl=' . $err . ' body=' . cws_truncate_for_log((string) $response));
             return null;
         }
 
@@ -74,23 +102,49 @@
         }
 
         $url = $baseUrl . $path;
-        $ch = curl_init($url);
-        curl_setopt_array($ch, [
-            CURLOPT_POST => true,
-            CURLOPT_POSTFIELDS => $jsonBody,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_HTTPHEADER => [
-                'Content-Type: application/json',
-                'Accept: application/json',
-                'Authorization: Bearer ' . $token,
-            ],
-            CURLOPT_TIMEOUT => 0,
-        ]);
+        $timeout = (int) cws_env('KOACH360_HTTP_TIMEOUT', '120');
+        $connectTimeout = (int) cws_env('KOACH360_CONNECT_TIMEOUT', '20');
+        $maxAttempts = max(1, (int) cws_env('KOACH360_RETRY_MAX', '3'));
 
-        $response = curl_exec($ch);
-        $http = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        $cerr = curl_error($ch);
-        unset($ch);
+        $response = false;
+        $http = 0;
+        $cerr = '';
+        for ($attempt = 1; $attempt <= $maxAttempts; $attempt++) {
+            $ch = curl_init($url);
+            curl_setopt_array($ch, [
+                CURLOPT_POST => true,
+                CURLOPT_POSTFIELDS => $jsonBody,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_HTTPHEADER => [
+                    'Content-Type: application/json',
+                    'Accept: application/json',
+                    'Authorization: Bearer ' . $token,
+                ],
+                CURLOPT_TIMEOUT => $timeout,
+                CURLOPT_CONNECTTIMEOUT => $connectTimeout,
+            ]);
+
+            $response = curl_exec($ch);
+            $http = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            $cerr = curl_error($ch);
+            unset($ch);
+
+            // Token expirado o inválido: refresca una vez y reintenta inmediatamente.
+            if ($http === 401 && $attempt === 1) {
+                $newToken = koach360_obtener_token(null, null, null, true);
+                if (is_string($newToken) && $newToken !== '') {
+                    $token = $newToken;
+                    continue;
+                }
+            }
+
+            $transient = ($response === false) || koach360_http_should_retry($http);
+            if (!$transient || $attempt === $maxAttempts) {
+                break;
+            }
+            error_log("KOACH360 POST {$path} retry {$attempt}/{$maxAttempts} HTTP {$http} curl={$cerr}");
+            koach360_retry_sleep_ms($attempt);
+        }
 
         if ($response === false) {
             return ['ok' => false, 'http' => $http, 'body' => '', 'error' => $cerr];
