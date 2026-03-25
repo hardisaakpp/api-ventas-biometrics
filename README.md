@@ -124,6 +124,55 @@ php -m | grep -i sqlsrv
 
 El servidor Linux debe poder **alcanzar por red** el `SQL_SCS_HOST` (firewall/VPN). Las credenciales van en `.env` (`SQL_SCS_*`).
 
+### Integrar ventas y asistencias en Ubuntu (ODBC + `sqlsrv`)
+
+Tras `php-cli`, instalar dependencias de compilación y el driver ODBC de Microsoft (Ubuntu 24.04; ajustar si usáis otra versión):
+
+```bash
+sudo apt update
+sudo apt install -y php-dev php-pear php-xml build-essential unixodbc-dev
+
+curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | sudo gpg --dearmor -o /usr/share/keyrings/microsoft-prod.gpg
+curl -fsSL https://packages.microsoft.com/config/ubuntu/24.04/prod.list | sudo tee /etc/apt/sources.list.d/mssql-release.list
+sudo apt update
+sudo ACCEPT_EULA=Y apt install -y msodbcsql18
+
+sudo pecl install sqlsrv
+sudo pecl install pdo_sqlsrv
+```
+
+Si **PECL falla al compilar** con errores de GCC, probad (según [FAQ Microsoft msphpsql](https://github.com/microsoft/msphpsql/wiki/FAQ)):
+
+```bash
+sudo CFLAGS="-Wno-error=implicit-function-declaration -Wno-error=incompatible-pointer-types" pecl install sqlsrv
+sudo CFLAGS="-Wno-error=implicit-function-declaration -Wno-error=incompatible-pointer-types" pecl install pdo_sqlsrv
+```
+
+Habilitar extensiones (sustituir `8.3` por vuestra versión: `php -r "echo PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION;"`):
+
+```bash
+PHPV=$(php -r "echo PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION;")
+printf "extension=sqlsrv.so\n" | sudo tee "/etc/php/${PHPV}/mods-available/sqlsrv.ini"
+printf "extension=pdo_sqlsrv.so\n" | sudo tee "/etc/php/${PHPV}/mods-available/pdo_sqlsrv.ini"
+sudo phpenmod sqlsrv pdo_sqlsrv
+```
+
+Comprobar módulos y conexión real (requiere `.env` con `SQL_SCS_*`):
+
+```bash
+php -m | grep -i sqlsrv
+cd /opt/backend/kliente-v1
+php cws/scripts/check_sqlsrv.php
+```
+
+Si `check_sqlsrv.php` responde **OK**, podéis ejecutar:
+
+```bash
+php tareas/syn_put_ventas.php
+php tareas/syn_put_asistencias.php
+php tareas/syn_put_asistencias_prog.php
+```
+
 ## Pruebas recomendadas (orden)
 
 Ejecutar **desde la raíz del proyecto** (`cd` a la carpeta que contiene `cws/`, `tareas/`, `.env`).
@@ -134,12 +183,53 @@ Ejecutar **desde la raíz del proyecto** (`cd` a la carpeta que contiene `cws/`,
 | 2 | `php cws/scripts/test_koach360_login.php` | Login JWT KOACH360 (red) |
 | 3 | `php tareas/syn_fetch_vcount.php 1` | V-Count horario + diario → `tareas/json/` y `tareas/logs/syn_fetch_vcount.log` |
 | 4 | `php -m` (salida debe incluir `sqlsrv`) | Extensiones SQL cargadas |
-| 5 | `php tareas/syn_put_ventas.php` | SQL + envío ventas a KOACH360 (impacto real; usar solo cuando toque en ese entorno) |
-| 6 | `php tareas/syn_put_asistencias.php` | SQL + asistencias reales |
-| 7 | `php tareas/syn_put_asistencias_prog.php` | SQL + asistencias programadas |
-| 8 | `php tareas/syn_consumo_vcount.php` | SQL + carga V-Count a staging (si lo usáis) |
+| 5 | `php cws/scripts/check_sqlsrv.php` | Conexión real a `SQL_SCS_*` (`SELECT 1`) |
+| 6 | `php tareas/syn_put_ventas.php` | SQL + envío ventas a KOACH360 (impacto real; usar solo cuando toque en ese entorno) |
+| 7 | `php tareas/syn_put_asistencias.php` | SQL + asistencias reales |
+| 8 | `php tareas/syn_put_asistencias_prog.php` | SQL + asistencias programadas |
+| 9 | `php tareas/syn_consumo_vcount.php` | SQL + carga V-Count a staging (si lo usáis) |
 
 **Interpretación rápida de fallos:** `check_env` con SQL vacío → completar `SQL_SCS_*`. KOACH360 **401** → usuario/contraseña de ese entorno. V-Count **400** → suele ser `US_VCOUNT` / `PS_VCOUNT` vacíos o parámetros; **401** → credenciales incorrectas.
+
+## Guía de validación para QA
+
+Objetivo: que QA pueda comprobar cada integración con criterios reproducibles. Todos los comandos suponen **estar en la raíz del proyecto** (carpeta que contiene `cws/`, `tareas/`, `.env`) y tener **PHP accesible** (`php -v`).
+
+### Entorno y alcance
+
+- Acordar con desarrollo/negocio si las pruebas con **`syn_put_*`** y **`syn_consumo_vcount`** se ejecutan contra **preproducción** u otro entorno aislado. Esas tareas **leen SQL** y **envían o escriben datos** (KOACH360 y/o tablas de staging).
+- Los scripts **`check_env.php`**, **`test_koach360_login.php`**, **`syn_fetch_vcount.php`** y **`check_sqlsrv.php`** sirven para validar configuración y conectividad sin ser la prueba funcional completa del negocio en KOACH360.
+
+### Niveles sugeridos
+
+| Nivel | Pasos (ver tabla anterior) | Notas |
+|-------|-----------------------------|--------|
+| Humo / config | 1 → 2 → 3; si aplica SQL: 4 → 5 | No ejecuta envíos masivos a KOACH360 ni consumo V-Count → SQL. |
+| Integración | 6 → 9 | Requiere acuerdo de entorno; revisar logs y JSON según tablas siguientes. |
+
+### Criterios por funcionalidad
+
+| Funcionalidad | Comando | Prerrequisitos | Cómo saber que fue bien (automatizable) | Comprobar además (manual / otro sistema) |
+|---------------|---------|----------------|----------------------------------------|------------------------------------------|
+| Variables `.env` | `php cws/scripts/check_env.php` | `.env` copiado y relleno | Salida en consola: línea que empieza por `OK:`; **código de salida 0** (`echo $?` en Linux, `$LASTEXITCODE` en PowerShell). Avisos V-Count en stderr son esperables si credenciales V-Count están vacías. | Si falla: mensajes en stderr indican qué falta. |
+| Solo KOACH en `.env` (sin SQL aún) | `php cws/scripts/check_env.php --no-sql` | Credenciales KOACH360 | Igual: `OK:` y código **0**. | — |
+| Login KOACH360 | `php cws/scripts/test_koach360_login.php` | Red hasta `KOACH360_BASE_URL`; usuario/contraseña | Consola: `OK: token obtenido`; código **0**. | Si código **1**: revisar credenciales y URL. |
+| V-Count → archivos JSON | `php tareas/syn_fetch_vcount.php 1` | `US_VCOUNT`, `PS_VCOUNT`, red | En `tareas/json/` aparecen **nuevos** `vcount_horaria_YYYYMMDD_HHMMSS.json` y `vcount_diaria_YYYYMMDD_HHMMSS.json`. En `tareas/logs/syn_fetch_vcount.log`, la última línea debe llevar `horaria=ok` y `diaria=ok` (no `null`). | Abrir JSON y comprobar que la estructura no sea claramente vacía/errónea según criterio de negocio. |
+| Extensión `sqlsrv` | `php -m` | PHP instalado | La salida incluye **`sqlsrv`** (y suele aparecer `pdo_sqlsrv`). | — |
+| SQL Server (conexión) | `php cws/scripts/check_sqlsrv.php` | `SQL_SCS_*` correctas; red | Consola: línea `OK: sqlsrv conectado...`; código **0**. | — |
+| Ventas → KOACH360 | `php tareas/syn_put_ventas.php` | SQL + KOACH360 | Nuevo `tareas/json/ventas_YYYYMMDD_HHMMSS.json`. En `tareas/logs/syn_put_ventas.log`, última línea: `ventas filas=N resp=...`. **Éxito HTTP:** `resp=` no debe empezar por `KOACH360 ventas HTTP` (ese prefijo indica error de API). | Validar en **KOACH360** (manual de integración / pantallas acordadas) que los datos esperados llegaron. |
+| Ventas retro 7 días | `php tareas/syn_put_ventas_retro7.php` | Igual que ventas | Nuevo `ventas_*.json`; log `tareas/logs/syn_put_ventas_retro7.log` con `[retro7]`; misma regla: `resp=` sin prefijo `KOACH360 ventas HTTP`. | Igual: verificación en KOACH360. |
+| Asistencias reales → KOACH360 | `php tareas/syn_put_asistencias.php` | SQL + KOACH360 | Si **hay filas** (`filas>0` en log): nuevo `tareas/json/asistencias_YYYYMMDD_HHMMSS.json` y línea en `tareas/logs/syn_put_asistencias.log` con `resp=` sin `KOACH360 asistencias HTTP`. Si **no hay datos**: `resp=sin_registros` (no se llama a la API; es válido). | KOACH360 / negocio. |
+| Asistencias programadas | `php tareas/syn_put_asistencias_prog.php` | SQL + KOACH360 | Nuevo `tareas/json/asistencias__prog_YYYYMMDD_HHMMSS.json` salvo que la expansión quede vacía (`resp=sin_registros_programados_expandidos`). Sin `KOACH360 asistencias programadas HTTP` en `resp=` cuando sí hubo POST. | KOACH360 / negocio. |
+| V-Count → staging SQL | `php tareas/syn_consumo_vcount.php` | SQL + API V-Count | Consola: `Inserción completada.` (si hubo datos) o `No se recibieron datos válidos.` (cuando la API no devolvió datos útiles). | Tabla `BISTAGING.dbo.STG_ConsumoContador` (coordinar con DBA/datos). |
+
+### Depuración de asistencias (solo diagnóstico)
+
+Con **`ASIST_DEBUG=1`** en `.env`, `syn_put_asistencias.php` **no envía** a KOACH360: escribe contadores de la consulta en `tareas/logs/syn_put_asistencias.log` y termina. Usar solo para analizar datos en SQL, no como prueba de integración KOACH360.
+
+### Sobre códigos de salida de `syn_put_*`
+
+PHP suele devolver **0** al terminar sin error fatal aunque la API devuelva error: el criterio principal para ventas/asistencias es el texto **`resp=`** en el log correspondiente y la ausencia de prefijos `KOACH360 ... HTTP`.
 
 ## Ejecución manual (Windows, desde la raíz del repo)
 
@@ -210,6 +300,7 @@ Ver `.env.example`. Principales:
 - **V-Count:** `US_VCOUNT`, `PS_VCOUNT`, `URL_VCOUNT`, `URL_VCOUNT_DAILY`
 - **HTTP (opcional):** `KOACH360_HTTP_TIMEOUT`, `KOACH360_CONNECT_TIMEOUT`, `KOACH360_RETRY_MAX`, `VCOUNT_HTTP_TIMEOUT`, `VCOUNT_CONNECT_TIMEOUT`, `VCOUNT_RETRY_MAX`
 - **check_env:** `CWS_CHECK_ENV_NO_SQL=1` (equivalente a `php cws/scripts/check_env.php --no-sql`)
+- **Asistencias (solo diagnóstico SQL):** `ASIST_DEBUG=1` (ver sección *Guía de validación para QA*)
 
 ## Extensiones SQL en Windows (XAMPP)
 
@@ -236,3 +327,4 @@ Si aparecen avisos `Unable to load dynamic library 'php_sqlsrv_...'` o *already 
 - `f_put_ventas.php`, `f_put_asistencias.php`, `f_put_asistencias_prog.php` — mapeo al contrato del manual.
 - `f_consumo_vcount.php` — cliente BoostBI.
 - `scripts/check_env.php` — validación mínima de `.env`.
+- `scripts/check_sqlsrv.php` — prueba de conexión `sqlsrv` + `SELECT 1`.
