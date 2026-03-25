@@ -3,16 +3,23 @@
  * Comprueba que .env tenga lo mínimo para SQL + KOACH360 (sin llamar a la red).
  *
  *   php cws/scripts/check_env.php
+ *   php cws/scripts/check_env.php --no-sql    # solo KOACH360 (+ avisos V-Count); útil si el servidor aún no tiene SQL
  */
 declare(strict_types=1);
 
 require_once __DIR__ . '/../dat_cws.php';
 
+$skipSql = in_array('--no-sql', $argv ?? [], true)
+    || in_array('-n', $argv ?? [], true)
+    || in_array(strtolower(trim((string) cws_env('CWS_CHECK_ENV_NO_SQL', ''))), ['1', 'true', 'yes', 'on'], true);
+
 $errors = [];
 
-foreach (['SQL_SCS_HOST', 'SQL_SCS_DATABASE', 'SQL_SCS_USER', 'SQL_SCS_PASSWORD'] as $key) {
-    if (trim(cws_env($key)) === '') {
-        $errors[] = "Falta o está vacío: {$key}";
+if (!$skipSql) {
+    foreach (['SQL_SCS_HOST', 'SQL_SCS_DATABASE', 'SQL_SCS_USER', 'SQL_SCS_PASSWORD'] as $key) {
+        if (trim(cws_env($key)) === '') {
+            $errors[] = "Falta o está vacío: {$key}";
+        }
     }
 }
 
@@ -32,7 +39,10 @@ if ($errors !== []) {
     exit(1);
 }
 
-echo 'OK: variables mínimas (SQL + credenciales KOACH360) presentes.' . PHP_EOL;
+$okMsg = $skipSql
+    ? 'OK: credenciales KOACH360 presentes (SQL no comprobado; usar sin --no-sql cuando tengáis SQL_SCS_*).'
+    : 'OK: variables mínimas (SQL + credenciales KOACH360) presentes.';
+echo $okMsg . PHP_EOL;
 foreach ($warnings as $w) {
     fwrite(STDERR, 'Aviso: ' . $w . PHP_EOL);
 }
