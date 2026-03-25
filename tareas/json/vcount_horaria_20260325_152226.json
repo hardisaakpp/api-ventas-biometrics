@@ -1,0 +1,3838 @@
+[
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-18 10:00:00",
+        "in": 8,
+        "out": 7
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-18 11:00:00",
+        "in": 29,
+        "out": 25
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-18 12:00:00",
+        "in": 20,
+        "out": 20
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-18 13:00:00",
+        "in": 31,
+        "out": 38
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-18 14:00:00",
+        "in": 23,
+        "out": 33
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-18 15:00:00",
+        "in": 13,
+        "out": 11
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-18 16:00:00",
+        "in": 33,
+        "out": 31
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-18 17:00:00",
+        "in": 48,
+        "out": 49
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-18 18:00:00",
+        "in": 35,
+        "out": 40
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-18 19:00:00",
+        "in": 28,
+        "out": 36
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-18 20:00:00",
+        "in": 0,
+        "out": 1
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-18 21:00:00",
+        "in": 0,
+        "out": 0
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-19 10:00:00",
+        "in": 10,
+        "out": 9
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-19 11:00:00",
+        "in": 19,
+        "out": 15
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-19 12:00:00",
+        "in": 21,
+        "out": 16
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-19 13:00:00",
+        "in": 30,
+        "out": 40
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-19 14:00:00",
+        "in": 25,
+        "out": 21
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-19 15:00:00",
+        "in": 20,
+        "out": 26
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-19 16:00:00",
+        "in": 39,
+        "out": 47
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-19 17:00:00",
+        "in": 31,
+        "out": 24
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-19 18:00:00",
+        "in": 45,
+        "out": 61
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-19 19:00:00",
+        "in": 26,
+        "out": 37
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-19 20:00:00",
+        "in": 0,
+        "out": 7
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-19 21:00:00",
+        "in": 0,
+        "out": 0
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-20 10:00:00",
+        "in": 12,
+        "out": 4
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-20 11:00:00",
+        "in": 32,
+        "out": 19
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-20 12:00:00",
+        "in": 30,
+        "out": 33
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-20 13:00:00",
+        "in": 33,
+        "out": 30
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-20 14:00:00",
+        "in": 35,
+        "out": 23
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-20 15:00:00",
+        "in": 50,
+        "out": 44
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-20 16:00:00",
+        "in": 55,
+        "out": 40
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-20 17:00:00",
+        "in": 66,
+        "out": 72
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-20 18:00:00",
+        "in": 64,
+        "out": 59
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-20 19:00:00",
+        "in": 67,
+        "out": 72
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-20 20:00:00",
+        "in": 33,
+        "out": 34
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-20 21:00:00",
+        "in": 2,
+        "out": 3
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-21 10:00:00",
+        "in": 14,
+        "out": 7
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-21 11:00:00",
+        "in": 27,
+        "out": 25
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-21 12:00:00",
+        "in": 59,
+        "out": 51
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-21 13:00:00",
+        "in": 81,
+        "out": 76
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-21 14:00:00",
+        "in": 106,
+        "out": 114
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-21 15:00:00",
+        "in": 79,
+        "out": 70
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-21 16:00:00",
+        "in": 90,
+        "out": 104
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-21 17:00:00",
+        "in": 107,
+        "out": 122
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-21 18:00:00",
+        "in": 129,
+        "out": 128
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-21 19:00:00",
+        "in": 83,
+        "out": 66
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-21 20:00:00",
+        "in": 46,
+        "out": 69
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-21 21:00:00",
+        "in": 0,
+        "out": 4
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-22 10:00:00",
+        "in": 22,
+        "out": 9
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-22 11:00:00",
+        "in": 42,
+        "out": 49
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-22 12:00:00",
+        "in": 58,
+        "out": 57
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-22 13:00:00",
+        "in": 78,
+        "out": 69
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-22 14:00:00",
+        "in": 74,
+        "out": 74
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-22 15:00:00",
+        "in": 100,
+        "out": 104
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-22 16:00:00",
+        "in": 104,
+        "out": 99
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-22 17:00:00",
+        "in": 100,
+        "out": 101
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-22 18:00:00",
+        "in": 115,
+        "out": 102
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-22 19:00:00",
+        "in": 79,
+        "out": 89
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-22 20:00:00",
+        "in": 1,
+        "out": 13
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-22 21:00:00",
+        "in": 0,
+        "out": 0
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-23 10:00:00",
+        "in": 6,
+        "out": 3
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-23 11:00:00",
+        "in": 11,
+        "out": 15
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-23 12:00:00",
+        "in": 18,
+        "out": 25
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-23 13:00:00",
+        "in": 13,
+        "out": 12
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-23 14:00:00",
+        "in": 33,
+        "out": 19
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-23 15:00:00",
+        "in": 17,
+        "out": 28
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-23 16:00:00",
+        "in": 33,
+        "out": 30
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-23 17:00:00",
+        "in": 44,
+        "out": 43
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-23 18:00:00",
+        "in": 17,
+        "out": 29
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-23 19:00:00",
+        "in": 39,
+        "out": 46
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-23 20:00:00",
+        "in": 1,
+        "out": 3
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-23 21:00:00",
+        "in": 0,
+        "out": 0
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-24 10:00:00",
+        "in": 5,
+        "out": 6
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-24 11:00:00",
+        "in": 12,
+        "out": 9
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-24 12:00:00",
+        "in": 22,
+        "out": 19
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-24 13:00:00",
+        "in": 28,
+        "out": 19
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-24 14:00:00",
+        "in": 10,
+        "out": 20
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-24 15:00:00",
+        "in": 29,
+        "out": 17
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-24 16:00:00",
+        "in": 34,
+        "out": 30
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-24 17:00:00",
+        "in": 43,
+        "out": 39
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-24 18:00:00",
+        "in": 40,
+        "out": 29
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-24 19:00:00",
+        "in": 18,
+        "out": 34
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-24 20:00:00",
+        "in": 2,
+        "out": 2
+    },
+    {
+        "storeCode": "RL-PSC",
+        "store": "RL-PORTAL SHOPPING",
+        "timeformatted": "2026-03-24 21:00:00",
+        "in": 0,
+        "out": 0
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-18 10:00:00",
+        "in": 21,
+        "out": 12
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-18 11:00:00",
+        "in": 38,
+        "out": 16
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-18 12:00:00",
+        "in": 29,
+        "out": 19
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-18 13:00:00",
+        "in": 18,
+        "out": 14
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-18 14:00:00",
+        "in": 26,
+        "out": 25
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-18 15:00:00",
+        "in": 51,
+        "out": 26
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-18 16:00:00",
+        "in": 44,
+        "out": 34
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-18 17:00:00",
+        "in": 55,
+        "out": 39
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-18 18:00:00",
+        "in": 82,
+        "out": 32
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-18 19:00:00",
+        "in": 44,
+        "out": 35
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-18 20:00:00",
+        "in": 0,
+        "out": 1
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-18 21:00:00",
+        "in": 0,
+        "out": 0
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-19 10:00:00",
+        "in": 21,
+        "out": 10
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-19 11:00:00",
+        "in": 21,
+        "out": 10
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-19 12:00:00",
+        "in": 34,
+        "out": 18
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-19 13:00:00",
+        "in": 20,
+        "out": 20
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-19 14:00:00",
+        "in": 23,
+        "out": 23
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-19 15:00:00",
+        "in": 46,
+        "out": 26
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-19 16:00:00",
+        "in": 65,
+        "out": 45
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-19 17:00:00",
+        "in": 45,
+        "out": 30
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-19 18:00:00",
+        "in": 53,
+        "out": 46
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-19 19:00:00",
+        "in": 35,
+        "out": 23
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-19 20:00:00",
+        "in": 1,
+        "out": 2
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-19 21:00:00",
+        "in": 0,
+        "out": 0
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-20 10:00:00",
+        "in": 37,
+        "out": 18
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-20 11:00:00",
+        "in": 49,
+        "out": 26
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-20 12:00:00",
+        "in": 52,
+        "out": 25
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-20 13:00:00",
+        "in": 46,
+        "out": 17
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-20 14:00:00",
+        "in": 41,
+        "out": 26
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-20 15:00:00",
+        "in": 105,
+        "out": 57
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-20 16:00:00",
+        "in": 96,
+        "out": 48
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-20 17:00:00",
+        "in": 75,
+        "out": 50
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-20 18:00:00",
+        "in": 80,
+        "out": 54
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-20 19:00:00",
+        "in": 100,
+        "out": 60
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-20 20:00:00",
+        "in": 38,
+        "out": 18
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-20 21:00:00",
+        "in": 2,
+        "out": 12
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-21 10:00:00",
+        "in": 32,
+        "out": 21
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-21 11:00:00",
+        "in": 63,
+        "out": 37
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-21 12:00:00",
+        "in": 77,
+        "out": 50
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-21 13:00:00",
+        "in": 84,
+        "out": 47
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-21 14:00:00",
+        "in": 101,
+        "out": 54
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-21 15:00:00",
+        "in": 107,
+        "out": 72
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-21 16:00:00",
+        "in": 122,
+        "out": 77
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-21 17:00:00",
+        "in": 136,
+        "out": 88
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-21 18:00:00",
+        "in": 86,
+        "out": 50
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-21 19:00:00",
+        "in": 62,
+        "out": 43
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-21 20:00:00",
+        "in": 27,
+        "out": 22
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-21 21:00:00",
+        "in": 0,
+        "out": 1
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-22 10:00:00",
+        "in": 30,
+        "out": 17
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-22 11:00:00",
+        "in": 70,
+        "out": 41
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-22 12:00:00",
+        "in": 93,
+        "out": 44
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-22 13:00:00",
+        "in": 100,
+        "out": 66
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-22 14:00:00",
+        "in": 116,
+        "out": 56
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-22 15:00:00",
+        "in": 159,
+        "out": 104
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-22 16:00:00",
+        "in": 139,
+        "out": 82
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-22 17:00:00",
+        "in": 136,
+        "out": 90
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-22 18:00:00",
+        "in": 92,
+        "out": 69
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-22 19:00:00",
+        "in": 63,
+        "out": 37
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-22 20:00:00",
+        "in": 13,
+        "out": 11
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-22 21:00:00",
+        "in": 0,
+        "out": 1
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-23 10:00:00",
+        "in": 7,
+        "out": 5
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-23 11:00:00",
+        "in": 28,
+        "out": 11
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-23 12:00:00",
+        "in": 34,
+        "out": 27
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-23 13:00:00",
+        "in": 25,
+        "out": 10
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-23 14:00:00",
+        "in": 45,
+        "out": 29
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-23 15:00:00",
+        "in": 24,
+        "out": 18
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-23 16:00:00",
+        "in": 56,
+        "out": 37
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-23 17:00:00",
+        "in": 51,
+        "out": 25
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-23 18:00:00",
+        "in": 39,
+        "out": 36
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-23 19:00:00",
+        "in": 31,
+        "out": 19
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-23 20:00:00",
+        "in": 1,
+        "out": 3
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-23 21:00:00",
+        "in": 0,
+        "out": 0
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-24 10:00:00",
+        "in": 10,
+        "out": 3
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-24 11:00:00",
+        "in": 31,
+        "out": 11
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-24 12:00:00",
+        "in": 34,
+        "out": 29
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-24 13:00:00",
+        "in": 26,
+        "out": 11
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-24 14:00:00",
+        "in": 20,
+        "out": 7
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-24 15:00:00",
+        "in": 36,
+        "out": 22
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-24 16:00:00",
+        "in": 60,
+        "out": 33
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-24 17:00:00",
+        "in": 54,
+        "out": 27
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-24 18:00:00",
+        "in": 78,
+        "out": 48
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-24 19:00:00",
+        "in": 32,
+        "out": 29
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-24 20:00:00",
+        "in": 1,
+        "out": 1
+    },
+    {
+        "storeCode": "RL-QSS2",
+        "store": "RL-QUICENTRO SUR",
+        "timeformatted": "2026-03-24 21:00:00",
+        "in": 0,
+        "out": 0
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-18 10:00:00",
+        "in": 9,
+        "out": 9
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-18 11:00:00",
+        "in": 13,
+        "out": 17
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-18 12:00:00",
+        "in": 16,
+        "out": 13
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-18 13:00:00",
+        "in": 4,
+        "out": 10
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-18 14:00:00",
+        "in": 10,
+        "out": 15
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-18 15:00:00",
+        "in": 24,
+        "out": 21
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-18 16:00:00",
+        "in": 22,
+        "out": 22
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-18 17:00:00",
+        "in": 26,
+        "out": 24
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-18 18:00:00",
+        "in": 18,
+        "out": 22
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-18 19:00:00",
+        "in": 15,
+        "out": 21
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-18 20:00:00",
+        "in": 8,
+        "out": 7
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-19 10:00:00",
+        "in": 11,
+        "out": 9
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-19 11:00:00",
+        "in": 15,
+        "out": 16
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-19 12:00:00",
+        "in": 19,
+        "out": 21
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-19 13:00:00",
+        "in": 21,
+        "out": 20
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-19 14:00:00",
+        "in": 8,
+        "out": 9
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-19 15:00:00",
+        "in": 13,
+        "out": 13
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-19 16:00:00",
+        "in": 13,
+        "out": 20
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-19 17:00:00",
+        "in": 20,
+        "out": 21
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-19 18:00:00",
+        "in": 24,
+        "out": 24
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-19 19:00:00",
+        "in": 23,
+        "out": 24
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-19 20:00:00",
+        "in": 14,
+        "out": 14
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-20 10:00:00",
+        "in": 16,
+        "out": 14
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-20 11:00:00",
+        "in": 15,
+        "out": 14
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-20 12:00:00",
+        "in": 11,
+        "out": 9
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-20 13:00:00",
+        "in": 10,
+        "out": 14
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-20 14:00:00",
+        "in": 18,
+        "out": 18
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-20 15:00:00",
+        "in": 29,
+        "out": 19
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-20 16:00:00",
+        "in": 43,
+        "out": 42
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-20 17:00:00",
+        "in": 21,
+        "out": 35
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-20 18:00:00",
+        "in": 52,
+        "out": 48
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-20 19:00:00",
+        "in": 32,
+        "out": 36
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-20 20:00:00",
+        "in": 24,
+        "out": 19
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-20 21:00:00",
+        "in": 1,
+        "out": 3
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-21 10:00:00",
+        "in": 12,
+        "out": 13
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-21 11:00:00",
+        "in": 24,
+        "out": 16
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-21 12:00:00",
+        "in": 30,
+        "out": 34
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-21 13:00:00",
+        "in": 25,
+        "out": 31
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-21 14:00:00",
+        "in": 31,
+        "out": 29
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-21 15:00:00",
+        "in": 63,
+        "out": 70
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-21 16:00:00",
+        "in": 51,
+        "out": 47
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-21 17:00:00",
+        "in": 52,
+        "out": 61
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-21 18:00:00",
+        "in": 41,
+        "out": 49
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-21 19:00:00",
+        "in": 48,
+        "out": 48
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-21 20:00:00",
+        "in": 22,
+        "out": 22
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-21 21:00:00",
+        "in": 1,
+        "out": 5
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-22 10:00:00",
+        "in": 4,
+        "out": 3
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-22 11:00:00",
+        "in": 29,
+        "out": 26
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-22 12:00:00",
+        "in": 37,
+        "out": 45
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-22 13:00:00",
+        "in": 39,
+        "out": 43
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-22 14:00:00",
+        "in": 32,
+        "out": 35
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-22 15:00:00",
+        "in": 54,
+        "out": 55
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-22 16:00:00",
+        "in": 51,
+        "out": 50
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-22 17:00:00",
+        "in": 66,
+        "out": 75
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-22 18:00:00",
+        "in": 36,
+        "out": 52
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-22 19:00:00",
+        "in": 24,
+        "out": 29
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-22 20:00:00",
+        "in": 0,
+        "out": 0
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-23 10:00:00",
+        "in": 7,
+        "out": 5
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-23 11:00:00",
+        "in": 9,
+        "out": 11
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-23 12:00:00",
+        "in": 11,
+        "out": 11
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-23 13:00:00",
+        "in": 11,
+        "out": 13
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-23 14:00:00",
+        "in": 7,
+        "out": 9
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-23 15:00:00",
+        "in": 15,
+        "out": 12
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-23 16:00:00",
+        "in": 21,
+        "out": 21
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-23 17:00:00",
+        "in": 11,
+        "out": 14
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-23 18:00:00",
+        "in": 20,
+        "out": 22
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-23 19:00:00",
+        "in": 16,
+        "out": 15
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-23 20:00:00",
+        "in": 6,
+        "out": 5
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-24 10:00:00",
+        "in": 9,
+        "out": 13
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-24 11:00:00",
+        "in": 5,
+        "out": 6
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-24 12:00:00",
+        "in": 17,
+        "out": 17
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-24 13:00:00",
+        "in": 6,
+        "out": 9
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-24 14:00:00",
+        "in": 8,
+        "out": 7
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-24 15:00:00",
+        "in": 6,
+        "out": 10
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-24 16:00:00",
+        "in": 23,
+        "out": 14
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-24 17:00:00",
+        "in": 22,
+        "out": 25
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-24 18:00:00",
+        "in": 27,
+        "out": 28
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-24 19:00:00",
+        "in": 16,
+        "out": 20
+    },
+    {
+        "storeCode": "RL-SCA",
+        "store": "RL-SCALA",
+        "timeformatted": "2026-03-24 20:00:00",
+        "in": 4,
+        "out": 4
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-18 10:00:00",
+        "in": 28,
+        "out": 28
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-18 11:00:00",
+        "in": 61,
+        "out": 59
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-18 12:00:00",
+        "in": 67,
+        "out": 65
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-18 13:00:00",
+        "in": 90,
+        "out": 92
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-18 14:00:00",
+        "in": 65,
+        "out": 63
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-18 15:00:00",
+        "in": 63,
+        "out": 66
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-18 16:00:00",
+        "in": 85,
+        "out": 79
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-18 17:00:00",
+        "in": 124,
+        "out": 118
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-18 18:00:00",
+        "in": 102,
+        "out": 101
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-18 19:00:00",
+        "in": 57,
+        "out": 62
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-18 20:00:00",
+        "in": 32,
+        "out": 41
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-19 10:00:00",
+        "in": 31,
+        "out": 27
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-19 11:00:00",
+        "in": 70,
+        "out": 58
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-19 12:00:00",
+        "in": 63,
+        "out": 60
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-19 13:00:00",
+        "in": 66,
+        "out": 65
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-19 14:00:00",
+        "in": 72,
+        "out": 78
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-19 15:00:00",
+        "in": 63,
+        "out": 59
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-19 16:00:00",
+        "in": 107,
+        "out": 99
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-19 17:00:00",
+        "in": 108,
+        "out": 108
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-19 18:00:00",
+        "in": 104,
+        "out": 113
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-19 19:00:00",
+        "in": 88,
+        "out": 94
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-19 20:00:00",
+        "in": 80,
+        "out": 76
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-20 10:00:00",
+        "in": 64,
+        "out": 56
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-20 11:00:00",
+        "in": 78,
+        "out": 73
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-20 12:00:00",
+        "in": 115,
+        "out": 119
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-20 13:00:00",
+        "in": 77,
+        "out": 75
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-20 14:00:00",
+        "in": 119,
+        "out": 103
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-20 15:00:00",
+        "in": 111,
+        "out": 128
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-20 16:00:00",
+        "in": 110,
+        "out": 91
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-20 17:00:00",
+        "in": 105,
+        "out": 115
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-20 18:00:00",
+        "in": 168,
+        "out": 166
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-20 19:00:00",
+        "in": 104,
+        "out": 127
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-20 20:00:00",
+        "in": 72,
+        "out": 82
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-21 10:00:00",
+        "in": 47,
+        "out": 41
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-21 11:00:00",
+        "in": 103,
+        "out": 83
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-21 12:00:00",
+        "in": 173,
+        "out": 159
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-21 13:00:00",
+        "in": 131,
+        "out": 164
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-21 14:00:00",
+        "in": 158,
+        "out": 133
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-21 15:00:00",
+        "in": 204,
+        "out": 217
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-21 16:00:00",
+        "in": 229,
+        "out": 205
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-21 17:00:00",
+        "in": 190,
+        "out": 203
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-21 18:00:00",
+        "in": 182,
+        "out": 170
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-21 19:00:00",
+        "in": 173,
+        "out": 192
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-21 20:00:00",
+        "in": 63,
+        "out": 92
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-22 10:00:00",
+        "in": 49,
+        "out": 37
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-22 11:00:00",
+        "in": 75,
+        "out": 72
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-22 12:00:00",
+        "in": 93,
+        "out": 89
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-22 13:00:00",
+        "in": 206,
+        "out": 192
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-22 14:00:00",
+        "in": 159,
+        "out": 161
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-22 15:00:00",
+        "in": 160,
+        "out": 168
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-22 16:00:00",
+        "in": 181,
+        "out": 189
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-22 17:00:00",
+        "in": 186,
+        "out": 173
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-22 18:00:00",
+        "in": 149,
+        "out": 128
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-22 19:00:00",
+        "in": 105,
+        "out": 134
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-22 20:00:00",
+        "in": 0,
+        "out": 5
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-23 10:00:00",
+        "in": 30,
+        "out": 24
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-23 11:00:00",
+        "in": 53,
+        "out": 48
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-23 12:00:00",
+        "in": 64,
+        "out": 69
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-23 13:00:00",
+        "in": 47,
+        "out": 40
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-23 14:00:00",
+        "in": 65,
+        "out": 65
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-23 15:00:00",
+        "in": 67,
+        "out": 70
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-23 16:00:00",
+        "in": 112,
+        "out": 105
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-23 17:00:00",
+        "in": 111,
+        "out": 101
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-23 18:00:00",
+        "in": 124,
+        "out": 134
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-23 19:00:00",
+        "in": 76,
+        "out": 75
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-23 20:00:00",
+        "in": 54,
+        "out": 56
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-24 10:00:00",
+        "in": 34,
+        "out": 28
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-24 11:00:00",
+        "in": 75,
+        "out": 63
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-24 12:00:00",
+        "in": 63,
+        "out": 71
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-24 13:00:00",
+        "in": 49,
+        "out": 56
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-24 14:00:00",
+        "in": 72,
+        "out": 71
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-24 15:00:00",
+        "in": 69,
+        "out": 64
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-24 16:00:00",
+        "in": 58,
+        "out": 63
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-24 17:00:00",
+        "in": 108,
+        "out": 91
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-24 18:00:00",
+        "in": 80,
+        "out": 84
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-24 19:00:00",
+        "in": 72,
+        "out": 78
+    },
+    {
+        "storeCode": "RL-QSN",
+        "store": "RL-QUICENTRO NORTE",
+        "timeformatted": "2026-03-24 20:00:00",
+        "in": 41,
+        "out": 45
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-18 10:00:00",
+        "in": 22,
+        "out": 15
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-18 11:00:00",
+        "in": 32,
+        "out": 31
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-18 12:00:00",
+        "in": 26,
+        "out": 28
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-18 13:00:00",
+        "in": 27,
+        "out": 23
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-18 14:00:00",
+        "in": 35,
+        "out": 39
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-18 15:00:00",
+        "in": 45,
+        "out": 40
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-18 16:00:00",
+        "in": 96,
+        "out": 91
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-18 17:00:00",
+        "in": 61,
+        "out": 71
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-18 18:00:00",
+        "in": 37,
+        "out": 47
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-18 19:00:00",
+        "in": 49,
+        "out": 49
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-18 20:00:00",
+        "in": 15,
+        "out": 16
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-19 10:00:00",
+        "in": 19,
+        "out": 11
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-19 11:00:00",
+        "in": 29,
+        "out": 29
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-19 12:00:00",
+        "in": 29,
+        "out": 36
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-19 13:00:00",
+        "in": 33,
+        "out": 33
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-19 14:00:00",
+        "in": 22,
+        "out": 24
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-19 15:00:00",
+        "in": 27,
+        "out": 29
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-19 16:00:00",
+        "in": 33,
+        "out": 31
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-19 17:00:00",
+        "in": 61,
+        "out": 67
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-19 18:00:00",
+        "in": 73,
+        "out": 62
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-19 19:00:00",
+        "in": 60,
+        "out": 63
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-19 20:00:00",
+        "in": 19,
+        "out": 26
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-20 10:00:00",
+        "in": 41,
+        "out": 36
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-20 11:00:00",
+        "in": 53,
+        "out": 57
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-20 12:00:00",
+        "in": 30,
+        "out": 31
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-20 13:00:00",
+        "in": 52,
+        "out": 53
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-20 14:00:00",
+        "in": 77,
+        "out": 59
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-20 15:00:00",
+        "in": 56,
+        "out": 64
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-20 16:00:00",
+        "in": 77,
+        "out": 72
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-20 17:00:00",
+        "in": 90,
+        "out": 91
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-20 18:00:00",
+        "in": 107,
+        "out": 112
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-20 19:00:00",
+        "in": 69,
+        "out": 83
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-20 20:00:00",
+        "in": 46,
+        "out": 44
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-21 10:00:00",
+        "in": 22,
+        "out": 18
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-21 11:00:00",
+        "in": 50,
+        "out": 40
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-21 12:00:00",
+        "in": 111,
+        "out": 107
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-21 13:00:00",
+        "in": 99,
+        "out": 107
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-21 14:00:00",
+        "in": 98,
+        "out": 95
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-21 15:00:00",
+        "in": 81,
+        "out": 85
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-21 16:00:00",
+        "in": 115,
+        "out": 109
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-21 17:00:00",
+        "in": 153,
+        "out": 156
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-21 18:00:00",
+        "in": 92,
+        "out": 108
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-21 19:00:00",
+        "in": 72,
+        "out": 77
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-21 20:00:00",
+        "in": 43,
+        "out": 46
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-22 10:00:00",
+        "in": 38,
+        "out": 33
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-22 11:00:00",
+        "in": 92,
+        "out": 75
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-22 12:00:00",
+        "in": 73,
+        "out": 88
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-22 13:00:00",
+        "in": 72,
+        "out": 82
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-22 14:00:00",
+        "in": 105,
+        "out": 94
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-22 15:00:00",
+        "in": 131,
+        "out": 143
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-22 16:00:00",
+        "in": 134,
+        "out": 132
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-22 17:00:00",
+        "in": 137,
+        "out": 140
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-22 18:00:00",
+        "in": 104,
+        "out": 113
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-22 19:00:00",
+        "in": 72,
+        "out": 84
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-22 20:00:00",
+        "in": 0,
+        "out": 4
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-23 10:00:00",
+        "in": 14,
+        "out": 15
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-23 11:00:00",
+        "in": 19,
+        "out": 20
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-23 12:00:00",
+        "in": 31,
+        "out": 35
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-23 13:00:00",
+        "in": 29,
+        "out": 30
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-23 14:00:00",
+        "in": 45,
+        "out": 38
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-23 15:00:00",
+        "in": 44,
+        "out": 52
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-23 16:00:00",
+        "in": 37,
+        "out": 38
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-23 17:00:00",
+        "in": 48,
+        "out": 45
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-23 18:00:00",
+        "in": 42,
+        "out": 48
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-23 19:00:00",
+        "in": 37,
+        "out": 33
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-23 20:00:00",
+        "in": 8,
+        "out": 19
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-24 10:00:00",
+        "in": 12,
+        "out": 5
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-24 11:00:00",
+        "in": 32,
+        "out": 33
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-24 12:00:00",
+        "in": 34,
+        "out": 35
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-24 13:00:00",
+        "in": 40,
+        "out": 41
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-24 14:00:00",
+        "in": 29,
+        "out": 31
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-24 15:00:00",
+        "in": 23,
+        "out": 24
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-24 16:00:00",
+        "in": 55,
+        "out": 47
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-24 17:00:00",
+        "in": 61,
+        "out": 55
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-24 18:00:00",
+        "in": 50,
+        "out": 58
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-24 19:00:00",
+        "in": 59,
+        "out": 68
+    },
+    {
+        "storeCode": "RL-CON",
+        "store": "RL-CONDADO",
+        "timeformatted": "2026-03-24 20:00:00",
+        "in": 10,
+        "out": 14
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-18 10:00:00",
+        "in": 14,
+        "out": 12
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-18 11:00:00",
+        "in": 17,
+        "out": 13
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-18 12:00:00",
+        "in": 15,
+        "out": 20
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-18 13:00:00",
+        "in": 22,
+        "out": 22
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-18 14:00:00",
+        "in": 29,
+        "out": 25
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-18 15:00:00",
+        "in": 20,
+        "out": 16
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-18 16:00:00",
+        "in": 15,
+        "out": 13
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-18 17:00:00",
+        "in": 38,
+        "out": 24
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-18 18:00:00",
+        "in": 39,
+        "out": 31
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-18 19:00:00",
+        "in": 30,
+        "out": 26
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-18 20:00:00",
+        "in": 6,
+        "out": 7
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-19 10:00:00",
+        "in": 6,
+        "out": 6
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-19 11:00:00",
+        "in": 19,
+        "out": 14
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-19 12:00:00",
+        "in": 15,
+        "out": 14
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-19 13:00:00",
+        "in": 20,
+        "out": 19
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-19 14:00:00",
+        "in": 22,
+        "out": 24
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-19 15:00:00",
+        "in": 16,
+        "out": 15
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-19 16:00:00",
+        "in": 16,
+        "out": 14
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-19 17:00:00",
+        "in": 31,
+        "out": 31
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-19 18:00:00",
+        "in": 22,
+        "out": 30
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-19 19:00:00",
+        "in": 20,
+        "out": 21
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-19 20:00:00",
+        "in": 7,
+        "out": 6
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-20 10:00:00",
+        "in": 10,
+        "out": 8
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-20 11:00:00",
+        "in": 13,
+        "out": 9
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-20 12:00:00",
+        "in": 35,
+        "out": 32
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-20 13:00:00",
+        "in": 23,
+        "out": 19
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-20 14:00:00",
+        "in": 39,
+        "out": 24
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-20 15:00:00",
+        "in": 23,
+        "out": 17
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-20 16:00:00",
+        "in": 32,
+        "out": 23
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-20 17:00:00",
+        "in": 33,
+        "out": 26
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-20 18:00:00",
+        "in": 40,
+        "out": 41
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-20 19:00:00",
+        "in": 33,
+        "out": 32
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-20 20:00:00",
+        "in": 15,
+        "out": 11
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-21 10:00:00",
+        "in": 19,
+        "out": 17
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-21 11:00:00",
+        "in": 43,
+        "out": 34
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-21 12:00:00",
+        "in": 34,
+        "out": 31
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-21 13:00:00",
+        "in": 34,
+        "out": 38
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-21 14:00:00",
+        "in": 50,
+        "out": 45
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-21 15:00:00",
+        "in": 34,
+        "out": 37
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-21 16:00:00",
+        "in": 44,
+        "out": 42
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-21 17:00:00",
+        "in": 17,
+        "out": 20
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-21 18:00:00",
+        "in": 64,
+        "out": 43
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-21 19:00:00",
+        "in": 22,
+        "out": 35
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-21 20:00:00",
+        "in": 11,
+        "out": 13
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-22 10:00:00",
+        "in": 3,
+        "out": 4
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-22 11:00:00",
+        "in": 14,
+        "out": 14
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-22 12:00:00",
+        "in": 27,
+        "out": 27
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-22 13:00:00",
+        "in": 20,
+        "out": 18
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-22 14:00:00",
+        "in": 28,
+        "out": 20
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-22 15:00:00",
+        "in": 58,
+        "out": 51
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-22 16:00:00",
+        "in": 54,
+        "out": 42
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-22 17:00:00",
+        "in": 34,
+        "out": 26
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-22 18:00:00",
+        "in": 18,
+        "out": 22
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-22 19:00:00",
+        "in": 31,
+        "out": 23
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-22 20:00:00",
+        "in": 0,
+        "out": 0
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-23 10:00:00",
+        "in": 11,
+        "out": 9
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-23 11:00:00",
+        "in": 10,
+        "out": 9
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-23 12:00:00",
+        "in": 16,
+        "out": 13
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-23 13:00:00",
+        "in": 28,
+        "out": 18
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-23 14:00:00",
+        "in": 16,
+        "out": 15
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-23 15:00:00",
+        "in": 9,
+        "out": 15
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-23 16:00:00",
+        "in": 19,
+        "out": 17
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-23 17:00:00",
+        "in": 16,
+        "out": 26
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-23 18:00:00",
+        "in": 29,
+        "out": 22
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-23 19:00:00",
+        "in": 6,
+        "out": 10
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-23 20:00:00",
+        "in": 1,
+        "out": 0
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-24 10:00:00",
+        "in": 6,
+        "out": 5
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-24 11:00:00",
+        "in": 17,
+        "out": 13
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-24 12:00:00",
+        "in": 13,
+        "out": 16
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-24 13:00:00",
+        "in": 26,
+        "out": 12
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-24 14:00:00",
+        "in": 37,
+        "out": 30
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-24 15:00:00",
+        "in": 24,
+        "out": 20
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-24 16:00:00",
+        "in": 21,
+        "out": 15
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-24 17:00:00",
+        "in": 20,
+        "out": 19
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-24 18:00:00",
+        "in": 35,
+        "out": 32
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-24 19:00:00",
+        "in": 8,
+        "out": 7
+    },
+    {
+        "storeCode": "RL-CCI",
+        "store": "RL-CCI",
+        "timeformatted": "2026-03-24 20:00:00",
+        "in": 2,
+        "out": 1
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-18 10:00:00",
+        "in": 12,
+        "out": 10
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-18 11:00:00",
+        "in": 12,
+        "out": 10
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-18 12:00:00",
+        "in": 22,
+        "out": 16
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-18 13:00:00",
+        "in": 9,
+        "out": 9
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-18 14:00:00",
+        "in": 11,
+        "out": 7
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-18 15:00:00",
+        "in": 18,
+        "out": 23
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-18 16:00:00",
+        "in": 34,
+        "out": 22
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-18 17:00:00",
+        "in": 22,
+        "out": 32
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-18 18:00:00",
+        "in": 27,
+        "out": 29
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-18 19:00:00",
+        "in": 19,
+        "out": 21
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-19 10:00:00",
+        "in": 14,
+        "out": 15
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-19 11:00:00",
+        "in": 17,
+        "out": 14
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-19 12:00:00",
+        "in": 9,
+        "out": 15
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-19 13:00:00",
+        "in": 15,
+        "out": 15
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-19 14:00:00",
+        "in": 10,
+        "out": 15
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-19 15:00:00",
+        "in": 38,
+        "out": 35
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-19 16:00:00",
+        "in": 21,
+        "out": 18
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-19 17:00:00",
+        "in": 25,
+        "out": 18
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-19 18:00:00",
+        "in": 27,
+        "out": 28
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-19 19:00:00",
+        "in": 9,
+        "out": 15
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-20 10:00:00",
+        "in": 15,
+        "out": 13
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-20 11:00:00",
+        "in": 17,
+        "out": 16
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-20 12:00:00",
+        "in": 35,
+        "out": 25
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-20 13:00:00",
+        "in": 10,
+        "out": 21
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-20 14:00:00",
+        "in": 19,
+        "out": 13
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-20 15:00:00",
+        "in": 21,
+        "out": 20
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-20 16:00:00",
+        "in": 26,
+        "out": 28
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-20 17:00:00",
+        "in": 31,
+        "out": 18
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-20 18:00:00",
+        "in": 32,
+        "out": 41
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-20 19:00:00",
+        "in": 27,
+        "out": 16
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-21 10:00:00",
+        "in": 12,
+        "out": 12
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-21 11:00:00",
+        "in": 9,
+        "out": 17
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-21 12:00:00",
+        "in": 22,
+        "out": 28
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-21 13:00:00",
+        "in": 57,
+        "out": 54
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-21 14:00:00",
+        "in": 35,
+        "out": 42
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-21 15:00:00",
+        "in": 51,
+        "out": 34
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-21 16:00:00",
+        "in": 46,
+        "out": 43
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-21 17:00:00",
+        "in": 59,
+        "out": 33
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-21 18:00:00",
+        "in": 25,
+        "out": 29
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-21 19:00:00",
+        "in": 31,
+        "out": 36
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-22 10:00:00",
+        "in": 25,
+        "out": 22
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-22 11:00:00",
+        "in": 39,
+        "out": 22
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-22 12:00:00",
+        "in": 41,
+        "out": 40
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-22 13:00:00",
+        "in": 50,
+        "out": 31
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-22 14:00:00",
+        "in": 45,
+        "out": 36
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-22 15:00:00",
+        "in": 70,
+        "out": 42
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-22 16:00:00",
+        "in": 80,
+        "out": 101
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-22 17:00:00",
+        "in": 59,
+        "out": 39
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-22 18:00:00",
+        "in": 38,
+        "out": 35
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-22 19:00:00",
+        "in": 21,
+        "out": 19
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-23 10:00:00",
+        "in": 16,
+        "out": 15
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-23 11:00:00",
+        "in": 18,
+        "out": 16
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-23 12:00:00",
+        "in": 12,
+        "out": 16
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-23 13:00:00",
+        "in": 8,
+        "out": 8
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-23 14:00:00",
+        "in": 15,
+        "out": 9
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-23 15:00:00",
+        "in": 20,
+        "out": 15
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-23 16:00:00",
+        "in": 18,
+        "out": 14
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-23 17:00:00",
+        "in": 18,
+        "out": 16
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-23 18:00:00",
+        "in": 15,
+        "out": 30
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-23 19:00:00",
+        "in": 25,
+        "out": 28
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-24 10:00:00",
+        "in": 8,
+        "out": 5
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-24 11:00:00",
+        "in": 16,
+        "out": 15
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-24 12:00:00",
+        "in": 9,
+        "out": 10
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-24 13:00:00",
+        "in": 9,
+        "out": 18
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-24 14:00:00",
+        "in": 15,
+        "out": 13
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-24 15:00:00",
+        "in": 22,
+        "out": 15
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-24 16:00:00",
+        "in": 21,
+        "out": 22
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-24 17:00:00",
+        "in": 31,
+        "out": 27
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-24 18:00:00",
+        "in": 42,
+        "out": 31
+    },
+    {
+        "storeCode": "RL-REC2",
+        "store": "RL-RECREO",
+        "timeformatted": "2026-03-24 19:00:00",
+        "in": 24,
+        "out": 14
+    }
+]
