@@ -19,16 +19,20 @@
         return $hora;
     }
 
+    /**
+     * Mapea registros de asistencias al formato KOACH360 (manual).
+     * Nota: el token JWT va por header (no en el body), por eso aquí NO se envían
+     * credenciales adicionales.
+     */
     function mapear_asistencias_koach360(
         array $asistencias,
-        int $clienteId,
-        string $usuarioApi,
-        string $claveApi
+        int $clienteId
     ): array {
         $out = [];
         foreach ($asistencias as $asis) {
             $correo = trim((string) ($asis['asesor_correo'] ?? ''));
             if ($correo === '') {
+                // Fallback seguro para KOACH360: no enviar string vacío
                 $correo = '-';
             }
             $out[] = [
@@ -41,8 +45,6 @@
                 'hora'          => normalizar_hora_asistencia((string) $asis['hora']),
                 'localNombre'   => trim((string) $asis['local_nombre']),
                 'localCodigo'   => trim((string) ($asis['local_codigo'] ?? '')),
-                'usuarioApi'    => $usuarioApi,
-                'claveApi'      => $claveApi,
             ];
         }
         return $out;
@@ -50,12 +52,10 @@
 
     function generarAsistenciasJson(
         array $asistencias,
-        $cliente_id = CLI_ASISTENCIAS,
-        $usuario_api = US_ASISTENCIAS,
-        $clave_api = PS_ASISTENCIAS
+        $cliente_id = CLI_ASISTENCIAS
     ) {
         $cid = (int) $cliente_id;
-        $payload = mapear_asistencias_koach360($asistencias, $cid, (string) $usuario_api, (string) $clave_api);
+        $payload = mapear_asistencias_koach360($asistencias, $cid);
         $json = json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
         $nombreArchivo = 'asistencias_' . date('Ymd_His') . '.json';
         $ruta = __DIR__ . '/../tareas/json/' . $nombreArchivo;
@@ -69,14 +69,12 @@
     function enviarAsistenciasKliente(
         array $asistencias,
         $url = null,
-        $cliente_id = CLI_ASISTENCIAS,
-        $usuario_api = US_ASISTENCIAS,
-        $clave_api = PS_ASISTENCIAS
+        $cliente_id = CLI_ASISTENCIAS
     ) {
         unset($url);
 
         $cid = (int) $cliente_id;
-        $payload = mapear_asistencias_koach360($asistencias, $cid, (string) $usuario_api, (string) $clave_api);
+        $payload = mapear_asistencias_koach360($asistencias, $cid);
         $jsonData = json_encode($payload, JSON_UNESCAPED_UNICODE);
 
         $nombreArchivo = 'asistencias_' . date('Ymd_His') . '.json';

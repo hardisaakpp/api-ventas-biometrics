@@ -62,13 +62,11 @@
 
     function generarAsistenciasProgramadasJson(
         array $registros,
-        $cliente_id = CLI_ASISTENCIAS_PROGRAMADAS,
-        $usuario_api = US_ASISTENCIAS_PROGRAMADAS,
-        $clave_api = PS_ASISTENCIAS_PROGRAMADAS
+        $cliente_id = CLI_ASISTENCIAS_PROGRAMADAS
     ) {
         $expandidos = expandir_asistencias_programadas_koach360($registros);
         $cid = (int) $cliente_id;
-        $payload = mapear_asistencias_koach360($expandidos, $cid, (string) $usuario_api, (string) $clave_api);
+        $payload = mapear_asistencias_koach360($expandidos, $cid);
         $json = json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
         $nombreArchivo = 'asistencias__prog_' . date('Ymd_His') . '.json';
         $ruta = __DIR__ . '/../tareas/json/' . $nombreArchivo;
@@ -82,9 +80,7 @@
     function enviarAsistenciasProgramadas(
         array $registros,
         $url = null,
-        $cliente_id = CLI_ASISTENCIAS_PROGRAMADAS,
-        $usuario_api = US_ASISTENCIAS_PROGRAMADAS,
-        $clave_api = PS_ASISTENCIAS_PROGRAMADAS
+        $cliente_id = CLI_ASISTENCIAS_PROGRAMADAS
     ) {
         unset($url);
 
@@ -94,7 +90,7 @@
         }
 
         $cid = (int) $cliente_id;
-        $payload = mapear_asistencias_koach360($expandidos, $cid, (string) $usuario_api, (string) $clave_api);
+        $payload = mapear_asistencias_koach360($expandidos, $cid);
         $jsonData = json_encode($payload, JSON_UNESCAPED_UNICODE);
 
         $nombreArchivo = 'asistencias__prog_' . date('Ymd_His') . '.json';

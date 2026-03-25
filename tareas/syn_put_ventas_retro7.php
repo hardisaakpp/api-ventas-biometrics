@@ -6,7 +6,10 @@
     require_once __DIR__ . '/../cx/bd_scs.php';
     require_once __DIR__ . '/../cws/f_put_ventas.php';
     require_once __DIR__ . '/f_tareas.php';
+    require_once __DIR__ . '/ventas_query_helpers.php';
     date_default_timezone_set('America/Guayaquil');
+
+    $correoFrag = ventas_syn_asesor_correo_fragments();
 
     $query = "
         SELECT
@@ -28,7 +31,7 @@
                                     WHEN 'NC' THEN 'NA'
                                     ELSE 'ND'
                                     END,
-            asesor_correo       = '-',
+            asesor_correo       = {$correoFrag['asesorCorreoExpr']},
             lider_nombre        = CASE V.CodTienda
                                     WHEN 'RL-PSC'  THEN 'GOMEZ IMBAQUINGO SILVIA ANDREA'
                                     WHEN 'RL-QSS2' THEN 'CUEVA MESA CHRISTIAN ANTONIO'
@@ -51,6 +54,7 @@
         FROM Analitica..DWH_VENTASGENERAL_VIEW V
         LEFT JOIN BISTAGING..STG_EMPLEADOS E
             ON V.CodVendedor = E.CodVendedor AND E.IdEmpresa = 1
+        {$correoFrag['applySql']}
         WHERE
             V.Fecha >= DATEADD(DAY, -7, CAST(GETDATE() AS DATE))
             AND V.Fecha < CAST(GETDATE() AS DATE)

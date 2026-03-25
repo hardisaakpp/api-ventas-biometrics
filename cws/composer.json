@@ -1,15 +1,9 @@
 {
-    "require": {
-        "composer/semver": "^3.4",
-        "guzzlehttp/guzzle": "^7.10",
-        "psr/log": "^3.0 || ^2.0 || ^1.1"
-    },
-    "scripts": {
-        "post-autoload-dump": [
-            "@php scripts/patch-intelephense-autoload-static.php",
-            "@php scripts/patch-intelephense-classloader-apcu.php",
-            "@php scripts/patch-intelephense-semver.php",
-            "@php scripts/patch-intelephense-guzzle-functions.php"
-        ]
+    "name": "mabel/kliente-integrations",
+    "description": "Integraciones KOACH360 + V-Count (sin dependencias PHP obligatorias; curl nativo).",
+    "license": "proprietary",
+    "require": {},
+    "config": {
+        "sort-packages": true
     }
 }

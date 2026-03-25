@@ -26,14 +26,10 @@
     }
 
     /**
-     * Arma el cuerpo KOACH360 (camelCase según manual). Notas de crédito: importes y unidades en negativo.
+     * Arma el cuerpo POST /api/Ventas/cargaVentasV1 según manual KOACH360 (solo campos obligatorios).
+     * factura_origen en filas (FAC|NC|ND) es solo interno: NC fuerza valorTransaccion y cantidadUnidades negativos.
      */
-    function mapear_ventas_koach360(
-        array $facturasBase,
-        int $clienteId,
-        string $usuarioApi,
-        string $claveApi
-    ): array {
+    function mapear_ventas_koach360(array $facturasBase, int $clienteId): array {
         $out = [];
         foreach ($facturasBase as $factura) {
             $origen = strtoupper(trim((string) ($factura['factura_origen'] ?? 'FAC')));
@@ -45,36 +41,28 @@
             }
 
             $out[] = [
-                'asesorCedula'      => trim((string) $factura['asesor_cedula']),
-                'asesorCorreo'      => trim((string) ($factura['asesor_correo'] ?: '-')),
-                'asesorNombre'      => trim((string) $factura['asesor_nombre']),
-                'claveApi'          => $claveApi,
-                'clienteId'         => $clienteId,
-                'facturaFecha'      => normalizar_fecha_venta_iso((string) $factura['factura_fecha']),
-                'facturaHora'       => normalizar_hora_venta((string) $factura['factura_hora']),
-                'facturaNumero'     => trim((string) $factura['factura_numero']),
-                'facturaOrigen'     => $origen,
-                'liderCedula'       => trim((string) $factura['lider_cedula']),
-                'liderCorreo'       => trim((string) $factura['lider_correo']),
-                'liderNombre'       => trim((string) $factura['lider_nombre']),
-                'localNombre'       => trim((string) $factura['local_nombre']),
-                'localCodigo'       => trim((string) $factura['local_codigo']),
-                'usuarioApi'        => $usuarioApi,
-                'valorTransaccion'  => $valor,
-                'cantidadUnidades'  => $unidades,
+                'asesorCedula'     => trim((string) $factura['asesor_cedula']),
+                'asesorCorreo'     => trim((string) ($factura['asesor_correo'] ?: '-')),
+                'asesorNombre'     => trim((string) $factura['asesor_nombre']),
+                'clienteId'        => $clienteId,
+                'facturaFecha'     => normalizar_fecha_venta_iso((string) $factura['factura_fecha']),
+                'facturaHora'      => normalizar_hora_venta((string) $factura['factura_hora']),
+                'facturaNumero'    => trim((string) $factura['factura_numero']),
+                'liderCedula'      => trim((string) $factura['lider_cedula']),
+                'liderCorreo'      => trim((string) $factura['lider_correo']),
+                'liderNombre'      => trim((string) $factura['lider_nombre']),
+                'localNombre'      => trim((string) $factura['local_nombre']),
+                'localCodigo'      => trim((string) $factura['local_codigo']),
+                'valorTransaccion' => $valor,
+                'cantidadUnidades' => $unidades,
             ];
         }
         return $out;
     }
 
-    function generarFacturasJson(
-        array $facturasBase,
-        $cliente_id = CLI_PVENTAS,
-        $usuario_api = US_PVENTAS,
-        $clave_api = PS_PVENTAS
-    ) {
+    function generarFacturasJson(array $facturasBase, $cliente_id = CLI_PVENTAS) {
         $cid = (int) $cliente_id;
-        $payload = mapear_ventas_koach360($facturasBase, $cid, (string) $usuario_api, (string) $clave_api);
+        $payload = mapear_ventas_koach360($facturasBase, $cid);
         $json = json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
         $nombreArchivo = 'ventas_' . date('Ymd_His') . '.json';
         $ruta = __DIR__ . '/../tareas/json/' . $nombreArchivo;
@@ -88,17 +76,11 @@
     /**
      * Envía ventas a KOACH360 (POST + JWT). Solo días completos deben venir en $facturas (filtrar en SQL).
      */
-    function enviarFacturasKliente(
-        array $facturas,
-        $url = null,
-        $cliente_id = CLI_PVENTAS,
-        $usuario_api = US_PVENTAS,
-        $clave_api = PS_PVENTAS
-    ) {
+    function enviarFacturasKliente(array $facturas, $url = null, $cliente_id = CLI_PVENTAS) {
         unset($url);
 
         $cid = (int) $cliente_id;
-        $payload = mapear_ventas_koach360($facturas, $cid, (string) $usuario_api, (string) $clave_api);
+        $payload = mapear_ventas_koach360($facturas, $cid);
         $jsonData = json_encode($payload, JSON_UNESCAPED_UNICODE);
 
         $nombreArchivo = 'ventas_' . date('Ymd_His') . '.json';

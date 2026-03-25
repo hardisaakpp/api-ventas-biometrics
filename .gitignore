@@ -3,3 +3,6 @@
 
 # Logs de tareas (opcional; quitar esta línea si quieres versionar logs de ejemplo)
 tareas/logs/*.log
+
+# Composer: este proyecto no requiere paquetes; si ejecutas composer install, no versionar vendor.
+cws/vendor/

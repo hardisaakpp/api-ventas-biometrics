@@ -65,18 +65,7 @@
 		}
 	}
 
-	//SNAPP--------------------------------------------------------------------------------------------------------------
-
-		if (!defined('APILOGIN')) { define('APILOGIN', cws_env('APILOGIN', 'https://e-proxy.hitellcorp.com/apilogin/external')); }
-		if (!defined('STORES')) { define('STORES', cws_env('STORES', 'https://e-proxy.hitellcorp.com/external/stores')); }
-		if (!defined('ARQUEO')) { define('ARQUEO', cws_env('ARQUEO', 'https://e-proxy.hitellcorp.com/external/arqueo-caja')); }
-
-		if (!defined('US_MABEL')) { define('US_MABEL', cws_env('US_MABEL')); }
-		if (!defined('PS_MABEL')) { define('PS_MABEL', cws_env('PS_MABEL')); }
-		if (!defined('US_COSMEC')) { define('US_COSMEC', cws_env('US_COSMEC')); }
-		if (!defined('PS_COSMEC')) { define('PS_COSMEC', cws_env('PS_COSMEC')); }
-
-	//KLIENTE--------------------------------------------------------------------------------------------------------------
+	// V-Count BoostBI (manual API)
 
 		if (!defined('US_VCOUNT')) { define('US_VCOUNT', cws_env('US_VCOUNT')); }
 		if (!defined('PS_VCOUNT')) { define('PS_VCOUNT', cws_env('PS_VCOUNT')); }
@@ -87,35 +76,7 @@
 			define('URL_VCOUNT_DAILY', cws_env('URL_VCOUNT_DAILY', 'https://boostbi.v-count.com/api/v4/vcountapi_daily'));
 		}
 
-		if (!defined('URL_PVENTAS')) {
-			define('URL_PVENTAS', cws_env('URL_PVENTAS', 'https://coach.kliente.tech:443/Kliente/api_ImportarVentasV2/'));
-		}
-		if (!defined('US_PVENTAS')) { define('US_PVENTAS', cws_env('US_PVENTAS')); }
-		if (!defined('PS_PVENTAS')) { define('PS_PVENTAS', cws_env('PS_PVENTAS')); }
-		if (!defined('CLI_PVENTAS')) { define('CLI_PVENTAS', cws_env('CLI_PVENTAS', '48')); }
-
-		if (!defined('URL_ASISTENCIAS')) {
-			define('URL_ASISTENCIAS', cws_env('URL_ASISTENCIAS', 'https://coach.kliente.tech:443/Kliente/api_ImportarAsistenciasAsesores/index.php'));
-		}
-		if (!defined('US_ASISTENCIAS')) { define('US_ASISTENCIAS', cws_env('US_ASISTENCIAS')); }
-		if (!defined('PS_ASISTENCIAS')) { define('PS_ASISTENCIAS', cws_env('PS_ASISTENCIAS')); }
-		if (!defined('CLI_ASISTENCIAS')) { define('CLI_ASISTENCIAS', cws_env('CLI_ASISTENCIAS', '48')); }
-
-		if (!defined('URL_ASISTENCIAS_PROGRAMADAS')) {
-			define(
-				'URL_ASISTENCIAS_PROGRAMADAS',
-				cws_env('URL_ASISTENCIAS_PROGRAMADAS', 'https://coach.kliente.tech/Kliente/api_ImportarAsistenciasProgramadasAsesores/')
-			);
-		}
-		if (!defined('US_ASISTENCIAS_PROGRAMADAS')) {
-			define('US_ASISTENCIAS_PROGRAMADAS', cws_env('US_ASISTENCIAS_PROGRAMADAS'));
-		}
-		if (!defined('PS_ASISTENCIAS_PROGRAMADAS')) {
-			define('PS_ASISTENCIAS_PROGRAMADAS', cws_env('PS_ASISTENCIAS_PROGRAMADAS'));
-		}
-		if (!defined('CLI_ASISTENCIAS_PROGRAMADAS')) {
-			define('CLI_ASISTENCIAS_PROGRAMADAS', cws_env('CLI_ASISTENCIAS_PROGRAMADAS', '48'));
-		}
+	// KOACH360 (manual integración API)
 
 		if (!defined('KOACH360_BASE_URL')) {
 			define('KOACH360_BASE_URL', cws_env('KOACH360_BASE_URL', 'https://koach360.kliente.tech:5000'));
@@ -126,37 +87,28 @@
 		if (!defined('KOACH360_PATH_ASIST_PROG')) {
 			define('KOACH360_PATH_ASIST_PROG', '/api/AsistenciasProgramadas/integracionAsistenciasProgramadas');
 		}
+
+		if (!defined('KOACH360_CLIENT_ID')) {
+			$kid = cws_env('KOACH360_CLIENT_ID');
+			if ($kid === '') {
+				$kid = cws_env('CLI_PVENTAS', '17');
+			}
+			define('KOACH360_CLIENT_ID', $kid);
+		}
+		if (!defined('CLI_PVENTAS')) { define('CLI_PVENTAS', KOACH360_CLIENT_ID); }
+		if (!defined('CLI_ASISTENCIAS')) { define('CLI_ASISTENCIAS', KOACH360_CLIENT_ID); }
+		if (!defined('CLI_ASISTENCIAS_PROGRAMADAS')) { define('CLI_ASISTENCIAS_PROGRAMADAS', KOACH360_CLIENT_ID); }
+
 		if (!defined('KOACH360_USUARIO')) {
 			$kU = cws_env('KOACH360_USUARIO');
-			define('KOACH360_USUARIO', $kU !== '' ? $kU : US_PVENTAS);
+			define('KOACH360_USUARIO', $kU !== '' ? $kU : cws_env('US_PVENTAS'));
 		}
 		if (!defined('KOACH360_PASSWORD')) {
 			$kP = cws_env('KOACH360_PASSWORD');
-			define('KOACH360_PASSWORD', $kP !== '' ? $kP : PS_PVENTAS);
+			define('KOACH360_PASSWORD', $kP !== '' ? $kP : cws_env('PS_PVENTAS'));
 		}
 		if (!defined('KOACH360_HORA_PROG_DEFAULT')) {
 			define('KOACH360_HORA_PROG_DEFAULT', cws_env('KOACH360_HORA_PROG_DEFAULT', '09:00'));
-		}
-
-	//BIMBA Y LOA--------------------------------------------------------------------------------------------------------------
-
-		if (!defined('TENANT_ID')) {
-			define('TENANT_ID', cws_env('BYL_TENANT_ID', 'bimbaylola.com'));
-		}
-		if (!defined('BYL_URL')) {
-			define('BYL_URL', cws_env('BYL_URL', 'https://login.microsoftonline.com/' . TENANT_ID . '/oauth2/token?v2.0'));
-		}
-		if (!defined('BYL_GRANT_TYPE')) {
-			define('BYL_GRANT_TYPE', cws_env('BYL_GRANT_TYPE', 'client_credentials'));
-		}
-		if (!defined('BYL_CLIENT_ID')) { define('BYL_CLIENT_ID', cws_env('BYL_CLIENT_ID')); }
-		if (!defined('BYL_CLIENT_SECRET')) { define('BYL_CLIENT_SECRET', cws_env('BYL_CLIENT_SECRET')); }
-		if (!defined('BYL_RESOURCE')) { define('BYL_RESOURCE', cws_env('BYL_RESOURCE')); }
-		if (!defined('BYL_API_URL')) {
-			define('BYL_API_URL', cws_env('BYL_API_URL', 'https://bimbaylola.azure-api.net/pdp-api-v1/StandardFranchisees?api-version=1'));
-		}
-		if (!defined('BYL_API_SUBSCRIPTION_KEY')) {
-			define('BYL_API_SUBSCRIPTION_KEY', cws_env('BYL_API_SUBSCRIPTION_KEY'));
 		}
 
 	//--------------------------------------------------------------------------------------------------------------

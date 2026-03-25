@@ -1,8 +1,12 @@
 <?php
 /**
  * Prueba KOACH360 login (JWT) sin SQL Server.
- * Uso (desde cualquier carpeta):
+ *
+ * Opción A — desde la raíz del repositorio klienteV1:
  *   php cws/scripts/test_koach360_login.php
+ *
+ * Opción B — desde cualquier carpeta (ruta absoluta al .php):
+ *   php "C:\ruta\completa\klienteV1\cws\scripts\test_koach360_login.php"
  *
  * Carga .env desde la raíz del repo vía dat_cws (igual que el resto de cws).
  */
