@@ -146,14 +146,14 @@ function normalize_and_validate_email(?string $correo): ?string
 /** Catálogo fijo de cargos (debe coincidir con opciones del frontend). */
 function store_employees_cargos_permitidos(): array
 {
-    return ['Administrador de tienda', 'Jefe de tienda', 'Asesor de ventas'];
+    return ['Administrador de tienda', 'Jefe de tienda', 'Director de tienda', 'Asesor de ventas'];
 }
 
 function json_cargo_invalido(): void
 {
     json_response(422, [
         'ok' => false,
-        'error' => 'cargo debe ser uno de: Administrador de tienda, Jefe de tienda, Asesor de ventas',
+        'error' => 'cargo debe ser uno de: Administrador de tienda, Jefe de tienda, Director de tienda, Asesor de ventas',
         'cargos_permitidos' => store_employees_cargos_permitidos(),
     ]);
 }
@@ -333,6 +333,25 @@ function cedula_exists($conn, string $cedula, ?int $excludeId = null): bool
 {
     $sql = "SELECT TOP 1 id FROM " . store_employees_table() . " WHERE cedula_identidad = ?";
     $params = [$cedula];
+    if ($excludeId !== null) {
+        $sql .= " AND id <> ?";
+        $params[] = $excludeId;
+    }
+    $stmt = sqlsrv_query($conn, $sql, $params);
+    if ($stmt === false) {
+        json_response(500, ['ok' => false, 'error' => sql_error_payload(sqlsrv_errors())]);
+    }
+    $row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
+    sqlsrv_free_stmt($stmt);
+    return is_array($row);
+}
+
+function encargado_activo_exists_por_tienda($conn, string $codigoTienda, ?int $excludeId = null): bool
+{
+    $sql = "SELECT TOP 1 id
+            FROM " . store_employees_table() . "
+            WHERE codigo_tienda = ? AND estado = 1 AND encargado = 1";
+    $params = [$codigoTienda];
     if ($excludeId !== null) {
         $sql .= " AND id <> ?";
         $params[] = $excludeId;
@@ -536,6 +555,14 @@ if ($method === 'POST') {
     if ($estado === 0) {
         $encargado = 0;
     }
+    if ($estado === 1 && $encargado === 1 && $codigoTienda !== null && encargado_activo_exists_por_tienda($conn, $codigoTienda)) {
+        sqlsrv_close($conn);
+        json_response(409, [
+            'ok' => false,
+            'error' => 'Ya existe un encargado activo para esta tienda',
+            'field' => 'encargado',
+        ]);
+    }
     if ($cedula !== null && cedula_exists($conn, $cedula)) {
         sqlsrv_close($conn);
         json_response(409, [
@@ -597,6 +624,9 @@ if ($method === 'PUT' || $method === 'PATCH') {
     $newEncargado = array_key_exists('encargado', $body)
         ? (int) ((bool) $body['encargado'])
         : (int) ($current['encargado'] ?? 0);
+    $newCodigoTienda = array_key_exists('codigo_tienda', $body)
+        ? normalize_text((string) $body['codigo_tienda'])
+        : normalize_text((string) ($current['codigo_tienda'] ?? ''));
 
     if ($newEstado === 0) {
         if (array_key_exists('encargado', $body) && (int) ((bool) $body['encargado']) === 1) {
@@ -607,6 +637,17 @@ if ($method === 'PUT' || $method === 'PATCH') {
             ]);
         }
         $newEncargado = 0;
+    }
+    if ($newEstado === 1 && $newEncargado === 1) {
+        assert_required_not_null('codigo_tienda', $newCodigoTienda);
+        if ($newCodigoTienda !== null && encargado_activo_exists_por_tienda($conn, $newCodigoTienda, $id)) {
+            sqlsrv_close($conn);
+            json_response(409, [
+                'ok' => false,
+                'error' => 'Ya existe un encargado activo para esta tienda',
+                'field' => 'encargado',
+            ]);
+        }
     }
 
     $fields = [];
