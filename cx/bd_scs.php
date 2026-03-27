@@ -1,6 +1,6 @@
 <?php
     function cx(){
-        include_once('dat_scs.php');
+        include_once __DIR__ . '/dat_scs.php';
         $cx= sqlsrv_connect(HOST,array('Database'=>BD,'UID'=>USUARIO,'PWD'=>PSW,'MultipleActiveResultSets'=>true,'TrustServerCertificate'=>'TRUE','CharacterSet'=>'UTF-8')); 
         if($cx==false){ die(FormatErrors(sqlsrv_errors())); }
         return $cx;
