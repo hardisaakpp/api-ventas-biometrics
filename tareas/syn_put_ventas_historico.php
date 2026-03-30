@@ -78,7 +78,8 @@ $query = "
                             'RL-CCI','RL-CON','RL-PSC','RL-QSN',
                             'RL-QSS2','RL-REC2','RL-SCA','RL-SNL'
                         )
-                        AND dt.Fecha = '2025-08-01'
+                        --AND dt.Fecha = '2025-08-01'
+                        AND dt.Fecha >= '2025-08-01' AND dt.Fecha <= '2025-08-08'
                         --AND dt.Fecha >= '2025-08-01' AND dt.Fecha <= '2025-08-31'
                     )
                     -- Guayaquil + Santo Domingo (deshabilitado; solo envío Quito)

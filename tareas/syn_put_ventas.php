@@ -17,24 +17,9 @@
             asesor_nombre       = dv.NombreVendedor,
             asesor_cedula       = dv.DocumentoVendedor,
             asesor_correo       = '',
-            lider_nombre        = CASE da.CodigoBodega
-                                    WHEN 'RL-PSC'  THEN 'GOMEZ IMBAQUINGO SILVIA ANDREA'
-                                    WHEN 'RL-QSS2' THEN 'CUEVA MESA CHRISTIAN ANTONIO'
-                                    WHEN 'RL-SCA'  THEN 'TUTILLO BENAVIDES DIGNA EVELIN'
-                                    ELSE '-'
-                                  END,
-            lider_cedula        = CASE da.CodigoBodega
-                                    WHEN 'RL-PSC'  THEN '1722759469'
-                                    WHEN 'RL-QSS2' THEN '1716633001'
-                                    WHEN 'RL-SCA'  THEN '1715033674'
-                                    ELSE '9999999999'
-                                  END,
-            lider_correo        = CASE da.CodigoBodega
-                                    WHEN 'RL-PSC'  THEN 'rolportjefe@mabeltrading.com.ec'
-                                    WHEN 'RL-QSS2' THEN 'rolquisurjefe@mabeltrading.com.ec'
-                                    WHEN 'RL-SCA'  THEN 'scala@mabeltrading.com.ec'
-                                    ELSE 'sin-lider@mabeltrading.com.ec'
-                                  END,
+            lider_nombre        = ISNULL(NULLIF(LTRIM(RTRIM(da.NombreLider)), ''), '-'),
+            lider_cedula        = ISNULL(NULLIF(LTRIM(RTRIM(da.DocumentoLider)), ''), '-'),
+            lider_correo        = ISNULL(NULLIF(LTRIM(RTRIM(da.CorreoLider)), ''), '-'),
             local_nombre        = da.NombreBodega,
             local_codigo        = da.CodigoBodega,
             valor_transaccion   = CONVERT(DECIMAL(18,2), SUM(fv.TotalPagado)),
@@ -63,7 +48,10 @@
             dv.NombreVendedor,
             dv.DocumentoVendedor,
             da.NombreBodega,
-            da.CodigoBodega
+            da.CodigoBodega,
+            da.NombreLider,
+            da.DocumentoLider,
+            da.CorreoLider
         ORDER BY
             da.CodigoBodega,
             dt.Fecha,

@@ -245,6 +245,54 @@ php tareas/syn_fetch_vcount.php
 php tareas/syn_fetch_vcount.php 14
 ```
 
+## API `store_employees` (HTTP)
+
+El archivo `cws/api/store_employees.php` expone una API CRUD de empleados (GET/POST/PUT/PATCH/DELETE).  
+Para pruebas locales, levantar servidor embebido de PHP desde la raíz del repo:
+
+```powershell
+Set-Location "C:\ruta\klienteV1"
+php -S localhost:8080 -t cws/api
+```
+
+En Linux:
+
+```bash
+cd /opt/backend/kliente-v1
+php -S 0.0.0.0:8080 -t cws/api
+```
+
+Pruebas rápidas:
+
+- Health: `GET /store_employees.php?health=1`
+- Cargos permitidos: `GET /store_employees.php?meta=cargos`
+- Catálogo de almacenes: `GET /store_employees.php?meta=almacenes`
+
+Ejemplos:
+
+```bash
+curl "http://localhost:8080/store_employees.php?health=1"
+curl "http://localhost:8080/store_employees.php?meta=cargos"
+curl "http://localhost:8080/store_employees.php?meta=almacenes"
+```
+
+Alta de empleado (POST):
+
+```bash
+curl -X POST "http://localhost:8080/store_employees.php" \
+  -H "Content-Type: application/json" \
+  -H "X-User: QA_LOCAL" \
+  -d '{
+    "cedula_identidad":"0123456789",
+    "correo":"empleado@empresa.com",
+    "nombre":"Empleado Prueba",
+    "cargo":"Asesor de ventas",
+    "codigo_tienda":"ALM001",
+    "estado":1,
+    "encargado":0
+  }'
+```
+
 ## Ejecución manual y `cron` (Linux, desde la raíz del repo)
 
 ```bash
