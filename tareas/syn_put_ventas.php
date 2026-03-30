@@ -21,19 +21,19 @@
                                     WHEN 'RL-PSC'  THEN 'GOMEZ IMBAQUINGO SILVIA ANDREA'
                                     WHEN 'RL-QSS2' THEN 'CUEVA MESA CHRISTIAN ANTONIO'
                                     WHEN 'RL-SCA'  THEN 'TUTILLO BENAVIDES DIGNA EVELIN'
-                                    ELSE 'SIN LIDER'
+                                    ELSE '-'
                                   END,
             lider_cedula        = CASE da.CodigoBodega
                                     WHEN 'RL-PSC'  THEN '1722759469'
                                     WHEN 'RL-QSS2' THEN '1716633001'
                                     WHEN 'RL-SCA'  THEN '1715033674'
-                                    ELSE '-'
+                                    ELSE '9999999999'
                                   END,
             lider_correo        = CASE da.CodigoBodega
                                     WHEN 'RL-PSC'  THEN 'rolportjefe@mabeltrading.com.ec'
                                     WHEN 'RL-QSS2' THEN 'rolquisurjefe@mabeltrading.com.ec'
                                     WHEN 'RL-SCA'  THEN 'scala@mabeltrading.com.ec'
-                                    ELSE '-'
+                                    ELSE 'sin-lider@mabeltrading.com.ec'
                                   END,
             local_nombre        = da.NombreBodega,
             local_codigo        = da.CodigoBodega,

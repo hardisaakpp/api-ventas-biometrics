@@ -25,6 +25,28 @@
         return $hora;
     }
 
+/**
+ * Normaliza cedula de asesor y aplica default en valores no validos.
+ */
+function normalizar_cedula_asesor($cedula, string $default = '9999999999'): string {
+    $valor = strtoupper(trim((string) $cedula));
+    if ($valor === '' || $valor === 'S/N' || $valor === '-') {
+        return $default;
+    }
+    return trim((string) $cedula);
+}
+
+/**
+ * Normaliza nombre de lider y aplica '-' en valores no validos.
+ */
+function normalizar_nombre_lider($nombre, string $default = '-'): string {
+    $valor = strtoupper(trim((string) $nombre));
+    if ($valor === '' || $valor === 'SIN LIDER') {
+        return $default;
+    }
+    return trim((string) $nombre);
+}
+
     /**
      * Arma el cuerpo POST /api/Ventas/cargaVentasV1 según manual KOACH360 (solo campos obligatorios).
      * factura_origen en filas (FAC|NC|ND) es solo interno: NC fuerza valorTransaccion y cantidadUnidades negativos.
@@ -41,7 +63,7 @@
             }
 
             $out[] = [
-                'asesorCedula'     => trim((string) $factura['asesor_cedula']),
+                'asesorCedula'     => normalizar_cedula_asesor($factura['asesor_cedula'] ?? null),
                 'asesorCorreo'     => trim((string) ($factura['asesor_correo'] ?: '-')),
                 'asesorNombre'     => trim((string) $factura['asesor_nombre']),
                 'clienteId'        => $clienteId,
@@ -50,7 +72,7 @@
                 'facturaNumero'    => trim((string) $factura['factura_numero']),
                 'liderCedula'      => trim((string) $factura['lider_cedula']),
                 'liderCorreo'      => trim((string) $factura['lider_correo']),
-                'liderNombre'      => trim((string) $factura['lider_nombre']),
+                'liderNombre'      => normalizar_nombre_lider($factura['lider_nombre'] ?? null),
                 'localNombre'      => trim((string) $factura['local_nombre']),
                 'localCodigo'      => trim((string) $factura['local_codigo']),
                 'valorTransaccion' => $valor,

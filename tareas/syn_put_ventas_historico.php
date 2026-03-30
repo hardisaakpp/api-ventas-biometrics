@@ -1,21 +1,19 @@
 <?php
-    /**
-     * Ventas históricas por tiendas y fechas (Quito vs Guayaquil/Santo Domingo) → KOACH360.
-     * Filtro actual: un día por región (ajustar en SQL si pasás a between / rangos).
-     * Reutiliza enviarVentasKoach360() (mismo endpoint JWT que syn_put_ventas.php).
-     *
-     * Ejecución: php tareas/syn_put_ventas_historico.php
-     */
-    require_once __DIR__ . '/../cx/bd_scs.php';
-    require_once __DIR__ . '/../cws/f_put_ventas.php';
-    require_once __DIR__ . '/f_tareas.php';
 
-    date_default_timezone_set('America/Guayaquil');
+/**
+ * Ventas históricas (filtros por tienda/fecha) → KOACH360.
+ * Mismo mapeo y envío que syn_put_ventas.php: enviarVentasKoach360($ventas) y CLI_PVENTAS desde .env.
+ * Filtro SQL: ajustar fechas en WHERE.
+ *
+ * Ejecución: php tareas/syn_put_ventas_historico.php
+ */
+require_once __DIR__ . '/../cx/bd_scs.php';
+require_once __DIR__ . '/../cws/f_put_ventas.php';
+require_once __DIR__ . '/f_tareas.php';
 
-    /** Cliente KOACH360 para esta carga (según negocio: 21). */
-    const VENTAS_HISTORICO_CLIENTE_ID = 21;
+date_default_timezone_set('America/Guayaquil');
 
-    $query = "
+$query = "
         SELECT
             factura_numero      = df.NumeroFactura,
             factura_fecha       = CONVERT(VARCHAR(10), dt.Fecha, 23),
@@ -28,19 +26,19 @@
                                     WHEN 'RL-PSC'  THEN 'GOMEZ IMBAQUINGO SILVIA ANDREA'
                                     WHEN 'RL-QSS2' THEN 'CUEVA MESA CHRISTIAN ANTONIO'
                                     WHEN 'RL-SCA'  THEN 'TUTILLO BENAVIDES DIGNA EVELIN'
-                                    ELSE 'SIN LIDER'
+                                    ELSE '-'
                                   END,
             lider_cedula        = CASE da.CodigoBodega
                                     WHEN 'RL-PSC'  THEN '1722759469'
                                     WHEN 'RL-QSS2' THEN '1716633001'
                                     WHEN 'RL-SCA'  THEN '1715033674'
-                                    ELSE '-'
+                                    ELSE '9999999999'
                                   END,
             lider_correo        = CASE da.CodigoBodega
                                     WHEN 'RL-PSC'  THEN 'rolportjefe@mabeltrading.com.ec'
                                     WHEN 'RL-QSS2' THEN 'rolquisurjefe@mabeltrading.com.ec'
                                     WHEN 'RL-SCA'  THEN 'scala@mabeltrading.com.ec'
-                                    ELSE '-'
+                                    ELSE 'sin-lider@mabeltrading.com.ec'
                                   END,
             local_nombre        = da.NombreBodega,
             local_codigo        = da.CodigoBodega,
@@ -60,35 +58,37 @@
             ON fv.Key_Almacen = da.Key_Almacen
         INNER JOIN DWHE.dbo.Dim_TipoDocumento dtd
             ON fv.Key_TipoDocumento = dtd.Key_TipoDocumento
+        INNER JOIN DWHE.dbo.Dim_Producto dp
+	        ON fv.Key_Producto = dp.Key_Producto
         WHERE
-            dv.CodigoInterno <> '114'
-            AND da.CodigoBodega IN (
+            dv.CodigoInterno <> '114' AND
+	        dp.TipoProducto = 'PRODUCTO' AND
+            da.CodigoBodega IN (
                 'RL-CCI','RL-CON','RL-PSC','RL-QSN','RL-QSS2',
-                'RL-REC2','RL-SCA','RL-SNL',
-                'RL-MSO3','RL-BMB'
+                'RL-REC2','RL-SCA','RL-SNL'
+                -- Solo Quito; otras tiendas comentadas:
+                -- ,'RL-MSO3','RL-BMB'
             )
-            AND (
+            AND 
                 (
-                    -- Quito
-                    da.CodigoBodega IN (
-                        'RL-CCI','RL-CON','RL-PSC','RL-QSN',
-                        'RL-QSS2','RL-REC2','RL-SCA','RL-SNL'
+                    (
+                        -- Quito
+                        da.CodigoBodega IN 
+                        (
+                            'RL-CCI','RL-CON','RL-PSC','RL-QSN',
+                            'RL-QSS2','RL-REC2','RL-SCA','RL-SNL'
+                        )
+                        AND dt.Fecha = '2025-08-01'
+                        --AND dt.Fecha >= '2025-08-01' AND dt.Fecha <= '2025-08-31'
                     )
-                    AND dt.Fecha = '2025-08-01'
-                    -- AND dt.Fecha BETWEEN '2025-08-01' AND '2025-08-08'
-                    -- AND dt.Fecha >= '2025-08-01'
-                    -- AND dt.Fecha < '2025-08-31'
+                    -- Guayaquil + Santo Domingo (deshabilitado; solo envío Quito)
+                    -- OR
+                    --     (
+                    --         da.CodigoBodega IN ('RL-MSO3','RL-BMB')
+                    --         AND dt.Fecha = '2026-01-01'
+                    --         --AND dt.Fecha >= '2026-01-01' AND dt.Fecha <= '2026-01-31'
+                    --     )
                 )
-                OR
-                (
-                    -- Guayaquil + Santo Domingo
-                    da.CodigoBodega IN ('RL-MSO3','RL-BMB')
-                    AND dt.Fecha = '2026-01-01'
-                    -- AND dt.Fecha BETWEEN '2026-01-01' AND '2026-01-09'
-                    -- AND dt.Fecha >= '2026-01-01'
-                    -- AND dt.Fecha < '2026-01-31'
-                )
-            )
         GROUP BY
             df.NumeroFactura,
             dt.Fecha,
@@ -105,15 +105,15 @@
             df.NumeroFactura;
     ";
 
-    $ventas = resp_simdim($query);
-    if (!is_array($ventas)) {
-        $ventas = [];
-    }
+$ventas = resp_simdim($query);
+if (!is_array($ventas)) {
+    $ventas = [];
+}
 
-    $resp = enviarVentasKoach360($ventas, null, VENTAS_HISTORICO_CLIENTE_ID);
-    $logLine = date('Y-m-d H:i:s')
-        . ' - ventas_historico filas=' . count($ventas)
-        . ' clienteId=' . VENTAS_HISTORICO_CLIENTE_ID
-        . ' resp=' . (is_string($resp) ? substr(preg_replace('/\s+/', ' ', $resp), 0, 500) : '')
-        . "\n";
-    file_put_contents(tareas_log_path('syn_put_ventas_historico.log'), $logLine, FILE_APPEND);
+$resp = enviarVentasKoach360($ventas);
+$logLine = date('Y-m-d H:i:s')
+    . ' - ventas_historico filas=' . count($ventas)
+    . ' clienteId=' . CLI_PVENTAS
+    . ' resp=' . (is_string($resp) ? substr(preg_replace('/\s+/', ' ', $resp), 0, 500) : '')
+    . "\n";
+file_put_contents(tareas_log_path('syn_put_ventas_historico.log'), $logLine, FILE_APPEND);
