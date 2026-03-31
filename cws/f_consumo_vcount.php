@@ -23,7 +23,7 @@
             'finish_date' => $finish_date,
             'store'       => $store
         ]);
-        $timeout = (int) cws_env('VCOUNT_HTTP_TIMEOUT', '120');
+        $timeout = (int) cws_env('VCOUNT_HTTP_TIMEOUT', '3600');
         $connectTimeout = (int) cws_env('VCOUNT_CONNECT_TIMEOUT', '20');
         $maxAttempts = max(1, (int) cws_env('VCOUNT_RETRY_MAX', '3'));
 

@@ -79,6 +79,91 @@
 		}
 	}
 
+	if (!function_exists('koach360_runtime_environment')) {
+		function koach360_runtime_environment(): string {
+			$env = trim(cws_env('KOACH360_ENVIRONMENT', cws_env('APP_ENV', 'PRUEBAS')));
+			if ($env === '') {
+				$env = 'PRUEBAS';
+			}
+			return strtoupper($env);
+		}
+	}
+
+	if (!function_exists('koach360_config_connection')) {
+		function koach360_config_connection() {
+			$host = cws_env('STORE_EMPLOYEES_SQL_HOST', '210.17.1.54');
+			$db = cws_env('STORE_EMPLOYEES_SQL_DATABASE', 'store_control');
+			$user = cws_env('STORE_EMPLOYEES_SQL_USER');
+			$pass = cws_env('STORE_EMPLOYEES_SQL_PASSWORD');
+			if ($host === '' || $db === '' || $user === '' || $pass === '') {
+				return null;
+			}
+			$conn = @sqlsrv_connect($host, [
+				'Database' => $db,
+				'UID' => $user,
+				'PWD' => $pass,
+				'MultipleActiveResultSets' => true,
+				'TrustServerCertificate' => true,
+				'CharacterSet' => 'UTF-8',
+			]);
+			return $conn === false ? null : $conn;
+		}
+	}
+
+	if (!function_exists('koach360_resolver_config')) {
+		/**
+		 * Resuelve config de integración desde BD por ambiente y tienda opcional.
+		 * Fallback fuera de esta función se hace con variables de entorno.
+		 */
+		function koach360_resolver_config(string $integration, ?string $codigoTienda = null): array {
+			static $cache = [];
+			$integration = strtoupper(trim($integration));
+			$codigoTienda = trim((string) $codigoTienda);
+			$codigoTienda = $codigoTienda === '' ? null : strtoupper($codigoTienda);
+			$environment = koach360_runtime_environment();
+			$key = $environment . '|' . $integration . '|' . ($codigoTienda ?? '-');
+			if (array_key_exists($key, $cache)) {
+				return $cache[$key];
+			}
+
+			$out = ['cliente_id' => null, 'api_user' => null];
+			$conn = koach360_config_connection();
+			if ($conn === null) {
+				$cache[$key] = $out;
+				return $out;
+			}
+
+			$sql = "
+				SELECT TOP 1 cliente_id, api_user
+				FROM dbo.integration_client_config
+				WHERE activo = 1
+				  AND UPPER(environment) = ?
+				  AND UPPER(integration) = ?
+				  AND (
+				       (? IS NULL AND codigo_tienda IS NULL)
+				       OR UPPER(codigo_tienda) = ?
+				       OR codigo_tienda IS NULL
+				  )
+				ORDER BY CASE WHEN UPPER(codigo_tienda) = ? THEN 0 ELSE 1 END, id DESC;
+			";
+			$params = [$environment, $integration, $codigoTienda, $codigoTienda, $codigoTienda];
+			$stmt = @sqlsrv_query($conn, $sql, $params);
+			if ($stmt !== false) {
+				$row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
+				if (is_array($row)) {
+					$cid = isset($row['cliente_id']) ? (int) $row['cliente_id'] : 0;
+					$out['cliente_id'] = $cid > 0 ? $cid : null;
+					$user = trim((string) ($row['api_user'] ?? ''));
+					$out['api_user'] = $user !== '' ? $user : null;
+				}
+				sqlsrv_free_stmt($stmt);
+			}
+			sqlsrv_close($conn);
+			$cache[$key] = $out;
+			return $out;
+		}
+	}
+
 	// V-Count BoostBI (manual API)
 
 		if (!defined('US_VCOUNT')) { define('US_VCOUNT', cws_env('US_VCOUNT')); }
@@ -103,22 +188,50 @@
 		}
 
 		if (!defined('KOACH360_CLIENT_ID')) {
-			$kid = cws_env('KOACH360_CLIENT_ID');
+			$cfgVentas = koach360_resolver_config('KOACH360_VENTAS');
+			$kid = isset($cfgVentas['cliente_id']) ? (string) $cfgVentas['cliente_id'] : '';
+			if ($kid === '' || $kid === '0') {
+				$kid = cws_env('KOACH360_CLIENT_ID');
+			}
 			if ($kid === '') {
 				$kid = cws_env('CLI_PVENTAS', '17');
 			}
 			define('KOACH360_CLIENT_ID', $kid);
 		}
-		if (!defined('CLI_PVENTAS')) { define('CLI_PVENTAS', KOACH360_CLIENT_ID); }
-		if (!defined('CLI_ASISTENCIAS')) { define('CLI_ASISTENCIAS', KOACH360_CLIENT_ID); }
-		if (!defined('CLI_ASISTENCIAS_PROGRAMADAS')) { define('CLI_ASISTENCIAS_PROGRAMADAS', KOACH360_CLIENT_ID); }
+		if (!defined('CLI_PVENTAS')) {
+			$cfgVentas = koach360_resolver_config('KOACH360_VENTAS');
+			$cid = isset($cfgVentas['cliente_id']) ? (string) $cfgVentas['cliente_id'] : '';
+			define('CLI_PVENTAS', $cid !== '' && $cid !== '0' ? $cid : KOACH360_CLIENT_ID);
+		}
+		if (!defined('CLI_ASISTENCIAS')) {
+			$cfgAsis = koach360_resolver_config('KOACH360_ASISTENCIAS');
+			$cid = isset($cfgAsis['cliente_id']) ? (string) $cfgAsis['cliente_id'] : '';
+			define('CLI_ASISTENCIAS', $cid !== '' && $cid !== '0' ? $cid : KOACH360_CLIENT_ID);
+		}
+		if (!defined('CLI_ASISTENCIAS_PROGRAMADAS')) {
+			$cfgAsisProg = koach360_resolver_config('KOACH360_ASISTENCIAS_PROGRAMADAS');
+			$cid = isset($cfgAsisProg['cliente_id']) ? (string) $cfgAsisProg['cliente_id'] : '';
+			define('CLI_ASISTENCIAS_PROGRAMADAS', $cid !== '' && $cid !== '0' ? $cid : KOACH360_CLIENT_ID);
+		}
 
 		if (!defined('KOACH360_USUARIO')) {
-			$kU = cws_env('KOACH360_USUARIO');
+			$cfgAuth = koach360_resolver_config('KOACH360_AUTH');
+			$cfgVentas = koach360_resolver_config('KOACH360_VENTAS');
+			$kU = (string) ($cfgAuth['api_user'] ?? '');
+			if ($kU === '') {
+				$kU = (string) ($cfgVentas['api_user'] ?? '');
+			}
+			if ($kU === '') {
+				$kU = cws_env('KOACH360_USUARIO');
+			}
 			define('KOACH360_USUARIO', $kU !== '' ? $kU : cws_env('US_PVENTAS'));
 		}
 		if (!defined('KOACH360_PASSWORD')) {
-			$kP = cws_env('KOACH360_PASSWORD');
+			$envName = koach360_runtime_environment();
+			$kP = cws_env('KOACH360_PASSWORD_' . $envName);
+			if ($kP === '') {
+				$kP = cws_env('KOACH360_PASSWORD');
+			}
 			define('KOACH360_PASSWORD', $kP !== '' ? $kP : cws_env('PS_PVENTAS'));
 		}
 		if (!defined('KOACH360_HORA_PROG_DEFAULT')) {

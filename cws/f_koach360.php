@@ -36,7 +36,7 @@
 
         $url = $baseUrl . KOACH360_PATH_LOGIN;
         $body = json_encode(['usuario' => $usuario, 'password' => $password], JSON_UNESCAPED_UNICODE);
-        $timeout = (int) cws_env('KOACH360_HTTP_TIMEOUT', '120');
+        $timeout = (int) cws_env('KOACH360_HTTP_TIMEOUT', '3600');
         $connectTimeout = (int) cws_env('KOACH360_CONNECT_TIMEOUT', '20');
         $maxAttempts = max(1, (int) cws_env('KOACH360_RETRY_MAX', '3'));
 
@@ -102,7 +102,7 @@
         }
 
         $url = $baseUrl . $path;
-        $timeout = (int) cws_env('KOACH360_HTTP_TIMEOUT', '120');
+        $timeout = (int) cws_env('KOACH360_HTTP_TIMEOUT', '3600');
         $connectTimeout = (int) cws_env('KOACH360_CONNECT_TIMEOUT', '20');
         $maxAttempts = max(1, (int) cws_env('KOACH360_RETRY_MAX', '3'));
 
