@@ -3,8 +3,9 @@
      * Ventas continuas → KOACH360 (JWT). Solo tiendas Fase 1 (CodigoBodega).
      *
      * Modos (CLI, argv[1]):
-     *   retroactivo — últimos 7 días calendario hasta hoy (inclusive). Cron sugerido: 1×/día.
+     *   retroactivo — últimos 7 días hasta hoy: Fact_Ventas (fechas estrictamente antes de hoy) + Fact_VentasDiaria (solo hoy).
      *   intradia    — solo hoy, desde 00:00 hasta antes de (hora_tope+1):00 (acumulativo por hora).
+     *                 Fuente: Fact_VentasDiaria (mismo grano/joins que Fact_Ventas; ventas del día en DWH).
      *                 Cron sugerido: cada hora 09:00–22:00 en punto.
      *
      * argv[2] opcional (intradia): hora entera 0–23 como tope de ventana (pruebas; por defecto usa la hora actual).
@@ -54,6 +55,8 @@
         if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $fechaDesdeYmd) || !preg_match('/^\d{4}-\d{2}-\d{2}$/', $fechaHastaYmd)) {
             throw new InvalidArgumentException('Rango de fechas inválido.');
         }
+        $inBodegas = ventas_continuo_sql_in_bodegas();
+
         if ($modo === 'intradia') {
             if ($horaExclusiveEnd === null || !preg_match('/^\d{2}:\d{2}:\d{2}$/', $horaExclusiveEnd)) {
                 throw new InvalidArgumentException('Hora límite intradia inválida.');
@@ -62,15 +65,8 @@
             dt.Fecha = CAST('{$fechaHastaYmd}' AS DATE)
             AND CAST(df.HoraEmision AS TIME) >= CAST('00:00:00' AS TIME)
             AND CAST(df.HoraEmision AS TIME) < CAST('{$horaExclusiveEnd}' AS TIME)";
-        } else {
-            $condFecha = "
-            dt.Fecha >= CAST('{$fechaDesdeYmd}' AS DATE)
-            AND dt.Fecha <= CAST('{$fechaHastaYmd}' AS DATE)";
-        }
 
-        $inBodegas = ventas_continuo_sql_in_bodegas();
-
-        return "
+            return "
         SELECT
             factura_numero      = df.NumeroFactura,
             factura_fecha       = CONVERT(VARCHAR(10), dt.Fecha, 23),
@@ -86,7 +82,7 @@
             local_codigo        = da.CodigoBodega,
             valor_transaccion   = CONVERT(DECIMAL(18,2), SUM(fv.TotalPagado)),
             cantidad_unidades   = SUM(fv.CantidadArticulos)
-        FROM DWHE.dbo.Fact_Ventas fv
+        FROM DWHE.dbo.Fact_VentasDiaria fv
         INNER JOIN DWHE.dbo.Dim_Factura df
             ON fv.Key_Factura = df.Key_Factura
         INNER JOIN DWHE.dbo.Dim_Empresa de
@@ -119,6 +115,105 @@
             da.CodigoBodega,
             dt.Fecha,
             df.NumeroFactura;
+    ";
+        }
+
+        // retroactivo: Fact_Ventas [fechaDesde, fechaHasta) + Fact_VentasDiaria solo fechaHasta (hoy en DW diario)
+        return "
+        SELECT
+            factura_numero      = u.NumeroFactura,
+            factura_fecha       = CONVERT(VARCHAR(10), u.Fecha, 23),
+            factura_hora        = LEFT(CONVERT(VARCHAR(8), u.HoraEmision, 108), 5),
+            factura_origen      = IIF(u.Nombre_TipoDocumento = 'Factura', 'FAC', 'NC'),
+            asesor_nombre       = u.NombreVendedor,
+            asesor_cedula       = u.DocumentoVendedor,
+            asesor_correo       = '',
+            lider_nombre        = '-',
+            lider_cedula        = '-',
+            lider_correo        = '-',
+            local_nombre        = u.NombreBodega,
+            local_codigo        = u.CodigoBodega,
+            valor_transaccion   = CONVERT(DECIMAL(18,2), SUM(u.TotalPagado)),
+            cantidad_unidades   = SUM(u.CantidadArticulos)
+        FROM (
+            SELECT
+                df.NumeroFactura,
+                dt.Fecha,
+                df.HoraEmision,
+                dtd.Nombre_TipoDocumento,
+                dv.NombreVendedor,
+                dv.DocumentoVendedor,
+                da.NombreBodega,
+                da.CodigoBodega,
+                fv.TotalPagado,
+                fv.CantidadArticulos
+            FROM DWHE.dbo.Fact_Ventas fv
+            INNER JOIN DWHE.dbo.Dim_Factura df
+                ON fv.Key_Factura = df.Key_Factura
+            INNER JOIN DWHE.dbo.Dim_Empresa de
+                ON fv.Key_Empresa = de.Key_Empresa
+            INNER JOIN DWHE.dbo.Dim_Tiempo dt
+                ON fv.Key_Tiempo = dt.Key_Tiempo
+            INNER JOIN DWHE.dbo.Dim_Vendedor dv
+                ON fv.Key_Vendedor = dv.Key_Vendedor
+            INNER JOIN DWHE.dbo.Dim_Almacen da
+                ON fv.Key_Almacen = da.Key_Almacen
+            INNER JOIN DWHE.dbo.Dim_TipoDocumento dtd
+                ON fv.Key_TipoDocumento = dtd.Key_TipoDocumento
+            INNER JOIN DWHE.dbo.Dim_Producto dp
+                ON fv.Key_Producto = dp.Key_Producto
+            WHERE
+                dv.CodigoInterno <> '114'
+                AND dp.TipoProducto = 'PRODUCTO'
+                AND dt.Fecha >= CAST('{$fechaDesdeYmd}' AS DATE)
+                AND dt.Fecha < CAST('{$fechaHastaYmd}' AS DATE)
+                AND da.CodigoBodega IN ({$inBodegas})
+            UNION ALL
+            SELECT
+                df.NumeroFactura,
+                dt.Fecha,
+                df.HoraEmision,
+                dtd.Nombre_TipoDocumento,
+                dv.NombreVendedor,
+                dv.DocumentoVendedor,
+                da.NombreBodega,
+                da.CodigoBodega,
+                fvd.TotalPagado,
+                fvd.CantidadArticulos
+            FROM DWHE.dbo.Fact_VentasDiaria fvd
+            INNER JOIN DWHE.dbo.Dim_Factura df
+                ON fvd.Key_Factura = df.Key_Factura
+            INNER JOIN DWHE.dbo.Dim_Empresa de
+                ON fvd.Key_Empresa = de.Key_Empresa
+            INNER JOIN DWHE.dbo.Dim_Tiempo dt
+                ON fvd.Key_Tiempo = dt.Key_Tiempo
+            INNER JOIN DWHE.dbo.Dim_Vendedor dv
+                ON fvd.Key_Vendedor = dv.Key_Vendedor
+            INNER JOIN DWHE.dbo.Dim_Almacen da
+                ON fvd.Key_Almacen = da.Key_Almacen
+            INNER JOIN DWHE.dbo.Dim_TipoDocumento dtd
+                ON fvd.Key_TipoDocumento = dtd.Key_TipoDocumento
+            INNER JOIN DWHE.dbo.Dim_Producto dp
+                ON fvd.Key_Producto = dp.Key_Producto
+            WHERE
+                dv.CodigoInterno <> '114'
+                AND dp.TipoProducto = 'PRODUCTO'
+                AND dt.Fecha = CAST('{$fechaHastaYmd}' AS DATE)
+                AND da.CodigoBodega IN ({$inBodegas})
+        ) u
+        GROUP BY
+            u.NumeroFactura,
+            u.Fecha,
+            u.HoraEmision,
+            u.Nombre_TipoDocumento,
+            u.NombreVendedor,
+            u.DocumentoVendedor,
+            u.NombreBodega,
+            u.CodigoBodega
+        ORDER BY
+            u.CodigoBodega,
+            u.Fecha,
+            u.NumeroFactura;
     ";
     }
 
@@ -232,7 +327,7 @@
     try {
         if ($modo === 'retroactivo') {
             $fechaDesde = date('Y-m-d', strtotime('-6 days', strtotime($hoy)));
-            $metaLog .= " desde={$fechaDesde} hasta={$fechaHasta}";
+            $metaLog .= " desde={$fechaDesde} hasta={$fechaHasta} fuente=Fact_Ventas+Fact_VentasDiaria";
         } else {
             $horaTop = (int) date('G');
             if (isset($argv[2]) && trim((string) $argv[2]) !== '' && ctype_digit(trim((string) $argv[2]))) {
@@ -254,7 +349,7 @@
                 exit(1);
             }
             $horaExclusiveEnd = sprintf('%02d:00:00', $siguiente);
-            $metaLog .= " fecha={$hoy} hora_tope={$horaTop} exclusivo_lt={$horaExclusiveEnd}";
+            $metaLog .= " fecha={$hoy} hora_tope={$horaTop} exclusivo_lt={$horaExclusiveEnd} fuente=Fact_VentasDiaria";
         }
 
         $query = ventas_continuo_build_query($modo, $fechaDesde, $fechaHasta, $horaExclusiveEnd);
