@@ -267,6 +267,12 @@
     if (!is_array($ventas)) {
         $ventas = [];
     }
+    if ($ventas === []) {
+        $logLine = date('Y-m-d H:i:s') . ' - ' . $metaLog . ' filas=0 skip_envio' . "\n";
+        file_put_contents(tareas_log_path('syn_put_ventas.log'), $logLine, FILE_APPEND);
+        exit(0);
+    }
+
     $codigosTienda = array_values(array_unique(array_map(static function ($venta) {
         return trim((string) ($venta['local_codigo'] ?? ''));
     }, $ventas)));
