@@ -1,6 +1,6 @@
 <?php
-    require_once(__DIR__ . '/../cx/bd_scs.php'); // debe contener la función cx() para conectar
-    require_once(__DIR__ . '/../cws/f_put_asistencias_prog.php');
+    require_once __DIR__ . '/../cx/bd_scs.php'; // debe contener la función cx() para conectar
+    require_once __DIR__ . '/../cws/f_put_asistencias_prog.php';
     require_once __DIR__ . '/f_tareas.php';
     date_default_timezone_set('America/Guayaquil');
 
@@ -22,71 +22,106 @@
         return quote_sql_identifier_prog($value);
     }
 
-    // Programadas usa la fuente de nómina/horarios.
-    $nominaServer = env_sql_identifier_prog('ASIST_NOMINA_LINKED_SERVER', '10.10.100.12');
+    /**
+     * Linked server SGP (nómina) para asistencias programadas.
+     * Por defecto 210.17.1.24; si vacío se usa ASIST_NOMINA_LINKED_SERVER y luego el default.
+     */
+    $nominaLsRaw = trim((string) cws_env('ASIST_PROG_NOMINA_LINKED_SERVER', ''));
+    if ($nominaLsRaw === '') {
+        $nominaLsRaw = trim((string) cws_env('ASIST_NOMINA_LINKED_SERVER', '210.17.1.24'));
+    }
+    if ($nominaLsRaw === '') {
+        $nominaLsRaw = '210.17.1.24';
+    }
+    if (!preg_match('/^[A-Za-z0-9._\\\\-]+$/', $nominaLsRaw)) {
+        fwrite(STDERR, "syn_put_asistencias_prog: ASIST_PROG_NOMINA_LINKED_SERVER / ASIST_NOMINA_LINKED_SERVER inválido.\n");
+        exit(1);
+    }
+    $nominaServer = quote_sql_identifier_prog($nominaLsRaw);
+
     $nominaDb = env_sql_identifier_prog('ASIST_NOMINA_DATABASE', 'BDDNOMINAMABEL19');
 
-    // Reglas de ejecución del requerimiento:
-    // - Diario los días 1..8 del mes.
-    // - Semanal todos los lunes cuando el día del mes es > 8.
-    $hoy = new DateTimeImmutable('today');
-    $diaMes = (int) $hoy->format('j');
-    $diaSemana = (int) $hoy->format('N'); // 1=lunes ... 7=domingo
-    $enVentanaDiaria = ($diaMes >= 1 && $diaMes <= 8);
-    $enVentanaSemanal = ($diaMes > 8 && $diaSemana === 1);
-    $debeEjecutar = ($enVentanaDiaria || $enVentanaSemanal);
-
-    if (!$debeEjecutar) {
-        $motivo = 'skip_frecuencia fecha=' . $hoy->format('Y-m-d')
-            . ' dia_mes=' . $diaMes
-            . ' dia_semana=' . $diaSemana;
-        $logLine = date('Y-m-d H:i:s') . ' - ' . $motivo . "\n";
-        file_put_contents(tareas_log_path('syn_put_asistencias_prog.log'), $logLine, FILE_APPEND);
-        exit;
+    $tiendasRaw = trim((string) cws_env('ASIST_PROG_CODIGOS_TIENDA', 'RL-PSC,RL-QSS2,RL-SCA'));
+    $tiendas = array_values(array_filter(array_map('trim', explode(',', $tiendasRaw)), static function ($t) {
+        return $t !== '';
+    }));
+    if ($tiendas === []) {
+        fwrite(STDERR, "syn_put_asistencias_prog: ASIST_PROG_CODIGOS_TIENDA no tiene códigos válidos.\n");
+        exit(1);
     }
+    $tiendasSql = [];
+    foreach ($tiendas as $t) {
+        if (!preg_match('/^[A-Za-z0-9._\\-]+$/', $t)) {
+            fwrite(STDERR, "syn_put_asistencias_prog: código de tienda inválido en lista: {$t}\n");
+            exit(1);
+        }
+        $tiendasSql[] = "N'" . str_replace("'", "''", $t) . "'";
+    }
+    $tiendasIn = implode(',', $tiendasSql);
 
     $query = "
         SET NOCOUNT ON;
-        DECLARE @hoy DATE = CAST(GETDATE() AS DATE);
-        DECLARE @fin_mes DATE = EOMONTH(@hoy);
+
+        DECLARE @FechaBase DATE = CAST(GETDATE() AS DATE);
+        DECLARE @Desde DATE = DATEFROMPARTS(YEAR(@FechaBase), MONTH(@FechaBase), 1);
+        DECLARE @Hasta DATE = DATEADD(MONTH, 1, @Desde);
 
         SELECT
-            asesor_nombre = P.strDPe_Apellidos + ' ' + P.strDPe_Nombres,
+            asesor_nombre = LTRIM(RTRIM(ISNULL(P.strDPe_Apellidos, '') + ' ' + ISNULL(P.strDPe_Nombres, ''))),
             asesor_cedula = P.strDPe_Cedula,
-            asesor_cargo  = '-',
+            asesor_cargo = '-',
             asesor_correo = '-',
-            fecha         = CONVERT(VARCHAR(10), CONVERT(DATE, H.Fecha), 23),
-            hora          = LEFT(CONVERT(VARCHAR(8), T.hora_src, 108), 5),
-            local_nombre  = H.CodigoTienda,
-            local_codigo  = H.CodigoTienda
+            fecha = CONVERT(varchar(10), H.Fecha, 23),
+            hora = LEFT(CONVERT(varchar(8), H.Hora1, 108), 5),
+            local_nombre = '',
+            local_codigo = CAST(H.CodigoTienda AS varchar(64))
         FROM {$nominaServer}.{$nominaDb}.[dbo].[Tbl_DatosPersonales] P
         INNER JOIN {$nominaServer}.{$nominaDb}.[dbo].[HorariosDiarios] H
             ON H.IdEmpleado = P.intDPe_Id
-        CROSS APPLY (
-            VALUES
-                (CONVERT(TIME, H.Hora1)),
-                (CONVERT(TIME, H.Hora4))
-        ) T(hora_src)
         WHERE
-            CONVERT(DATE, H.Fecha) >= @hoy
-            AND CONVERT(DATE, H.Fecha) <= @fin_mes
+            H.Fecha >= @Desde AND H.Fecha < @Hasta
             AND H.DiaLibre = 0
-            AND H.CodigoTienda IN ('RL-PSC', 'RL-QSS2', 'RL-SCA')
-            AND T.hora_src IS NOT NULL
-        ORDER BY
-            fecha, hora, asesor_cedula;
+            AND H.CodigoTienda IN ({$tiendasIn})
+            AND H.Hora1 IS NOT NULL
+
+        UNION ALL
+
+        SELECT
+            asesor_nombre = LTRIM(RTRIM(ISNULL(P.strDPe_Apellidos, '') + ' ' + ISNULL(P.strDPe_Nombres, ''))),
+            asesor_cedula = P.strDPe_Cedula,
+            asesor_cargo = '-',
+            asesor_correo = '-',
+            fecha = CONVERT(varchar(10), H.Fecha, 23),
+            hora = LEFT(CONVERT(varchar(8), H.Hora4, 108), 5),
+            local_nombre = '',
+            local_codigo = CAST(H.CodigoTienda AS varchar(64))
+        FROM {$nominaServer}.{$nominaDb}.[dbo].[Tbl_DatosPersonales] P
+        INNER JOIN {$nominaServer}.{$nominaDb}.[dbo].[HorariosDiarios] H
+            ON H.IdEmpleado = P.intDPe_Id
+        WHERE
+            H.Fecha >= @Desde AND H.Fecha < @Hasta
+            AND H.DiaLibre = 0
+            AND H.CodigoTienda IN ({$tiendasIn})
+            AND H.Hora4 IS NOT NULL
+
+        ORDER BY asesor_cedula, fecha, hora;
     ";
+
     $asistencias_programadas = resp_simdim($query);
     if (!is_array($asistencias_programadas)) {
         $asistencias_programadas = [];
     }
-    // Enviar asistencias programadas (solo hoy/futuro) a KOACH360
+
     if ($asistencias_programadas === []) {
         $resp = 'sin_registros';
     } else {
         $resp = enviarAsistenciasProgramadasKoach360($asistencias_programadas);
     }
-    $logLine = date('Y-m-d H:i:s') . ' - prog bloques=' . count($asistencias_programadas) . ' resp=' . (is_string($resp) ? substr(preg_replace('/\s+/', ' ', $resp), 0, 500) : '') . "\n";
+
+    $logLine = date('Y-m-d H:i:s')
+        . ' - prog filas=' . count($asistencias_programadas)
+        . ' resp=' . (is_string($resp) ? substr(preg_replace('/\s+/', ' ', $resp), 0, 500) : '')
+        . "\n";
     file_put_contents(tareas_log_path('syn_put_asistencias_prog.log'), $logLine, FILE_APPEND);
 
 ?>
