@@ -15,12 +15,17 @@
     "**/vendor/**/Tests/**",
     "**/vendor/**/test/**"
   ],
-  "intelephense.environment.includePaths": ["cws/vendor"],
+  "intelephense.environment.includePaths": [
+    "cws/vendor",
+    "stubs"
+  ],
   "intelephense.diagnostics.memberAccess": false,
   "intelephense.diagnostics.severity": {
     "P1056": false
   },
   "intelephense.diagnostics.exclude": {
+    "**/stubs/**/*.php": ["*"],
+    "**/stubs/*.php": ["*"],
     "**/vendor/composer/autoload_static.php": ["P1056"],
     "**/vendor/composer/semver/**/*.php": ["P1007"],
     "**/vendor/**/.php_cs": ["*"],

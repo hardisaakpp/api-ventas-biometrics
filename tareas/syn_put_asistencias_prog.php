@@ -23,15 +23,33 @@
     }
 
     /**
-     * Linked server SGP (nómina) para asistencias programadas.
-     * Por defecto 210.17.1.24; si vacío se usa ASIST_NOMINA_LINKED_SERVER y luego el default.
+     * Linked server hacia SGP (HorariosDiarios en BDDNOMINAMABEL19).
+     *
+     * Si PHP se conecta al DWH pero los datos solo existen vía Analítica → 210.17.1.24 (como en SSMS),
+     * defina ASIST_PROG_EXEC_AT_LINKED_SERVER con el nombre del linked server al que apunta Analítica
+     * (p. ej. 10.10.100.12 en sys.servers del DWH). El batch se ejecuta allí con EXEC (...) AT.
      */
-    $nominaLsRaw = trim((string) cws_env('ASIST_PROG_NOMINA_LINKED_SERVER', ''));
-    if ($nominaLsRaw === '') {
-        $nominaLsRaw = trim((string) cws_env('ASIST_NOMINA_LINKED_SERVER', '210.17.1.24'));
-    }
-    if ($nominaLsRaw === '') {
-        $nominaLsRaw = '210.17.1.24';
+    $execAtRaw = trim((string) cws_env('ASIST_PROG_EXEC_AT_LINKED_SERVER', ''));
+    $useExecAt = $execAtRaw !== '';
+    if ($useExecAt) {
+        if (!preg_match('/^[A-Za-z0-9._\\\\-]+$/', $execAtRaw)) {
+            fwrite(STDERR, "syn_put_asistencias_prog: ASIST_PROG_EXEC_AT_LINKED_SERVER inválido.\n");
+            exit(1);
+        }
+        $execAtServer = quote_sql_identifier_prog($execAtRaw);
+        $nominaLsRaw = trim((string) cws_env('ASIST_PROG_NOMINA_LINKED_SERVER', ''));
+        if ($nominaLsRaw === '') {
+            $nominaLsRaw = '210.17.1.24';
+        }
+    } else {
+        $execAtServer = null;
+        $nominaLsRaw = trim((string) cws_env('ASIST_PROG_NOMINA_LINKED_SERVER', ''));
+        if ($nominaLsRaw === '') {
+            $nominaLsRaw = trim((string) cws_env('ASIST_NOMINA_LINKED_SERVER', '210.17.1.24'));
+        }
+        if ($nominaLsRaw === '') {
+            $nominaLsRaw = '210.17.1.24';
+        }
     }
     if (!preg_match('/^[A-Za-z0-9._\\\\-]+$/', $nominaLsRaw)) {
         fwrite(STDERR, "syn_put_asistencias_prog: ASIST_PROG_NOMINA_LINKED_SERVER / ASIST_NOMINA_LINKED_SERVER inválido.\n");
@@ -63,8 +81,8 @@
         SET NOCOUNT ON;
 
         DECLARE @FechaBase DATE = CAST(GETDATE() AS DATE);
-        DECLARE @Desde DATE = DATEFROMPARTS(YEAR(@FechaBase), MONTH(@FechaBase), 1);
-        DECLARE @Hasta DATE = DATEADD(MONTH, 1, @Desde);
+        DECLARE @Desde DATE = @FechaBase;
+        DECLARE @Hasta DATE = EOMONTH(@FechaBase);
 
         SELECT
             asesor_nombre = LTRIM(RTRIM(ISNULL(P.strDPe_Apellidos, '') + ' ' + ISNULL(P.strDPe_Nombres, ''))),
@@ -79,7 +97,7 @@
         INNER JOIN {$nominaServer}.{$nominaDb}.[dbo].[HorariosDiarios] H
             ON H.IdEmpleado = P.intDPe_Id
         WHERE
-            H.Fecha >= @Desde AND H.Fecha < @Hasta
+            H.Fecha >= @Desde AND H.Fecha <= @Hasta
             AND H.DiaLibre = 0
             AND H.CodigoTienda IN ({$tiendasIn})
             AND H.Hora1 IS NOT NULL
@@ -99,13 +117,19 @@
         INNER JOIN {$nominaServer}.{$nominaDb}.[dbo].[HorariosDiarios] H
             ON H.IdEmpleado = P.intDPe_Id
         WHERE
-            H.Fecha >= @Desde AND H.Fecha < @Hasta
+            H.Fecha >= @Desde AND H.Fecha <= @Hasta
             AND H.DiaLibre = 0
             AND H.CodigoTienda IN ({$tiendasIn})
             AND H.Hora4 IS NOT NULL
 
         ORDER BY asesor_cedula, fecha, hora;
     ";
+
+    $innerSql = trim($query);
+    if ($useExecAt) {
+        $escaped = str_replace("'", "''", $innerSql);
+        $query = 'EXEC (N\'' . $escaped . '\') AT ' . $execAtServer;
+    }
 
     $asistencias_programadas = resp_simdim($query);
     if (!is_array($asistencias_programadas)) {

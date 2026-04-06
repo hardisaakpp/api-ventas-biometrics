@@ -48,7 +48,16 @@
              $get=sqlsrv_query($cx, $query);
              if($get==FALSE){ die(FormatErrors(sqlsrv_errors())); }
              $resp = [];
-             while($row=sqlsrv_fetch_array($get, SQLSRV_FETCH_ASSOC)){ foreach($row as $key => $value){ if($value instanceof DateTime){ $row[$key] = $value->format('Y-m-d H:i:s'); } } $resp[]=$row; }
+             do {
+                 while ($row = sqlsrv_fetch_array($get, SQLSRV_FETCH_ASSOC)) {
+                     foreach ($row as $key => $value) {
+                         if ($value instanceof DateTime) {
+                             $row[$key] = $value->format('Y-m-d H:i:s');
+                         }
+                     }
+                     $resp[] = $row;
+                 }
+             } while (sqlsrv_next_result($get));
              sqlsrv_free_stmt($get);
              sqlsrv_close($cx);
              return $resp;

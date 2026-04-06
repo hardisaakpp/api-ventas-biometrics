@@ -1,29 +1,81 @@
 <?php
 
 /**
- * Declaraciones solo para el IDE (Intelephense). No incluir en runtime: la extensión sqlsrv ya define estos símbolos.
+ * Declaraciones para Intelephense: extensión Microsoft sqlsrv (cargada en runtime por PHP).
+ * No incluir este archivo en la aplicación; solo indexación del IDE.
  *
- * @see https://learn.microsoft.com/en-us/sql/connect/php/sqlsrv-driver-api-reference
+ * @see https://www.php.net/manual/en/ref.sqlsrv.php
  */
 
-const SQLSRV_FETCH_NUMERIC = 1;
+declare(strict_types=1);
+
 const SQLSRV_FETCH_ASSOC = 2;
-const SQLSRV_FETCH_BOTH = 3;
+const SQLSRV_FETCH_NUMERIC = 1;
 
-function sqlsrv_connect($serverName, $connectionInfo, $options = null) {}
+/** @param array<string, mixed> $connectionInfo */
+function sqlsrv_connect(string $serverName, array $connectionInfo): mixed
+{
+    return false;
+}
 
-function sqlsrv_errors($errorsAndWarnings = null) {}
+/** @return array<int, array<string, mixed>>|false|null */
+function sqlsrv_errors(?int $errorsAndOrWarnings = null): array|false|null
+{
+    return false;
+}
 
-function sqlsrv_query($conn, $sql, $params = null, $options = null) {}
+/**
+ * @param resource $conn
+ * @param array<int, mixed> $params
+ * @param array<string, mixed> $options
+ */
+function sqlsrv_query($conn, string $sql, array $params = [], array $options = []): mixed
+{
+    return false;
+}
 
-function sqlsrv_fetch_array($stmt, $fetchType = null, $row = null, $offset = null) {}
+/**
+ * @param resource $stmt
+ */
+function sqlsrv_fetch_array($stmt, ?int $fetchType = null, ?int $row = null, ?int $offset = null): array|false|null
+{
+    return false;
+}
 
-function sqlsrv_free_stmt($stmt) {}
+/**
+ * @param resource $stmt
+ */
+function sqlsrv_next_result($stmt): ?bool
+{
+    return false;
+}
 
-function sqlsrv_close($conn) {}
+/** @param resource $stmt */
+function sqlsrv_free_stmt($stmt): bool
+{
+    return true;
+}
 
-function sqlsrv_begin_transaction($conn) {}
+/** @param resource $conn */
+function sqlsrv_close($conn): bool
+{
+    return true;
+}
 
-function sqlsrv_commit($conn) {}
+/** @param resource $conn */
+function sqlsrv_begin_transaction($conn): bool
+{
+    return true;
+}
 
-function sqlsrv_rollback($conn) {}
+/** @param resource $conn */
+function sqlsrv_commit($conn): bool
+{
+    return true;
+}
+
+/** @param resource $conn */
+function sqlsrv_rollback($conn): bool
+{
+    return true;
+}
