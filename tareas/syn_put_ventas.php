@@ -326,7 +326,7 @@
 
     try {
         if ($modo === 'retroactivo') {
-            $fechaDesde = date('Y-m-d', strtotime('-6 days', strtotime($hoy)));
+            $fechaDesde = date('Y-m-d', strtotime('-7 days', strtotime($hoy)));
             $metaLog .= " desde={$fechaDesde} hasta={$fechaHasta} fuente=Fact_Ventas+Fact_VentasDiaria";
         } else {
             $horaTop = (int) date('G');
