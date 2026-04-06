@@ -5,7 +5,7 @@
      * Modos (CLI, argv[1]):
      *   retroactivo — últimos 7 días hasta hoy: Fact_Ventas (fechas estrictamente antes de hoy) + Fact_VentasDiaria (solo hoy).
      *   intradia    — solo hoy, desde 00:00 hasta antes de (hora_tope+1):00 (acumulativo por hora).
-     *                 Fuente: Fact_VentasDiaria (mismo grano/joins que Fact_Ventas; ventas del día en DWH).
+     *                 Fuente: Fact_VentasDiaria + Dim_FacturaDiaria (HoraEmision alineada al día; intradia).
      *                 Cron sugerido: cada hora 09:00–22:00 en punto.
      *
      * argv[2] opcional (intradia): hora entera 0–23 como tope de ventana (pruebas; por defecto usa la hora actual).
@@ -83,7 +83,7 @@
             valor_transaccion   = CONVERT(DECIMAL(18,2), SUM(fv.TotalPagado)),
             cantidad_unidades   = SUM(fv.CantidadArticulos)
         FROM DWHE.dbo.Fact_VentasDiaria fv
-        INNER JOIN DWHE.dbo.Dim_Factura df
+        INNER JOIN DWHE.dbo.Dim_FacturaDiaria df
             ON fv.Key_Factura = df.Key_Factura
         INNER JOIN DWHE.dbo.Dim_Empresa de
             ON fv.Key_Empresa = de.Key_Empresa
@@ -349,7 +349,7 @@
                 exit(1);
             }
             $horaExclusiveEnd = sprintf('%02d:00:00', $siguiente);
-            $metaLog .= " fecha={$hoy} hora_tope={$horaTop} exclusivo_lt={$horaExclusiveEnd} fuente=Fact_VentasDiaria";
+            $metaLog .= " fecha={$hoy} hora_tope={$horaTop} exclusivo_lt={$horaExclusiveEnd} fuente=Fact_VentasDiaria+Dim_FacturaDiaria";
         }
 
         $query = ventas_continuo_build_query($modo, $fechaDesde, $fechaHasta, $horaExclusiveEnd);

@@ -15,6 +15,35 @@
         $out = [];
 
         foreach ($filas as $r) {
+            // Formato nuevo: una fila por fecha/hora ya lista para enviar.
+            if (isset($r['fecha'])) {
+                $fechaRaw = trim((string) ($r['fecha'] ?? ''));
+                $fecha = DateTime::createFromFormat('Y-m-d', $fechaRaw, $tz);
+                if (!$fecha) {
+                    $fecha = DateTime::createFromFormat('Ymd', preg_replace('/\D/', '', $fechaRaw), $tz);
+                }
+                if (!$fecha) {
+                    continue;
+                }
+                $fecha->setTime(0, 0, 0);
+                if ($fecha < $hoy) {
+                    continue;
+                }
+
+                $out[] = [
+                    'asesor_nombre'  => trim((string) ($r['asesor_nombre'] ?? '')),
+                    'asesor_cedula'  => trim((string) ($r['asesor_cedula'] ?? '')),
+                    'asesor_cargo'   => trim((string) ($r['asesor_cargo'] ?? '-')),
+                    'asesor_correo'  => trim((string) ($r['asesor_correo'] ?? '-')),
+                    'fecha'          => $fecha->format('Y-m-d'),
+                    'hora'           => trim((string) ($r['hora'] ?? $horaDefault)),
+                    'local_nombre'   => trim((string) ($r['local_nombre'] ?? '')),
+                    'local_codigo'   => trim((string) ($r['local_codigo'] ?? '')),
+                ];
+                continue;
+            }
+
+            // Formato legacy: bloques por rango + dias de semana.
             $desde = DateTime::createFromFormat('Ymd', preg_replace('/\D/', '', (string) $r['fecha_desde']), $tz);
             $hasta = DateTime::createFromFormat('Ymd', preg_replace('/\D/', '', (string) $r['fecha_hasta']), $tz);
             if (!$desde || !$hasta) {
