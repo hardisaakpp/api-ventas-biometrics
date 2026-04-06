@@ -4,8 +4,8 @@
 # Logs de tareas (opcional; quitar esta línea si quieres versionar logs de ejemplo)
 tareas/logs/*.log
 
-# JSON generados por procesos de sincronizacion
-tareas/json/*.json
+# JSON generados por procesos de sincronización (no versionar)
+tareas/json/
 
 # Composer: este proyecto no requiere paquetes; si ejecutas composer install, no versionar vendor.
 cws/vendor/
