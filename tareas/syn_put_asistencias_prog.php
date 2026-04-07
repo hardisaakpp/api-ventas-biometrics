@@ -84,43 +84,28 @@
         DECLARE @Desde DATE = @FechaBase;
         DECLARE @Hasta DATE = EOMONTH(@FechaBase);
 
+        -- Una fila por marca (entrada Hora1, salida Hora4); mismo payload que UNION ALL pero un solo scan P/H.
         SELECT
             asesor_nombre = LTRIM(RTRIM(ISNULL(P.strDPe_Apellidos, '') + ' ' + ISNULL(P.strDPe_Nombres, ''))),
             asesor_cedula = P.strDPe_Cedula,
             asesor_cargo = '-',
             asesor_correo = '-',
             fecha = CONVERT(varchar(10), H.Fecha, 23),
-            hora = LEFT(CONVERT(varchar(8), H.Hora1, 108), 5),
+            hora = LEFT(CONVERT(varchar(8), T.hora_plan, 108), 5),
             local_nombre = '',
             local_codigo = CAST(H.CodigoTienda AS varchar(64))
         FROM {$nominaServer}.{$nominaDb}.[dbo].[Tbl_DatosPersonales] P
         INNER JOIN {$nominaServer}.{$nominaDb}.[dbo].[HorariosDiarios] H
             ON H.IdEmpleado = P.intDPe_Id
+        CROSS APPLY (
+            SELECT v.hora_plan
+            FROM (VALUES (H.Hora1), (H.Hora4)) AS v(hora_plan)
+            WHERE v.hora_plan IS NOT NULL
+        ) AS T
         WHERE
             H.Fecha >= @Desde AND H.Fecha <= @Hasta
             AND H.DiaLibre = 0
             AND H.CodigoTienda IN ({$tiendasIn})
-            AND H.Hora1 IS NOT NULL
-
-        UNION ALL
-
-        SELECT
-            asesor_nombre = LTRIM(RTRIM(ISNULL(P.strDPe_Apellidos, '') + ' ' + ISNULL(P.strDPe_Nombres, ''))),
-            asesor_cedula = P.strDPe_Cedula,
-            asesor_cargo = '-',
-            asesor_correo = '-',
-            fecha = CONVERT(varchar(10), H.Fecha, 23),
-            hora = LEFT(CONVERT(varchar(8), H.Hora4, 108), 5),
-            local_nombre = '',
-            local_codigo = CAST(H.CodigoTienda AS varchar(64))
-        FROM {$nominaServer}.{$nominaDb}.[dbo].[Tbl_DatosPersonales] P
-        INNER JOIN {$nominaServer}.{$nominaDb}.[dbo].[HorariosDiarios] H
-            ON H.IdEmpleado = P.intDPe_Id
-        WHERE
-            H.Fecha >= @Desde AND H.Fecha <= @Hasta
-            AND H.DiaLibre = 0
-            AND H.CodigoTienda IN ({$tiendasIn})
-            AND H.Hora4 IS NOT NULL
 
         ORDER BY asesor_cedula, fecha, hora;
     ";

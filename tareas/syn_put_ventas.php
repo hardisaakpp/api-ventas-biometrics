@@ -100,6 +100,7 @@
         WHERE
             dv.CodigoInterno <> '114'
             AND dp.TipoProducto = 'PRODUCTO'
+            AND fv.VentaDiariaFc = 0
             AND {$condFecha}
             AND da.CodigoBodega IN ({$inBodegas})
         GROUP BY
