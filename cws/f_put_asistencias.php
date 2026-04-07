@@ -20,6 +20,79 @@
     }
 
     /**
+     * Trae cargo y correo por cédula desde SCNexus (store_control.store_employees).
+     * Retorna mapa [cedula_identidad => ['cargo' => ..., 'correo' => ...]].
+     */
+    function obtener_datos_scnexus_por_cedula(array $cedulas): array {
+        $cedulasLimpias = [];
+        foreach ($cedulas as $cedula) {
+            $c = trim((string) $cedula);
+            if ($c !== '') {
+                $cedulasLimpias[$c] = true;
+            }
+        }
+        $cedulasLimpias = array_keys($cedulasLimpias);
+        if ($cedulasLimpias === []) {
+            return [];
+        }
+
+        $host = cws_env('STORE_EMPLOYEES_SQL_HOST', '210.17.1.54');
+        $db   = cws_env('STORE_EMPLOYEES_SQL_DATABASE', 'store_control');
+        $user = cws_env('STORE_EMPLOYEES_SQL_USER');
+        $pass = cws_env('STORE_EMPLOYEES_SQL_PASSWORD');
+        if ($host === '' || $db === '' || $user === '' || $pass === '') {
+            return [];
+        }
+
+        $cxScnexus = sqlsrv_connect($host, [
+            'Database' => $db,
+            'UID' => $user,
+            'PWD' => $pass,
+            'MultipleActiveResultSets' => true,
+            'TrustServerCertificate' => true,
+            'CharacterSet' => 'UTF-8',
+        ]);
+        if ($cxScnexus === false) {
+            return [];
+        }
+
+        $placeholders = implode(',', array_fill(0, count($cedulasLimpias), '?'));
+        $sql = "
+            SELECT
+                cedula_identidad,
+                cargo,
+                correo,
+                id
+            FROM dbo.store_employees
+            WHERE estado = 1
+              AND cedula_identidad IN ($placeholders)
+            ORDER BY cedula_identidad, id DESC;
+        ";
+
+        $stmt = sqlsrv_query($cxScnexus, $sql, $cedulasLimpias);
+        if ($stmt === false) {
+            sqlsrv_close($cxScnexus);
+            return [];
+        }
+
+        $mapa = [];
+        while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
+            $cedula = trim((string) ($row['cedula_identidad'] ?? ''));
+            if ($cedula === '' || isset($mapa[$cedula])) {
+                continue;
+            }
+            $mapa[$cedula] = [
+                'cargo' => trim((string) ($row['cargo'] ?? '')),
+                'correo' => trim((string) ($row['correo'] ?? '')),
+            ];
+        }
+
+        sqlsrv_free_stmt($stmt);
+        sqlsrv_close($cxScnexus);
+        return $mapa;
+    }
+
+    /**
      * Mapea registros de asistencias al formato KOACH360 (manual).
      * Nota: el token JWT va por header (no en el body), por eso aquí NO se envían
      * credenciales adicionales.
@@ -29,8 +102,26 @@
         int $clienteId
     ): array {
         $out = [];
+        $cedulas = array_values(array_unique(array_map(static function ($asis) {
+            return trim((string) ($asis['asesor_cedula'] ?? ''));
+        }, $asistencias)));
+        $datosScnexusPorCedula = obtener_datos_scnexus_por_cedula($cedulas);
         foreach ($asistencias as $asis) {
             $correo = trim((string) ($asis['asesor_correo'] ?? ''));
+            $cedula = trim((string) ($asis['asesor_cedula'] ?? ''));
+            $cargo = trim((string) ($asis['asesor_cargo'] ?? ''));
+            $datosScnexus = $datosScnexusPorCedula[$cedula] ?? null;
+            $cargoScnexus = is_array($datosScnexus) ? trim((string) ($datosScnexus['cargo'] ?? '')) : '';
+            $correoScnexus = is_array($datosScnexus) ? trim((string) ($datosScnexus['correo'] ?? '')) : '';
+            if ($cargoScnexus !== '') {
+                $cargo = $cargoScnexus;
+            }
+            if ($correoScnexus !== '') {
+                $correo = $correoScnexus;
+            }
+            if ($cargo === '' || $cargo === '-') {
+                $cargo = 'Asesor de Ventas';
+            }
             if ($correo === '') {
                 // Fallback seguro para KOACH360: no enviar string vacío
                 $correo = '-';
@@ -38,8 +129,8 @@
             $out[] = [
                 'clienteId'     => $clienteId,
                 'asesorNombre'  => trim((string) $asis['asesor_nombre']),
-                'asesorCedula'  => trim((string) $asis['asesor_cedula']),
-                'asesorCargo'   => trim((string) $asis['asesor_cargo']),
+                'asesorCedula'  => $cedula,
+                'asesorCargo'   => $cargo,
                 'asesorCorreo'  => $correo,
                 'fecha'         => normalizar_fecha_asistencia_iso((string) $asis['fecha']),
                 'hora'          => normalizar_hora_asistencia((string) $asis['hora']),

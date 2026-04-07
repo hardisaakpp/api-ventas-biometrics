@@ -23,6 +23,79 @@
     }
 
     /**
+     * Obtiene local_nombre desde SAP (dbo.almacenes) por código de local.
+     * Retorna mapa [cod_almacen => nombre].
+     */
+    function asist_prog_obtener_locales_sap_por_codigo(array $codigos): array
+    {
+        $codes = [];
+        foreach ($codigos as $codigo) {
+            $c = trim((string) $codigo);
+            if ($c !== '') {
+                $codes[$c] = true;
+            }
+        }
+        $codes = array_keys($codes);
+        if ($codes === []) {
+            return [];
+        }
+
+        $host = trim((string) cws_env('SQL_SERVER_SAP_SERVER'));
+        $db = trim((string) cws_env('SQL_SERVER_SAP_DATABASE'));
+        $uid = trim((string) cws_env('SQL_SERVER_SAP_UID'));
+        $pwd = (string) cws_env('SQL_SERVER_SAP_PWD');
+        if ($host === '' || $db === '' || $uid === '') {
+            return [];
+        }
+
+        $opts = [
+            'Database' => $db,
+            'UID' => $uid,
+            'PWD' => $pwd,
+            'MultipleActiveResultSets' => true,
+            'TrustServerCertificate' => true,
+            'CharacterSet' => 'UTF-8',
+        ];
+        if (trim((string) cws_env('SQL_SERVER_SAP_ENCRYPT', '1')) !== '0') {
+            $opts['Encrypt'] = 'yes';
+        }
+
+        $cxSap = sqlsrv_connect($host, $opts);
+        if ($cxSap === false) {
+            return [];
+        }
+
+        $placeholders = implode(',', array_fill(0, count($codes), '?'));
+        $sql = "
+            SELECT
+                cod_almacen,
+                nombre
+            FROM dbo.almacenes
+            WHERE inactivo = 0
+              AND cod_almacen IN ($placeholders)
+            ORDER BY cod_almacen;
+        ";
+        $stmt = sqlsrv_query($cxSap, $sql, $codes);
+        if ($stmt === false) {
+            sqlsrv_close($cxSap);
+            return [];
+        }
+
+        $mapa = [];
+        while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
+            $codigo = trim((string) ($row['cod_almacen'] ?? ''));
+            if ($codigo === '' || isset($mapa[$codigo])) {
+                continue;
+            }
+            $mapa[$codigo] = trim((string) ($row['nombre'] ?? ''));
+        }
+
+        sqlsrv_free_stmt($stmt);
+        sqlsrv_close($cxSap);
+        return $mapa;
+    }
+
+    /**
      * Linked server hacia SGP (HorariosDiarios en BDDNOMINAMABEL19).
      *
      * Si PHP se conecta al DWH pero los datos solo existen vía Analítica → 210.17.1.24 (como en SSMS),
@@ -59,7 +132,7 @@
 
     $nominaDb = env_sql_identifier_prog('ASIST_NOMINA_DATABASE', 'BDDNOMINAMABEL19');
 
-    $tiendasRaw = trim((string) cws_env('ASIST_PROG_CODIGOS_TIENDA', 'RL-PSC,RL-QSS2,RL-SCA'));
+    $tiendasRaw = trim((string) cws_env('ASIST_PROG_CODIGOS_TIENDA', 'RL-CCI,RL-CON,RL-PSC,RL-QSN,RL-QSS2,RL-REC2,RL-SNL,RL-SCA,RL-MSO3,RL-BMB'));
     $tiendas = array_values(array_filter(array_map('trim', explode(',', $tiendasRaw)), static function ($t) {
         return $t !== '';
     }));
@@ -120,6 +193,26 @@
     if (!is_array($asistencias_programadas)) {
         $asistencias_programadas = [];
     }
+    $localesNoEncontrados = [];
+    $localesResueltos = 0;
+    if ($asistencias_programadas !== []) {
+        $codigosLocal = array_values(array_unique(array_map(static function ($row) {
+            return trim((string) ($row['local_codigo'] ?? ''));
+        }, $asistencias_programadas)));
+        $localesSap = asist_prog_obtener_locales_sap_por_codigo($codigosLocal);
+        $localesNoEncontrados = array_values(array_filter($codigosLocal, static function ($codigo) use ($localesSap) {
+            return !isset($localesSap[$codigo]) || trim((string) ($localesSap[$codigo] ?? '')) === '';
+        }));
+        foreach ($asistencias_programadas as &$row) {
+            $codigo = trim((string) ($row['local_codigo'] ?? ''));
+            $nombreSap = $localesSap[$codigo] ?? '';
+            if ($nombreSap !== '') {
+                $row['local_nombre'] = $nombreSap;
+                $localesResueltos++;
+            }
+        }
+        unset($row);
+    }
 
     if ($asistencias_programadas === []) {
         $resp = 'sin_registros';
@@ -129,6 +222,9 @@
 
     $logLine = date('Y-m-d H:i:s')
         . ' - prog filas=' . count($asistencias_programadas)
+        . ' locales_resueltos=' . $localesResueltos
+        . ' locales_no_encontrados=' . count($localesNoEncontrados)
+        . ' codigos_no_encontrados=' . ($localesNoEncontrados === [] ? '0' : implode(',', $localesNoEncontrados))
         . ' resp=' . (is_string($resp) ? substr(preg_replace('/\s+/', ' ', $resp), 0, 500) : '')
         . "\n";
     file_put_contents(tareas_log_path('syn_put_asistencias_prog.log'), $logLine, FILE_APPEND);

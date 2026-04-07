@@ -8,6 +8,83 @@
     require_once __DIR__ . '/f_tareas.php';
     date_default_timezone_set('America/Guayaquil');
 
+    /**
+     * Trae líder activo/encargado por código de tienda desde SCNexus (store_control).
+     * Retorna mapa [codigo_tienda => ['nombre' => ..., 'cedula' => ..., 'correo' => ...]].
+     */
+    function obtener_lideres_scnexus_por_tienda_retro7(array $codigosTienda): array
+    {
+        $codigos = [];
+        foreach ($codigosTienda as $codigo) {
+            $c = trim((string) $codigo);
+            if ($c !== '') {
+                $codigos[$c] = true;
+            }
+        }
+        $codigos = array_keys($codigos);
+        if ($codigos === []) {
+            return [];
+        }
+
+        $host = cws_env('STORE_EMPLOYEES_SQL_HOST', '210.17.1.54');
+        $db   = cws_env('STORE_EMPLOYEES_SQL_DATABASE', 'store_control');
+        $user = cws_env('STORE_EMPLOYEES_SQL_USER');
+        $pass = cws_env('STORE_EMPLOYEES_SQL_PASSWORD');
+        if ($host === '' || $db === '' || $user === '' || $pass === '') {
+            return [];
+        }
+
+        $cxScnexus = sqlsrv_connect($host, [
+            'Database' => $db,
+            'UID' => $user,
+            'PWD' => $pass,
+            'MultipleActiveResultSets' => true,
+            'TrustServerCertificate' => true,
+            'CharacterSet' => 'UTF-8',
+        ]);
+        if ($cxScnexus === false) {
+            return [];
+        }
+
+        $placeholders = implode(',', array_fill(0, count($codigos), '?'));
+        $sqlLideres = "
+            SELECT
+                codigo_tienda,
+                nombre,
+                cedula_identidad,
+                correo,
+                id
+            FROM dbo.store_employees
+            WHERE estado = 1
+              AND encargado = 1
+              AND codigo_tienda IN ($placeholders)
+            ORDER BY codigo_tienda, id DESC;
+        ";
+
+        $stmt = sqlsrv_query($cxScnexus, $sqlLideres, $codigos);
+        if ($stmt === false) {
+            sqlsrv_close($cxScnexus);
+            return [];
+        }
+
+        $mapa = [];
+        while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
+            $codigo = trim((string) ($row['codigo_tienda'] ?? ''));
+            if ($codigo === '' || isset($mapa[$codigo])) {
+                continue;
+            }
+            $mapa[$codigo] = [
+                'nombre' => trim((string) ($row['nombre'] ?? '')),
+                'cedula' => trim((string) ($row['cedula_identidad'] ?? '')),
+                'correo' => trim((string) ($row['correo'] ?? '')),
+            ];
+        }
+
+        sqlsrv_free_stmt($stmt);
+        sqlsrv_close($cxScnexus);
+        return $mapa;
+    }
+
     $query = "
         SELECT
             factura_numero      = df.NumeroFactura,
@@ -17,24 +94,9 @@
             asesor_nombre       = dv.NombreVendedor,
             asesor_cedula       = dv.DocumentoVendedor,
             asesor_correo       = '',
-            lider_nombre        = CASE da.CodigoBodega
-                                    WHEN 'RL-PSC'  THEN 'GOMEZ IMBAQUINGO SILVIA ANDREA'
-                                    WHEN 'RL-QSS2' THEN 'CUEVA MESA CHRISTIAN ANTONIO'
-                                    WHEN 'RL-SCA'  THEN 'TUTILLO BENAVIDES DIGNA EVELIN'
-                                    ELSE 'SIN LIDER'
-                                  END,
-            lider_cedula        = CASE da.CodigoBodega
-                                    WHEN 'RL-PSC'  THEN '1722759469'
-                                    WHEN 'RL-QSS2' THEN '1716633001'
-                                    WHEN 'RL-SCA'  THEN '1715033674'
-                                    ELSE '-'
-                                  END,
-            lider_correo        = CASE da.CodigoBodega
-                                    WHEN 'RL-PSC'  THEN 'rolportjefe@mabeltrading.com.ec'
-                                    WHEN 'RL-QSS2' THEN 'rolquisurjefe@mabeltrading.com.ec'
-                                    WHEN 'RL-SCA'  THEN 'scala@mabeltrading.com.ec'
-                                    ELSE '-'
-                                  END,
+            lider_nombre        = '-',
+            lider_cedula        = '-',
+            lider_correo        = '-',
             local_nombre        = da.NombreBodega,
             local_codigo        = da.CodigoBodega,
             valor_transaccion   = CONVERT(DECIMAL(18,2), SUM(fv.TotalPagado)),
@@ -73,6 +135,20 @@
     $ventas = resp_simdim($query);
     if (!is_array($ventas)) {
         $ventas = [];
+    }
+    if ($ventas !== []) {
+        $codigosTienda = array_values(array_unique(array_map(static function ($venta) {
+            return trim((string) ($venta['local_codigo'] ?? ''));
+        }, $ventas)));
+        $lideresPorTienda = obtener_lideres_scnexus_por_tienda_retro7($codigosTienda);
+        foreach ($ventas as &$venta) {
+            $codigo = trim((string) ($venta['local_codigo'] ?? ''));
+            $lider = $lideresPorTienda[$codigo] ?? null;
+            $venta['lider_nombre'] = ($lider && $lider['nombre'] !== '') ? $lider['nombre'] : '-';
+            $venta['lider_cedula'] = ($lider && $lider['cedula'] !== '') ? $lider['cedula'] : '-';
+            $venta['lider_correo'] = ($lider && $lider['correo'] !== '') ? $lider['correo'] : '-';
+        }
+        unset($venta);
     }
     $resp = enviarVentasKoach360($ventas);
     $logLine = date('Y-m-d H:i:s') . ' [retro7] ventas filas=' . count($ventas) . ' resp=' . (is_string($resp) ? substr(preg_replace('/\s+/', ' ', $resp), 0, 500) : '') . "\n";

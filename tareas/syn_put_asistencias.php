@@ -32,6 +32,79 @@
     }
 
     /**
+     * Obtiene local_nombre desde SAP (dbo.almacenes) por código de local.
+     * Retorna mapa [cod_almacen => nombre].
+     */
+    function asist_reales_obtener_locales_sap_por_codigo(array $codigos): array
+    {
+        $codes = [];
+        foreach ($codigos as $codigo) {
+            $c = trim((string) $codigo);
+            if ($c !== '') {
+                $codes[$c] = true;
+            }
+        }
+        $codes = array_keys($codes);
+        if ($codes === []) {
+            return [];
+        }
+
+        $host = trim((string) cws_env('SQL_SERVER_SAP_SERVER'));
+        $db = trim((string) cws_env('SQL_SERVER_SAP_DATABASE'));
+        $uid = trim((string) cws_env('SQL_SERVER_SAP_UID'));
+        $pwd = (string) cws_env('SQL_SERVER_SAP_PWD');
+        if ($host === '' || $db === '' || $uid === '') {
+            return [];
+        }
+
+        $opts = [
+            'Database' => $db,
+            'UID' => $uid,
+            'PWD' => $pwd,
+            'MultipleActiveResultSets' => true,
+            'TrustServerCertificate' => true,
+            'CharacterSet' => 'UTF-8',
+        ];
+        if (trim((string) cws_env('SQL_SERVER_SAP_ENCRYPT', '1')) !== '0') {
+            $opts['Encrypt'] = 'yes';
+        }
+
+        $cxSap = sqlsrv_connect($host, $opts);
+        if ($cxSap === false) {
+            return [];
+        }
+
+        $placeholders = implode(',', array_fill(0, count($codes), '?'));
+        $sql = "
+            SELECT
+                cod_almacen,
+                nombre
+            FROM dbo.almacenes
+            WHERE inactivo = 0
+              AND cod_almacen IN ($placeholders)
+            ORDER BY cod_almacen;
+        ";
+        $stmt = sqlsrv_query($cxSap, $sql, $codes);
+        if ($stmt === false) {
+            sqlsrv_close($cxSap);
+            return [];
+        }
+
+        $mapa = [];
+        while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
+            $codigo = trim((string) ($row['cod_almacen'] ?? ''));
+            if ($codigo === '' || isset($mapa[$codigo])) {
+                continue;
+            }
+            $mapa[$codigo] = trim((string) ($row['nombre'] ?? ''));
+        }
+
+        sqlsrv_free_stmt($stmt);
+        sqlsrv_close($cxSap);
+        return $mapa;
+    }
+
+    /**
      * Fecha "hoy" para la ventana: America/Guayaquil (requisito Ecuador), no GETDATE() del SQL Server.
      * Si Analítica/DWH está en UTC u otra zona, GETDATE() desplazaba el rango de 7 días.
      */
@@ -43,8 +116,8 @@
     $hoySqlDate = $hoyGuayaquil;
 
     /**
-     * Días hacia atrás desde @hoy (inclusive ambos extremos en comparación por DATE).
-     * Ej.: 7 → desde DATEADD(DAY,-7,@hoy) hasta @hoy (hasta 8 fechas distintas; mismo criterio que antes con -7 y fin de día).
+     * Días hacia atrás con fecha fin n-1 (ayer), excluyendo el día actual.
+     * Ej.: 7 → desde DATEADD(DAY,-7,@hoy) hasta < @hoy (exactamente 7 fechas: hoy-7 ... hoy-1).
      */
     $lookbackDays = (int) cws_env('ASIST_REALES_LOOKBACK_DAYS', '7');
     if ($lookbackDays < 1) {
@@ -129,7 +202,7 @@
     $ventanaFechas = "
             WHERE
                 CONVERT(DATE, R.RecordTime) >= DATEADD(DAY, -{$lookbackDays}, @hoy)
-                AND CONVERT(DATE, R.RecordTime) <= @hoy
+                AND CONVERT(DATE, R.RecordTime) < @hoy
                 {$filtroTiendas}";
 
     $declareHoy = "DECLARE @hoy DATE = CAST('{$hoySqlDate}' AS DATE);";
@@ -140,7 +213,7 @@
         $baseWhere = "
             WHERE
                 CONVERT(DATE, R.RecordTime) >= DATEADD(DAY, -{$lookbackDays}, @hoy)
-                AND CONVERT(DATE, R.RecordTime) <= @hoy
+                AND CONVERT(DATE, R.RecordTime) < @hoy
                 {$filtroTiendas}";
         $qSin = trim("
             SET NOCOUNT ON;
@@ -242,6 +315,20 @@
     $asistencias = resp_simdim($query);
     if (!is_array($asistencias)) {
         $asistencias = [];
+    }
+    if ($asistencias !== []) {
+        $codigosLocal = array_values(array_unique(array_map(static function ($row) {
+            return trim((string) ($row['local_codigo'] ?? ''));
+        }, $asistencias)));
+        $localesSap = asist_reales_obtener_locales_sap_por_codigo($codigosLocal);
+        foreach ($asistencias as &$row) {
+            $codigo = trim((string) ($row['local_codigo'] ?? ''));
+            $nombreSap = $localesSap[$codigo] ?? '';
+            if ($nombreSap !== '') {
+                $row['local_nombre'] = $nombreSap;
+            }
+        }
+        unset($row);
     }
 
     // Enviar las asistencias a Kliente (evitar POST con array vacío)
