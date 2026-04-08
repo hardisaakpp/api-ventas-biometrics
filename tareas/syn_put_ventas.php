@@ -23,6 +23,7 @@
      */
     require_once(__DIR__ . '/../cx/bd_scs.php');
     require_once(__DIR__ . '/../cws/f_put_ventas.php');
+    require_once(__DIR__ . '/../cws/f_store_scope.php');
     require_once('f_tareas.php');
     date_default_timezone_set('America/Guayaquil');
 
@@ -31,10 +32,7 @@
      */
     function ventas_continuo_codigos_fase1(): array
     {
-        return [
-            'RL-CCI', 'RL-CON', 'RL-PSC', 'RL-QSN', 'RL-QSS2',
-            'RL-REC2', 'RL-SCA', 'RL-SNL', 'RL-MSO3', 'RL-BMB',
-        ];
+        return store_scope_resolver_codigos('KOACH360_VENTAS', true);
     }
 
     function ventas_continuo_sql_in_bodegas(): string

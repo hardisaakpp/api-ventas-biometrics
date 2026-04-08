@@ -1,6 +1,7 @@
 <?php
     require_once(__DIR__ . '/../cx/bd_scs.php'); // debe contener la función cx() para conectar
     require_once(__DIR__ . '/../cws/f_put_asistencias.php'); // enviarAsistenciasRealesKoach360()
+    require_once(__DIR__ . '/../cws/f_store_scope.php');
     require_once('f_tareas.php');
     date_default_timezone_set('America/Guayaquil');
 
@@ -184,20 +185,26 @@
                         = LTRIM(RTRIM(CONVERT(NVARCHAR(64), R.IdUser)))
                 )";
 
+    $codigosAutorizados = store_scope_resolver_codigos('KOACH360_ASISTENCIAS', true);
+    $descMapFiltrado = store_scope_desc_map_filtrado_por_codigos($codigosAutorizados);
+    if ($descMapFiltrado === []) {
+        fwrite(STDERR, "syn_put_asistencias: no hay mapeo de tiendas para Fase 1.\n");
+        exit(1);
+    }
+    $descSql = [];
+    $caseSql = [];
+    foreach ($descMapFiltrado as $desc => $code) {
+        $descEsc = str_replace("'", "''", $desc);
+        $codeEsc = str_replace("'", "''", $code);
+        $descSql[] = "'" . $descEsc . "'";
+        $caseSql[] = "WHEN '" . $descEsc . "' THEN '" . $codeEsc . "'";
+    }
     $filtroTiendas = "
                 AND D.Description IN
                 (
-                    'ROLAND-QUITO-CCI',
-                    'ROLAND-QUITO-CONDADO SHOPPING',
-                    'ROLAND-QUITO-PORTAL SHOPPING',
-                    'ROLAND-QUITO-QUICENTRO NORTE',
-                    'ROLAND-QUITO-QUICENTRO SUR',
-                    'ROLAND-QUITO-RECREO',
-                    'ROLAND-QUITO-SAN LUIS',
-                    'ROLAND-QUITO-SCALA SHOPPING',
-                    'ROLAND-GUAYAQUIL-MALL DEL SOL3',
-                    'ROLAND-STO DOMINGO-BOMBOLI'
+                    " . implode(",\n                    ", $descSql) . "
                 )";
+    $caseLocalCodigo = implode("\n                                ", $caseSql);
 
     $ventanaFechas = "
             WHERE
@@ -290,16 +297,7 @@
             hora          = LEFT(CONVERT(VARCHAR(8), CONVERT(TIME, R.RecordTime), 108), 5),
             local_nombre  = D.Description,
             local_codigo  = CASE D.Description
-                                WHEN 'ROLAND-QUITO-CCI'                    THEN 'RL-CCI'
-                                WHEN 'ROLAND-QUITO-CONDADO SHOPPING'       THEN 'RL-CON'
-                                WHEN 'ROLAND-QUITO-PORTAL SHOPPING'        THEN 'RL-PSC'
-                                WHEN 'ROLAND-QUITO-QUICENTRO NORTE'        THEN 'RL-QSN'
-                                WHEN 'ROLAND-QUITO-QUICENTRO SUR'          THEN 'RL-QSS2'
-                                WHEN 'ROLAND-QUITO-RECREO'                 THEN 'RL-REC2'
-                                WHEN 'ROLAND-QUITO-SAN LUIS'               THEN 'RL-SNL'
-                                WHEN 'ROLAND-QUITO-SCALA SHOPPING'         THEN 'RL-SCA'
-                                WHEN 'ROLAND-GUAYAQUIL-MALL DEL SOL3'      THEN 'RL-MSO3'
-                                WHEN 'ROLAND-STO DOMINGO-BOMBOLI'          THEN 'RL-BMB'
+                                {$caseLocalCodigo}
                                 ELSE 'N/A'
                             END
         FROM {$fromRecord}

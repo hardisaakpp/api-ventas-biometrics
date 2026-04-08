@@ -1,6 +1,7 @@
 <?php
     require_once __DIR__ . '/../cx/bd_scs.php'; // debe contener la función cx() para conectar
     require_once __DIR__ . '/../cws/f_put_asistencias_prog.php';
+    require_once __DIR__ . '/../cws/f_store_scope.php';
     require_once __DIR__ . '/f_tareas.php';
     date_default_timezone_set('America/Guayaquil');
 
@@ -20,6 +21,53 @@
             exit(1);
         }
         return quote_sql_identifier_prog($value);
+    }
+
+    /**
+     * Compacta mensajes repetidos en resp JSON para evitar ruido en el log.
+     * Solo aplica cuando existe resp.mensajes; en otros casos conserva el formato original.
+     */
+    function format_prog_resp_for_log($resp, int $maxLen = 5000): string
+    {
+        if (!is_string($resp)) {
+            return '';
+        }
+
+        $decoded = json_decode($resp, true);
+        if (!is_array($decoded) || !isset($decoded['mensajes']) || !is_array($decoded['mensajes'])) {
+            return substr(preg_replace('/\s+/', ' ', $resp), 0, $maxLen);
+        }
+
+        $counts = [];
+        $order = [];
+        foreach ($decoded['mensajes'] as $msg) {
+            if (!is_scalar($msg)) {
+                continue;
+            }
+            $text = trim((string) $msg);
+            if ($text === '') {
+                continue;
+            }
+            if (!isset($counts[$text])) {
+                $counts[$text] = 0;
+                $order[] = $text;
+            }
+            $counts[$text]++;
+        }
+
+        $compact = [];
+        foreach ($order as $text) {
+            $times = (int) $counts[$text];
+            $compact[] = $times > 1 ? "{$text} (x{$times})" : $text;
+        }
+
+        $decoded['mensajes'] = $compact;
+        $json = json_encode($decoded, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        if (!is_string($json) || $json === '') {
+            return substr(preg_replace('/\s+/', ' ', $resp), 0, $maxLen);
+        }
+
+        return substr(preg_replace('/\s+/', ' ', $json), 0, $maxLen);
     }
 
     /**
@@ -132,12 +180,9 @@
 
     $nominaDb = env_sql_identifier_prog('ASIST_NOMINA_DATABASE', 'BDDNOMINAMABEL19');
 
-    $tiendasRaw = trim((string) cws_env('ASIST_PROG_CODIGOS_TIENDA', 'RL-CCI,RL-CON,RL-PSC,RL-QSN,RL-QSS2,RL-REC2,RL-SNL,RL-SCA,RL-MSO3,RL-BMB'));
-    $tiendas = array_values(array_filter(array_map('trim', explode(',', $tiendasRaw)), static function ($t) {
-        return $t !== '';
-    }));
+    $tiendas = store_scope_resolver_codigos('KOACH360_ASISTENCIAS_PROGRAMADAS', true);
     if ($tiendas === []) {
-        fwrite(STDERR, "syn_put_asistencias_prog: ASIST_PROG_CODIGOS_TIENDA no tiene códigos válidos.\n");
+        fwrite(STDERR, "syn_put_asistencias_prog: no hay códigos de tienda para Fase 1.\n");
         exit(1);
     }
     $tiendasSql = [];
@@ -225,7 +270,7 @@
         . ' locales_resueltos=' . $localesResueltos
         . ' locales_no_encontrados=' . count($localesNoEncontrados)
         . ' codigos_no_encontrados=' . ($localesNoEncontrados === [] ? '0' : implode(',', $localesNoEncontrados))
-        . ' resp=' . (is_string($resp) ? substr(preg_replace('/\s+/', ' ', $resp), 0, 5000) : '')
+        . ' resp=' . format_prog_resp_for_log($resp, 5000)
         . "\n";
     file_put_contents(tareas_log_path('syn_put_asistencias_prog.log'), $logLine, FILE_APPEND);
 

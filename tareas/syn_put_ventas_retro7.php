@@ -5,6 +5,7 @@
      */
     require_once __DIR__ . '/../cx/bd_scs.php';
     require_once __DIR__ . '/../cws/f_put_ventas.php';
+    require_once __DIR__ . '/../cws/f_store_scope.php';
     require_once __DIR__ . '/f_tareas.php';
     date_default_timezone_set('America/Guayaquil');
 
@@ -85,6 +86,15 @@
         return $mapa;
     }
 
+    $codigosFase1 = store_scope_resolver_codigos('KOACH360_VENTAS', true);
+    if ($codigosFase1 === []) {
+        fwrite(STDERR, "syn_put_ventas_retro7: no hay tiendas configuradas para Fase 1.\n");
+        exit(1);
+    }
+    $inBodegas = implode(',', array_map(static function (string $code): string {
+        return "'" . str_replace("'", "''", $code) . "'";
+    }, $codigosFase1));
+
     $query = "
         SELECT
             factura_numero      = df.NumeroFactura,
@@ -117,6 +127,7 @@
         WHERE
             dt.Fecha >= DATEADD(DAY, -7, CAST(GETDATE() AS DATE))
             AND dt.Fecha < CAST(GETDATE() AS DATE)
+            AND da.CodigoBodega IN ({$inBodegas})
         GROUP BY
             df.NumeroFactura,
             dt.Fecha,
