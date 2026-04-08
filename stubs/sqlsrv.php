@@ -79,3 +79,11 @@ function sqlsrv_rollback($conn): bool
 {
     return true;
 }
+
+/**
+ * @param 'WarningsReturnAsErrors'|'LogSeverity'|'LogSubsystems' $setting
+ */
+function sqlsrv_configure(string $setting, mixed $value): bool
+{
+    return true;
+}

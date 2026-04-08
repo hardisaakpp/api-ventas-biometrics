@@ -102,7 +102,7 @@ function store_employees_service_list($conn, array $query): array
         }
 
         if (mb_strlen($qRaw, 'UTF-8') >= $minLen) {
-            $searchCols = ['nombre', 'cedula_identidad', 'correo', 'cargo', 'codigo_tienda', 'usuario_actual'];
+            $searchCols = ['nombre', 'cedula_identidad', 'correo', 'cargo', 'codigo_tienda', 'usuario_ultima_actualizacion'];
             $qOrGroups = [];
             $tokenGroups = [];
             $qParams = [];
@@ -346,8 +346,8 @@ function store_employees_service_update($conn, array $body, int $idParam): array
         json_response(422, ['ok' => false, 'error' => 'No hay campos para actualizar']);
     }
 
-    $fields[] = 'fecha_actual = SYSDATETIME()';
-    $fields[] = 'usuario_actual = ?';
+    $fields[] = 'fecha_ultima_actualizacion = SYSDATETIME()';
+    $fields[] = 'usuario_ultima_actualizacion = ?';
     $actor = get_actor($body);
     assert_max_length('usuario_actual', $actor, 64);
     $params[] = $actor;

@@ -45,7 +45,8 @@ function store_employees_repo_fetch_almacenes_catalogo($conn, string $like, bool
 
 function store_employees_repo_fetch_one_by_id($conn, int $id): ?array
 {
-    $sql = 'SELECT id, cedula_identidad, correo, nombre, cargo, codigo_tienda, estado, encargado, fecha_actual, usuario_actual
+    $sql = 'SELECT id, cedula_identidad, correo, nombre, cargo, codigo_tienda, estado, encargado,
+                   fecha_ingreso, fecha_ultima_actualizacion, usuario_ultima_actualizacion
             FROM ' . store_employees_table() . '
             WHERE id = ?';
     $stmt = sqlsrv_query($conn, $sql, [$id]);
@@ -112,7 +113,8 @@ function store_employees_repo_list($conn, array $where, array $params, int $offs
     sqlsrv_free_stmt($countStmt);
     $total = (int) ($countRow['total'] ?? 0);
 
-    $listSql = 'SELECT id, cedula_identidad, correo, nombre, cargo, codigo_tienda, estado, encargado, fecha_actual, usuario_actual
+    $listSql = 'SELECT id, cedula_identidad, correo, nombre, cargo, codigo_tienda, estado, encargado,
+                        fecha_ingreso, fecha_ultima_actualizacion, usuario_ultima_actualizacion
                 FROM ' . store_employees_table() . '
                 ' . $whereSql . '
                 ORDER BY id DESC
@@ -138,8 +140,9 @@ function store_employees_repo_list($conn, array $where, array $params, int $offs
 function store_employees_repo_insert($conn, array $params): int
 {
     $sql = 'INSERT INTO ' . store_employees_table() . '
-            (cedula_identidad, correo, nombre, cargo, codigo_tienda, estado, encargado, fecha_actual, usuario_actual)
-            VALUES (?, ?, ?, ?, ?, ?, ?, SYSDATETIME(), ?)';
+            (cedula_identidad, correo, nombre, cargo, codigo_tienda, estado, encargado,
+             fecha_ingreso, fecha_ultima_actualizacion, usuario_ultima_actualizacion)
+            VALUES (?, ?, ?, ?, ?, ?, ?, SYSDATETIME(), SYSDATETIME(), ?)';
     $stmt = sqlsrv_query($conn, $sql, $params);
     if ($stmt === false) {
         $errors = sqlsrv_errors();
@@ -185,7 +188,8 @@ function store_employees_repo_update_by_id($conn, int $id, array $fields, array 
 function store_employees_repo_soft_delete($conn, int $id, string $actor): void
 {
     $sql = 'UPDATE ' . store_employees_table() . '
-            SET estado = 0, encargado = 0, fecha_actual = SYSDATETIME(), usuario_actual = ?
+            SET estado = 0, encargado = 0,
+                fecha_ultima_actualizacion = SYSDATETIME(), usuario_ultima_actualizacion = ?
             WHERE id = ?';
     $stmt = sqlsrv_query($conn, $sql, [$actor, $id]);
     if ($stmt === false) {
