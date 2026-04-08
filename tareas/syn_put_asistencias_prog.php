@@ -225,7 +225,7 @@
         . ' locales_resueltos=' . $localesResueltos
         . ' locales_no_encontrados=' . count($localesNoEncontrados)
         . ' codigos_no_encontrados=' . ($localesNoEncontrados === [] ? '0' : implode(',', $localesNoEncontrados))
-        . ' resp=' . (is_string($resp) ? substr(preg_replace('/\s+/', ' ', $resp), 0, 1500) : '')
+        . ' resp=' . (is_string($resp) ? substr(preg_replace('/\s+/', ' ', $resp), 0, 5000) : '')
         . "\n";
     file_put_contents(tareas_log_path('syn_put_asistencias_prog.log'), $logLine, FILE_APPEND);
 

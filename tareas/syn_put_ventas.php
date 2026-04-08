@@ -383,6 +383,6 @@
     unset($venta);
 
     $resp = enviarVentasKoach360($ventas);
-    $logLine = date('Y-m-d H:i:s') . ' - ' . $metaLog . ' filas=' . count($ventas) . ' resp=' . (is_string($resp) ? substr(preg_replace('/\s+/', ' ', $resp), 0, 1500) : '') . "\n";
+    $logLine = date('Y-m-d H:i:s') . ' - ' . $metaLog . ' filas=' . count($ventas) . ' resp=' . (is_string($resp) ? substr(preg_replace('/\s+/', ' ', $resp), 0, 5000) : '') . "\n";
     file_put_contents(tareas_log_path('syn_put_ventas.log'), $logLine, FILE_APPEND);
 ?>

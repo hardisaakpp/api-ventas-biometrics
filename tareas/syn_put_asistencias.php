@@ -341,7 +341,7 @@
         . ' - asistencias filas=' . count($asistencias)
         . ' hoy_ec=' . $hoyGuayaquil
         . ' lookback=' . $lookbackDays
-        . ' resp=' . (is_string($resp) ? substr(preg_replace('/\s+/', ' ', $resp), 0, 1500) : '')
+        . ' resp=' . (is_string($resp) ? substr(preg_replace('/\s+/', ' ', $resp), 0, 5000) : '')
         . "\n";
     file_put_contents(tareas_log_path('syn_put_asistencias.log'), $logLine, FILE_APPEND);
 ?>
