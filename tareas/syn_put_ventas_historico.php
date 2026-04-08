@@ -116,6 +116,6 @@ $resp = enviarVentasKoach360($ventas);
 $logLine = date('Y-m-d H:i:s')
     . ' - ventas_historico filas=' . count($ventas)
     . ' clienteId=' . CLI_PVENTAS
-    . ' resp=' . (is_string($resp) ? substr(preg_replace('/\s+/', ' ', $resp), 0, 500) : '')
+    . ' resp=' . (is_string($resp) ? substr(preg_replace('/\s+/', ' ', $resp), 0, 1500) : '')
     . "\n";
 file_put_contents(tareas_log_path('syn_put_ventas_historico.log'), $logLine, FILE_APPEND);

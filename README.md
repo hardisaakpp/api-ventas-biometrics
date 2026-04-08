@@ -8,7 +8,7 @@ Integraciones **PHP CLI** alineadas con la documentación de **KOACH360** (venta
 
 | Área | Scripts / módulos |
 |------|-------------------|
-| KOACH360 — ventas | `tareas/syn_put_ventas.php`, `tareas/syn_put_ventas_retro7.php` → `cws/f_put_ventas.php`, `cws/f_koach360.php` |
+| KOACH360 — ventas | `tareas/syn_put_ventas.php` (modos `retroactivo` / `intradia`) → `cws/f_put_ventas.php`, `cws/f_koach360.php` |
 | KOACH360 — asistencias | `tareas/syn_put_asistencias.php`, `tareas/syn_put_asistencias_prog.php` → `cws/f_put_asistencias*.php` |
 | V-Count | `tareas/syn_fetch_vcount.php` (JSON en `tareas/json/`), `tareas/syn_consumo_vcount.php` (opcional: staging SQL) |
 | Configuración | `.env` en la raíz, `cws/dat_cws.php` |
@@ -184,10 +184,11 @@ Ejecutar **desde la raíz del proyecto** (`cd` a la carpeta que contiene `cws/`,
 | 3 | `php tareas/syn_fetch_vcount.php 1` | V-Count horario + diario → `tareas/json/` y `tareas/logs/syn_fetch_vcount.log` |
 | 4 | `php -m` (salida debe incluir `sqlsrv`) | Extensiones SQL cargadas |
 | 5 | `php cws/scripts/check_sqlsrv.php` | Conexión real a `SQL_SCS_*` (`SELECT 1`) |
-| 6 | `php tareas/syn_put_ventas.php` | SQL + envío ventas a KOACH360 (impacto real; usar solo cuando toque en ese entorno) |
-| 7 | `php tareas/syn_put_asistencias.php` | SQL + asistencias reales |
-| 8 | `php tareas/syn_put_asistencias_prog.php` | SQL + asistencias programadas |
-| 9 | `php tareas/syn_consumo_vcount.php` | SQL + carga V-Count a staging (si lo usáis) |
+| 6 | `php tareas/syn_put_ventas.php retroactivo` | SQL + envío ventas KOACH360 (últimos 7 días hasta hoy; impacto real) |
+| 7 | `php tareas/syn_put_ventas.php intradia` | SQL + envío ventas KOACH360 (solo hoy, acumulado desde 00:00; horario 09:00-22:00) |
+| 8 | `php tareas/syn_put_asistencias.php` | SQL + asistencias reales |
+| 9 | `php tareas/syn_put_asistencias_prog.php` | SQL + asistencias programadas |
+| 10 | `php tareas/syn_consumo_vcount.php` | SQL + carga V-Count a staging (si lo usáis) |
 
 **Interpretación rápida de fallos:** `check_env` con SQL vacío → completar `SQL_SCS_*`. KOACH360 **401** → usuario/contraseña de ese entorno. V-Count **400** → suele ser `US_VCOUNT` / `PS_VCOUNT` vacíos o parámetros; **401** → credenciales incorrectas.
 
@@ -217,8 +218,8 @@ Objetivo: que QA pueda comprobar cada integración con criterios reproducibles. 
 | V-Count → archivos JSON | `php tareas/syn_fetch_vcount.php 1` | `US_VCOUNT`, `PS_VCOUNT`, red | En `tareas/json/` aparecen **nuevos** `vcount_horaria_YYYYMMDD_HHMMSS.json` y `vcount_diaria_YYYYMMDD_HHMMSS.json`. En `tareas/logs/syn_fetch_vcount.log`, la última línea debe llevar `horaria=ok` y `diaria=ok` (no `null`). | Abrir JSON y comprobar que la estructura no sea claramente vacía/errónea según criterio de negocio. |
 | Extensión `sqlsrv` | `php -m` | PHP instalado | La salida incluye **`sqlsrv`** (y suele aparecer `pdo_sqlsrv`). | — |
 | SQL Server (conexión) | `php cws/scripts/check_sqlsrv.php` | `SQL_SCS_*` correctas; red | Consola: línea `OK: sqlsrv conectado...`; código **0**. | — |
-| Ventas → KOACH360 | `php tareas/syn_put_ventas.php` | SQL + KOACH360 | Nuevo `tareas/json/ventas_YYYYMMDD_HHMMSS.json`. En `tareas/logs/syn_put_ventas.log`, última línea: `ventas filas=N resp=...`. **Éxito HTTP:** `resp=` no debe empezar por `KOACH360 ventas HTTP` (ese prefijo indica error de API). | Validar en **KOACH360** (manual de integración / pantallas acordadas) que los datos esperados llegaron. |
-| Ventas retro 7 días | `php tareas/syn_put_ventas_retro7.php` | Igual que ventas | Nuevo `ventas_*.json`; log `tareas/logs/syn_put_ventas_retro7.log` con `[retro7]`; misma regla: `resp=` sin prefijo `KOACH360 ventas HTTP`. | Igual: verificación en KOACH360. |
+| Ventas → KOACH360 (retroactivo) | `php tareas/syn_put_ventas.php retroactivo` | SQL + KOACH360 | Nuevo `tareas/json/ventas_YYYYMMDD_HHMMSS.json`. En `tareas/logs/syn_put_ventas.log`, última línea con `modo=retroactivo ... filas=N resp=...`. **Éxito HTTP:** `resp=` no debe empezar por `KOACH360 ventas HTTP`. | Validar en **KOACH360** (manual de integración / pantallas acordadas) que los datos esperados llegaron. |
+| Ventas → KOACH360 (intradia) | `php tareas/syn_put_ventas.php intradia` | SQL + KOACH360 | Log `tareas/logs/syn_put_ventas.log` con `modo=intradia`. Fuera de ventana 09-22 registra `skip fuera_ventana` (sin envío). Misma regla para `resp=`. | Igual: verificación en KOACH360. |
 | Asistencias reales → KOACH360 | `php tareas/syn_put_asistencias.php` | SQL + KOACH360 | Si **hay filas** (`filas>0` en log): nuevo `tareas/json/asistencias_YYYYMMDD_HHMMSS.json` y línea en `tareas/logs/syn_put_asistencias.log` con `resp=` sin `KOACH360 asistencias HTTP`. Si **no hay datos**: `resp=sin_registros` (no se llama a la API; es válido). | KOACH360 / negocio. |
 | Asistencias programadas | `php tareas/syn_put_asistencias_prog.php` | SQL + KOACH360 | Nuevo `tareas/json/asistencias__prog_YYYYMMDD_HHMMSS.json` salvo que la expansión quede vacía (`resp=sin_registros_programados_expandidos`). Sin `KOACH360 asistencias programadas HTTP` en `resp=` cuando sí hubo POST. | KOACH360 / negocio. |
 | V-Count → staging SQL | `php tareas/syn_consumo_vcount.php` | SQL + API V-Count | Consola: `Inserción completada.` (si hubo datos) o `No se recibieron datos válidos.` (cuando la API no devolvió datos útiles). | Tabla `BISTAGING.dbo.STG_ConsumoContador` (coordinar con DBA/datos). |
@@ -237,8 +238,8 @@ PHP suele devolver **0** al terminar sin error fatal aunque la API devuelva erro
 Set-Location "C:\ruta\klienteV1"
 php cws/scripts/check_env.php
 php cws/scripts/test_koach360_login.php
-php tareas/syn_put_ventas.php
-php tareas/syn_put_ventas_retro7.php
+php tareas/syn_put_ventas.php retroactivo
+php tareas/syn_put_ventas.php intradia
 php tareas/syn_put_asistencias.php
 php tareas/syn_put_asistencias_prog.php
 php tareas/syn_fetch_vcount.php
@@ -300,17 +301,18 @@ cd /opt/backend/kliente-v1
 php cws/scripts/check_env.php
 php cws/scripts/test_koach360_login.php
 php tareas/syn_fetch_vcount.php 1
-php tareas/syn_put_ventas.php
+php tareas/syn_put_ventas.php retroactivo
+php tareas/syn_put_ventas.php intradia
 ```
 
 Ejemplo de líneas en `crontab` (ajustar rutas y horarios; el usuario debe tener `php` en PATH o usar ruta absoluta a `php`):
 
 ```cron
-# Ventas cada hora (ej. minuto 5)
-5 * * * * cd /opt/backend/kliente-v1 && /usr/bin/php tareas/syn_put_ventas.php >> /opt/backend/kliente-v1/tareas/logs/cron_ventas.log 2>&1
+# Ventas retroactivo (1 vez al día; últimos 7 días hasta hoy)
+0 6 * * * cd /opt/backend/kliente-v1 && /usr/bin/php tareas/syn_put_ventas.php retroactivo >> /opt/backend/kliente-v1/tareas/logs/cron_ventas.log 2>&1
 
-# Retro 7 días una vez al día (ej. 02:15)
-15 2 * * * cd /opt/backend/kliente-v1 && /usr/bin/php tareas/syn_put_ventas_retro7.php >> /opt/backend/kliente-v1/tareas/logs/cron_ventas_retro7.log 2>&1
+# Ventas intradia (cada hora, 09:00-22:00; día actual desde 00:00 acumulado)
+0 9-22 * * * cd /opt/backend/kliente-v1 && /usr/bin/php tareas/syn_put_ventas.php intradia >> /opt/backend/kliente-v1/tareas/logs/cron_ventas.log 2>&1
 
 # Asistencias (ej. cada 30 min)
 */30 * * * * cd /opt/backend/kliente-v1 && /usr/bin/php tareas/syn_put_asistencias.php >> /opt/backend/kliente-v1/tareas/logs/cron_asistencias.log 2>&1
@@ -326,16 +328,16 @@ Scripts que deben seguir existiendo en el repo para cron: los bajo `tareas/syn_p
 
 ## Recurrencia recomendada (manual KOACH360)
 
-- Ventas: **cada hora** en horario laboral → `syn_put_ventas.php`.
-- Ventas retroactivo **7 días** en madrugada → `syn_put_ventas_retro7.php`.
+- Ventas continuas: **1 vez al día** `retroactivo` + **cada hora 09:00-22:00** `intradia` usando `syn_put_ventas.php`.
+- Tiendas consideradas: solo **Fase 1** (lista fija de `CodigoBodega` dentro del script).
 
-Wrappers PowerShell: `tareas/scripts/run_ventas_horario.ps1`, `tareas/scripts/run_ventas_retro7_madrugada.ps1`.
+Wrappers PowerShell disponibles: `tareas/scripts/run_ventas_horario.ps1`, `tareas/scripts/run_ventas_retro7_madrugada.ps1` (si se mantiene el flujo legado).
 
 Ejemplo `schtasks` (ajustar ruta):
 
 ```powershell
-schtasks /Create /F /TN "KLIENTEV1_VENTAS_HORARIO" /SC HOURLY /MO 1 /ST 06:00 /ET 22:59 /TR "powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"C:\ruta\klienteV1\tareas\scripts\run_ventas_horario.ps1\""
-schtasks /Create /F /TN "KLIENTEV1_VENTAS_RETRO7" /SC DAILY /ST 02:15 /TR "powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"C:\ruta\klienteV1\tareas\scripts\run_ventas_retro7_madrugada.ps1\""
+schtasks /Create /F /TN "KLIENTEV1_VENTAS_RETROACTIVO" /SC DAILY /ST 06:00 /TR "powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"Set-Location 'C:\ruta\klienteV1'; php tareas\syn_put_ventas.php retroactivo\""
+schtasks /Create /F /TN "KLIENTEV1_VENTAS_INTRADIA" /SC HOURLY /MO 1 /ST 09:00 /ET 22:59 /TR "powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"Set-Location 'C:\ruta\klienteV1'; php tareas\syn_put_ventas.php intradia\""
 ```
 
 ## Variables de entorno (resumen)
@@ -349,6 +351,7 @@ Ver `.env.example`. Principales:
 - **HTTP (opcional):** `KOACH360_HTTP_TIMEOUT`, `KOACH360_CONNECT_TIMEOUT`, `KOACH360_RETRY_MAX`, `VCOUNT_HTTP_TIMEOUT`, `VCOUNT_CONNECT_TIMEOUT`, `VCOUNT_RETRY_MAX`
 - **check_env:** `CWS_CHECK_ENV_NO_SQL=1` (equivalente a `php cws/scripts/check_env.php --no-sql`)
 - **Asistencias (solo diagnóstico SQL):** `ASIST_DEBUG=1` (ver sección *Guía de validación para QA*)
+- **Ventas continuas:** `VENTAS_CONTINUO_DESDE` (go-live, p. ej. `2026-04-01`), `VENTAS_INTRADIA_FORCE=1` (solo pruebas fuera de 09-22)
 
 ## Extensiones SQL en Windows (XAMPP)
 
