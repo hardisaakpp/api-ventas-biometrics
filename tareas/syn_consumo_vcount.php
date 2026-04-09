@@ -9,8 +9,8 @@
     $logFile = tareas_log_path('syn_consumo_vcount.log');
     $startedAt = microtime(true);
 
-    // 1. Calcular fechas de los últimos 7 días (hasta ayer)
-    $rango7 = rangoDiasDesdeAyer(7);
+    // 1. Calcular fechas de los últimos 10 días (hasta ayer)
+    $rango7 = rangoDiasDesdeAyer(10);
     $fecha_fin_consumo = date('Y-m-d', strtotime('yesterday'));
     $fecha_inicio = $rango7['fecha_inicio'];
     $fecha_fin    = $rango7['fecha_fin'];

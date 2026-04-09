@@ -7,7 +7,7 @@
     require_once __DIR__ . '/f_tareas.php';
     date_default_timezone_set('America/Guayaquil');
 
-    $dias = isset($argv[1]) ? max(1, (int) $argv[1]) : 7;
+    $dias = isset($argv[1]) ? max(1, (int) $argv[1]) : 10;
     $fin = date('Y-m-d', strtotime('yesterday'));
     $ini = date('Y-m-d', strtotime('-' . ($dias - 1) . ' days', strtotime($fin)));
 
