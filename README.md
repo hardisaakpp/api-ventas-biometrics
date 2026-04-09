@@ -297,7 +297,7 @@ curl -X POST "http://localhost:8080/store_employees.php" \
 ## Ejecución manual y `cron` (Linux, desde la raíz del repo)
 
 ```bash
-cd /opt/backend/kliente-v1
+cd /opt/klienteV1
 php cws/scripts/check_env.php
 php cws/scripts/test_koach360_login.php
 php tareas/syn_fetch_vcount.php 1
@@ -305,23 +305,26 @@ php tareas/syn_put_ventas.php retroactivo
 php tareas/syn_put_ventas.php intradia
 ```
 
-Ejemplo de líneas en `crontab` (ajustar rutas y horarios; el usuario debe tener `php` en PATH o usar ruta absoluta a `php`):
+Configuración actual de `crontab`:
 
 ```cron
-# Ventas retroactivo (1 vez al día; últimos 7 días hasta hoy)
-0 6 * * * cd /opt/backend/kliente-v1 && /usr/bin/php tareas/syn_put_ventas.php retroactivo >> /opt/backend/kliente-v1/tareas/logs/cron_ventas.log 2>&1
+# KLIENTE Ejecuta 'syn_consumo_vcount.php' todos los días a las 02:00 a.m., y guarda la salida en el log
+0 2 * * * /usr/bin/php $K/tareas/syn_consumo_vcount.php >> /storage/tareas/syn_consumo_vcount.log 2>&1
 
-# Ventas intradia (cada hora, 09:00-22:00; día actual desde 00:00 acumulado)
-0 9-22 * * * cd /opt/backend/kliente-v1 && /usr/bin/php tareas/syn_put_ventas.php intradia >> /opt/backend/kliente-v1/tareas/logs/cron_ventas.log 2>&1
+# KLIENTE Ejecuta 'syn_put_ventas.php' todos los días a las 06:00 a.m., y guarda la salida en el log
+0 6 * * * cd /opt/klienteV1 && /usr/bin/php tareas/syn_put_ventas.php retroactivo >> /opt/klienteV1/tareas/logs/cron_put_ventas.log 2>&1
 
-# Asistencias (ej. cada 30 min)
-*/30 * * * * cd /opt/backend/kliente-v1 && /usr/bin/php tareas/syn_put_asistencias.php >> /opt/backend/kliente-v1/tareas/logs/cron_asistencias.log 2>&1
+# KLIENTE Ejecuta 'syn_put_ventas.php' intradia (09:00-22:00, cada hora)
+0 9-22 * * * cd /opt/klienteV1 && /usr/bin/php tareas/syn_put_ventas.php intradia >> /opt/klienteV1/tareas/logs/cron_put_ventas_intradia.log 2>&1
 
-# Asistencias programadas (ej. diario 06:10)
-10 6 * * * cd /opt/backend/kliente-v1 && /usr/bin/php tareas/syn_put_asistencias_prog.php >> /opt/backend/kliente-v1/tareas/logs/cron_asist_prog.log 2>&1
+# KLIENTE Ejecuta 'syn_put_asistencias.php' Asistencias reales (diario)
+20 9 * * * cd /opt/klienteV1 && /usr/bin/php tareas/syn_put_asistencias.php >> /opt/klienteV1/tareas/logs/cron_put_asistencias.log 2>&1
 
-# V-Count (ej. diario 07:00, últimos 10 días)
-0 7 * * * cd /opt/backend/kliente-v1 && /usr/bin/php tareas/syn_fetch_vcount.php >> /opt/backend/kliente-v1/tareas/logs/cron_vcount.log 2>&1
+# KLIENTE Ejecuta 'syn_put_asistencias_prog.php' Asistencias programadas: diario días 1-8
+20 6 1-8 * * cd /opt/klienteV1 && /usr/bin/php tareas/syn_put_asistencias_prog.php >> /opt/klienteV1/tareas/logs/cron_put_asistencias_prog.log 2>&1
+
+# KLIENTE Ejecuta 'syn_put_asistencias_prog.php' Asistencias programadas: lunes cuando día > 8
+30 6 * * 1 [ "$(date +\%d)" -gt 8 ] && cd /opt/klienteV1 && /usr/bin/php tareas/syn_put_asistencias_prog.php >> /opt/klienteV1/tareas/logs/cron_put_asistencias_prog.log 2>&1
 ```
 
 Scripts que deben seguir existiendo en el repo para cron: los bajo `tareas/syn_put_*.php`, `syn_fetch_vcount.php`, `syn_consumo_vcount.php` (opcional). Tras un despliegue, revisar que **ningún** job apunte a scripts eliminados en versiones anteriores.
