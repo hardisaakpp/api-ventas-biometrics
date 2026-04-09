@@ -222,7 +222,7 @@ Objetivo: que QA pueda comprobar cada integración con criterios reproducibles. 
 | Ventas → KOACH360 (intradia) | `php tareas/syn_put_ventas.php intradia` | SQL + KOACH360 | Log `tareas/logs/syn_put_ventas.log` con `modo=intradia`. Fuera de ventana 09-22 registra `skip fuera_ventana` (sin envío). Misma regla para `resp=`. | Igual: verificación en KOACH360. |
 | Asistencias reales → KOACH360 | `php tareas/syn_put_asistencias.php` | SQL + KOACH360 | Si **hay filas** (`filas>0` en log): nuevo `tareas/json/asistencias_YYYYMMDD_HHMMSS.json` y línea en `tareas/logs/syn_put_asistencias.log` con `resp=` sin `KOACH360 asistencias HTTP`. Si **no hay datos**: `resp=sin_registros` (no se llama a la API; es válido). | KOACH360 / negocio. |
 | Asistencias programadas | `php tareas/syn_put_asistencias_prog.php` | SQL + KOACH360 | Nuevo `tareas/json/asistencias__prog_YYYYMMDD_HHMMSS.json` salvo que la expansión quede vacía (`resp=sin_registros_programados_expandidos`). Sin `KOACH360 asistencias programadas HTTP` en `resp=` cuando sí hubo POST. | KOACH360 / negocio. |
-| V-Count → staging SQL | `php tareas/syn_consumo_vcount.php` | SQL + API V-Count | Consola: `Inserción completada.` (si hubo datos) o `No se recibieron datos válidos.` (cuando la API no devolvió datos útiles). | Tabla `BISTAGING.dbo.STG_ConsumoContador` (coordinar con DBA/datos). |
+| V-Count → staging SQL | `php tareas/syn_consumo_vcount.php` | SQL + API V-Count | Consola: `Inserción completada.` (si hubo datos) o `No se recibieron datos válidos.` (cuando la API no devolvió datos útiles). El script usa por defecto los últimos **10 días** (hasta ayer). | Tabla `BISTAGING.dbo.STG_ConsumoContador` (coordinar con DBA/datos). |
 
 ### Depuración de asistencias (solo diagnóstico)
 
@@ -320,7 +320,7 @@ Ejemplo de líneas en `crontab` (ajustar rutas y horarios; el usuario debe tener
 # Asistencias programadas (ej. diario 06:10)
 10 6 * * * cd /opt/backend/kliente-v1 && /usr/bin/php tareas/syn_put_asistencias_prog.php >> /opt/backend/kliente-v1/tareas/logs/cron_asist_prog.log 2>&1
 
-# V-Count (ej. diario 07:00, últimos 7 días)
+# V-Count (ej. diario 07:00, últimos 10 días)
 0 7 * * * cd /opt/backend/kliente-v1 && /usr/bin/php tareas/syn_fetch_vcount.php >> /opt/backend/kliente-v1/tareas/logs/cron_vcount.log 2>&1
 ```
 
@@ -329,7 +329,23 @@ Scripts que deben seguir existiendo en el repo para cron: los bajo `tareas/syn_p
 ## Recurrencia recomendada (manual KOACH360)
 
 - Ventas continuas: **1 vez al día** `retroactivo` + **cada hora 09:00-22:00** `intradia` usando `syn_put_ventas.php`.
-- Tiendas consideradas: solo **Fase 1** (lista fija de `CodigoBodega` dentro del script).
+- Tiendas consideradas: **Fase 1** según `dbo.integration_store_scope` (por `integration` y `es_fase1=1`), con fallback a `TIENDAS_FASE1_CODIGOS` en `.env`.
+
+### Reglas de filtrado en ventas (`syn_put_ventas.php`)
+
+El query de ventas aplica filtros funcionales para evitar ruido o duplicidad en la carga hacia KOACH360:
+
+- `dv.CodigoInterno <> '114'`  
+  Excluye el vendedor/código interno `114` del envío (regla de negocio específica del cliente).
+- `dp.TipoProducto = 'PRODUCTO'`  
+  Considera solo líneas de producto; excluye conceptos que no son producto (servicios, cargos u otros tipos).
+- `fv.VentaDiariaFc = 0`  
+  Filtra registros no marcados como venta fiscal/ajuste en `Fact_VentasDiaria`, evitando duplicar o mezclar movimientos no deseados en el payload final.
+
+Además de lo anterior, el script siempre filtra por:
+
+- rango de fecha/hora según modo (`retroactivo` o `intradia`),
+- tiendas autorizadas por scope (`integration_store_scope` / fallback de `.env`).
 
 Wrappers PowerShell disponibles: `tareas/scripts/run_ventas_horario.ps1`, `tareas/scripts/run_ventas_retro7_madrugada.ps1` (si se mantiene el flujo legado).
 
