@@ -1,16 +1,17 @@
 <?php
 /**
- * Ejecuta cws/sql/store_employees_audit_columns.sql contra STORE_EMPLOYEES_SQL_* (.env).
+ * Ejecuta cws/sql/store_employees_audit_columns.sql contra STORE_EMPLOYEES_SQL_* (.env),
+ * o STORE_EMPLOYEES_MIGRATE_DEST_* si están definidas (mismo criterio que migrate_store_employees_copy.php).
  * Uso: php cws/scripts/run_store_employees_audit_sql.php
  */
 declare(strict_types=1);
 
 require_once __DIR__ . '/../dat_cws.php';
 
-$host = trim(cws_env('STORE_EMPLOYEES_SQL_HOST'));
-$db = trim(cws_env('STORE_EMPLOYEES_SQL_DATABASE'));
-$user = trim(cws_env('STORE_EMPLOYEES_SQL_USER'));
-$pass = (string) cws_env('STORE_EMPLOYEES_SQL_PASSWORD');
+$host = trim(cws_env('STORE_EMPLOYEES_MIGRATE_DEST_HOST', cws_env('STORE_EMPLOYEES_SQL_HOST')));
+$db = trim(cws_env('STORE_EMPLOYEES_MIGRATE_DEST_DATABASE', cws_env('STORE_EMPLOYEES_SQL_DATABASE')));
+$user = trim(cws_env('STORE_EMPLOYEES_MIGRATE_DEST_USER', cws_env('STORE_EMPLOYEES_SQL_USER')));
+$pass = (string) cws_env('STORE_EMPLOYEES_MIGRATE_DEST_PASSWORD', cws_env('STORE_EMPLOYEES_SQL_PASSWORD'));
 
 if ($host === '' || $db === '' || $user === '' || $pass === '') {
     fwrite(STDERR, "Faltan STORE_EMPLOYEES_SQL_HOST|DATABASE|USER|PASSWORD en .env\n");
