@@ -216,9 +216,18 @@
         INNER JOIN {$nominaServer}.{$nominaDb}.[dbo].[HorariosDiarios] H
             ON H.IdEmpleado = P.intDPe_Id
         CROSS APPLY (
-            SELECT v.hora_plan
-            FROM (VALUES (H.Hora1), (H.Hora4)) AS v(hora_plan)
-            WHERE v.hora_plan IS NOT NULL
+            SELECT T.hora_plan
+            FROM (
+                SELECT H.Hora1 AS hora_plan
+                WHERE H.Hora1 IS NOT NULL
+                UNION ALL
+                SELECT H.Hora4 AS hora_plan
+                WHERE H.Hora4 IS NOT NULL
+                  AND (
+                      H.Hora1 IS NULL
+                      OR CONVERT(time(0), H.Hora4) <> CONVERT(time(0), H.Hora1)
+                  )
+            ) AS T
         ) AS T
         WHERE
             H.Fecha >= @Desde AND H.Fecha <= @Hasta
