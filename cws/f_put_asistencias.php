@@ -22,17 +22,21 @@
     /**
      * Trae cargo y correo por cédula desde SCNexus (store_control.store_employees).
      * Retorna mapa [cedula_identidad => ['cargo' => ..., 'correo' => ...]].
+     *
+     * Se lee la tabla completa (estado = 1) y el cruce se hace en PHP contra las
+     * cédulas recibidas. Evita el IN (?, ?, ...) con parámetros, que en algunos
+     * entornos falla silenciosamente por conversión implícita de tipos y deja
+     * vacío el enriquecimiento de cargo/correo.
      */
     function obtener_datos_scnexus_por_cedula(array $cedulas): array {
-        $cedulasLimpias = [];
+        $cedulasBuscadas = [];
         foreach ($cedulas as $cedula) {
             $c = trim((string) $cedula);
             if ($c !== '') {
-                $cedulasLimpias[$c] = true;
+                $cedulasBuscadas[$c] = true;
             }
         }
-        $cedulasLimpias = array_keys($cedulasLimpias);
-        if ($cedulasLimpias === []) {
+        if ($cedulasBuscadas === []) {
             return [];
         }
 
@@ -56,7 +60,6 @@
             return [];
         }
 
-        $placeholders = implode(',', array_fill(0, count($cedulasLimpias), '?'));
         $sql = "
             SELECT
                 cedula_identidad,
@@ -65,12 +68,15 @@
                 id
             FROM dbo.store_employees
             WHERE estado = 1
-              AND cedula_identidad IN ($placeholders)
             ORDER BY cedula_identidad, id DESC;
         ";
 
-        $stmt = sqlsrv_query($cxScnexus, $sql, $cedulasLimpias);
+        $stmt = sqlsrv_query($cxScnexus, $sql);
         if ($stmt === false) {
+            $errs = sqlsrv_errors();
+            if (is_array($errs) && $errs !== []) {
+                error_log('obtener_datos_scnexus_por_cedula sqlsrv_errors=' . json_encode($errs, JSON_UNESCAPED_UNICODE));
+            }
             sqlsrv_close($cxScnexus);
             return [];
         }
@@ -79,6 +85,9 @@
         while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
             $cedula = trim((string) ($row['cedula_identidad'] ?? ''));
             if ($cedula === '' || isset($mapa[$cedula])) {
+                continue;
+            }
+            if (!isset($cedulasBuscadas[$cedula])) {
                 continue;
             }
             $mapa[$cedula] = [
