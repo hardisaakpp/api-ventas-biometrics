@@ -72,24 +72,25 @@ $query = "
             )
             AND 
                 (
-                    (
+                    --(
                         -- Quito
-                        da.CodigoBodega IN 
-                        (
-                            'RL-CCI','RL-CON','RL-PSC','RL-QSN',
-                            'RL-QSS2','RL-REC2','RL-SCA','RL-SNL'
-                        )
+                        --da.CodigoBodega IN 
+                        --(
+                            --'RL-CCI','RL-CON','RL-PSC','RL-QSN',
+                            --'RL-QSS2','RL-REC2','RL-SCA','RL-SNL'
+                        --)
                         --AND dt.Fecha = '2026-04-01'
-                        AND dt.Fecha >= '2025-04-01' AND dt.Fecha <= '2025-04-30'
+                        --AND dt.Fecha >= '2025-04-01' AND dt.Fecha <= '2025-04-30'
                         --AND dt.Fecha >= '2026-03-01' AND dt.Fecha <= '2026-03-31'
-                    )
+                    --)
                     -- Guayaquil + Santo Domingo
                     --OR
-                    --    (
-                    --        da.CodigoBodega IN ('RL-MSO3','RL-BMB')
+                        (
+                            da.CodigoBodega IN ('RL-BMB')
+                            --da.CodigoBodega IN ('RL-MSO3','RL-BMB')
                     --        AND dt.Fecha = '2026-04-01'
-                    --        AND dt.Fecha >= '2026-03-01' AND dt.Fecha <= '2026-03-30'
-                    --    )
+                            AND dt.Fecha >= '2025-10-01' AND dt.Fecha <= '2025-10-31'
+                        )
                 )
         GROUP BY
             df.NumeroFactura,
