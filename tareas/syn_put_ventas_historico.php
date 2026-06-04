@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Ventas histÃ³ricas (filtros por tienda/fecha) â†’ KOACH360.
- * Mismo envÃ­o que syn_put_ventas.php (enviarVentasKoach360, CLI_PVENTAS). Ventas continuas: syn_put_ventas.php retroactivo|intradia.
- * En histÃ³rico lider_* van siempre como '-'.
+ * Ventas históricas (filtros por tienda/fecha) ? KOACH360.
+ * Mismo envío que syn_put_ventas.php (enviarVentasKoach360, CLI_PVENTAS). Ventas continuas: syn_put_ventas.php retroactivo|intradia.
+ * En histórico lider_* van siempre como '-'.
  * Filtro SQL: ajustar fechas en WHERE.
  *
  * Tiendas en el filtro: Fase 1 (mismo alcance que syn_put_ventas.php).
  *
- * EjecuciÃ³n: php tareas/syn_put_ventas_historico.php
+ * Ejecución: php tareas/syn_put_ventas_historico.php
  */
 require_once __DIR__ . '/../cx/bd_scs.php';
 require_once __DIR__ . '/../cws/f_put_ventas.php';
@@ -80,16 +80,16 @@ $query = "
                             --'RL-QSS2','RL-REC2','RL-SCA','RL-SNL'
                         --)
                         --AND dt.Fecha = '2026-04-01'
-                        --AND dt.Fecha >= '2025-04-01' AND dt.Fecha <= '2025-04-30'
+                        --AND dt.Fecha >= '2025-05-01' AND dt.Fecha <= '2025-05-29'
                         --AND dt.Fecha >= '2026-03-01' AND dt.Fecha <= '2026-03-31'
                     --)
                     -- Guayaquil + Santo Domingo
                     --OR
                         (
-                            da.CodigoBodega IN ('RL-BMB')
-                            --da.CodigoBodega IN ('RL-MSO3','RL-BMB')
+                            --da.CodigoBodega IN ('RL-BMB')
+                            da.CodigoBodega IN ('RL-MSO3','RL-BMB','RL-CCI','RL-CON','RL-PSC','RL-QSN','RL-QSS2','RL-REC2','RL-SCA','RL-SNL')
                     --        AND dt.Fecha = '2026-04-01'
-                            AND dt.Fecha >= '2025-10-01' AND dt.Fecha <= '2025-10-31'
+                            AND dt.Fecha >= '2026-05-01' AND dt.Fecha <= '2026-05-29'
                         )
                 )
         GROUP BY

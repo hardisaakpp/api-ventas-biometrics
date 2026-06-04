@@ -49,6 +49,7 @@
                 CURLOPT_POST => true,
                 CURLOPT_POSTFIELDS => $body,
                 CURLOPT_RETURNTRANSFER => true,
+		CURLOPT_CAINFO => '/etc/ssl/certs/ca-certificates.crt',
                 CURLOPT_HTTPHEADER => [
                     'Content-Type: application/json',
                     'Accept: application/json',
@@ -115,6 +116,7 @@
                 CURLOPT_POST => true,
                 CURLOPT_POSTFIELDS => $jsonBody,
                 CURLOPT_RETURNTRANSFER => true,
+		CURLOPT_CAINFO => '/etc/ssl/certs/ca-certificates.crt',
                 CURLOPT_HTTPHEADER => [
                     'Content-Type: application/json',
                     'Accept: application/json',
