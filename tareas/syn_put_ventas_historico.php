@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Ventas históricas (filtros por tienda/fecha) ? KOACH360.
- * Mismo envío que syn_put_ventas.php (enviarVentasKoach360, CLI_PVENTAS). Ventas continuas: syn_put_ventas.php retroactivo|intradia.
- * En histórico lider_* van siempre como '-'.
+ * Ventas historicas (filtros por tienda/fecha) ? KOACH360.
+ * Mismo envio que syn_put_ventas.php (enviarVentasKoach360, CLI_PVENTAS). Ventas continuas: syn_put_ventas.php retroactivo|intradia.
+ * En historico lider_* van siempre como '-'.
  * Filtro SQL: ajustar fechas en WHERE.
  *
  * Tiendas en el filtro: Fase 1 (mismo alcance que syn_put_ventas.php).
  *
- * Ejecución: php tareas/syn_put_ventas_historico.php
+ * Ejecucion: php tareas/syn_put_ventas_historico.php
  */
 require_once __DIR__ . '/../cx/bd_scs.php';
 require_once __DIR__ . '/../cws/f_put_ventas.php';
@@ -65,33 +65,20 @@ $query = "
 	        ON fv.Key_Producto = dp.Key_Producto
         WHERE
             dv.CodigoInterno <> '114' AND
-	        dp.TipoProducto = 'PRODUCTO' AND
+            dp.TipoProducto = 'PRODUCTO' AND
+            -- =================================================================
+            -- AJUSTAR TIENDAS: incluir o excluir codigos segun la tarea.
+            --   Quito (8)    : 'RL-CCI','RL-CON','RL-PSC','RL-QSN','RL-QSS2','RL-REC2','RL-SCA','RL-SNL'
+            --   GYE + SD (2) : 'RL-MSO3','RL-BMB'
+            -- =================================================================
             da.CodigoBodega IN (
-                'RL-CCI','RL-CON','RL-PSC','RL-QSN','RL-QSS2',
-                'RL-REC2','RL-SCA','RL-SNL','RL-MSO3','RL-BMB'
+                'RL-CCI','RL-CON','RL-PSC','RL-QSN','RL-QSS2','RL-REC2','RL-SCA','RL-SNL', -- Quito
+                'RL-MSO3','RL-BMB'                                                           -- GYE + Santo Domingo
             )
-            AND 
-                (
-                    --(
-                        -- Quito
-                        --da.CodigoBodega IN 
-                        --(
-                            --'RL-CCI','RL-CON','RL-PSC','RL-QSN',
-                            --'RL-QSS2','RL-REC2','RL-SCA','RL-SNL'
-                        --)
-                        --AND dt.Fecha = '2026-04-01'
-                        --AND dt.Fecha >= '2025-05-01' AND dt.Fecha <= '2025-05-29'
-                        --AND dt.Fecha >= '2026-03-01' AND dt.Fecha <= '2026-03-31'
-                    --)
-                    -- Guayaquil + Santo Domingo
-                    --OR
-                        (
-                            --da.CodigoBodega IN ('RL-BMB')
-                            da.CodigoBodega IN ('RL-MSO3','RL-BMB','RL-CCI','RL-CON','RL-PSC','RL-QSN','RL-QSS2','RL-REC2','RL-SCA','RL-SNL')
-                    --        AND dt.Fecha = '2026-04-01'
-                            AND dt.Fecha >= '2026-05-01' AND dt.Fecha <= '2026-05-29'
-                        )
-                )
+            -- =================================================================
+            -- AJUSTAR FECHAS: cambiar el rango segun el periodo a reprocesar.
+            -- =================================================================
+            AND dt.Fecha >= '2026-05-01' AND dt.Fecha <= '2026-05-29'
         GROUP BY
             df.NumeroFactura,
             dt.Fecha,
