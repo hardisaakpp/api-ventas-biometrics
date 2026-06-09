@@ -23,6 +23,66 @@
         return quote_sql_identifier($value);
     }
 
+    function asist_log_persist_entry(
+        string $timestampEc,
+        string $fechaEc,
+        int $records,
+        int $lookback,
+        string $respRaw
+    ): void {
+        $host = defined('HOST')    ? (string) HOST    : '';
+        $db   = defined('BD')      ? (string) BD      : '';
+        $user = defined('USUARIO') ? (string) USUARIO : '';
+        $pass = defined('PSW')     ? (string) PSW     : '';
+
+        if ($host === '' || $db === '' || $user === '') { return; }
+
+        $conn = @sqlsrv_connect($host, [
+            'Database'                 => $db,
+            'UID'                      => $user,
+            'PWD'                      => $pass,
+            'MultipleActiveResultSets' => true,
+            'TrustServerCertificate'   => 'TRUE',
+            'CharacterSet'             => 'UTF-8',
+        ]);
+        if ($conn === false) { return; }
+
+        $decoded       = json_decode($respRaw, true);
+        $mensajes      = (is_array($decoded) && isset($decoded['mensajes']) && is_array($decoded['mensajes']))
+            ? $decoded['mensajes'] : [];
+        $stats         = (is_array($decoded) && isset($decoded['estadisticas']) && is_array($decoded['estadisticas']))
+            ? $decoded['estadisticas'] : null;
+        $lotesFallidos = is_array($stats) ? (int) ($stats['LotesFallidos'] ?? 0) : 0;
+        $hasError      = $lotesFallidos > 0
+            || (is_array($decoded) && array_key_exists('error', $decoded))
+            || str_contains($respRaw, '"error"');
+        $advertencias  = [];
+        foreach ($mensajes as $msg) {
+            if (is_string($msg) && mb_strpos($msg, "\u{26A0}") !== false) {
+                $advertencias[] = trim($msg);
+            }
+        }
+        $status = $hasError ? 'error' : (count($advertencias) > 0 ? 'warning' : 'success');
+
+        $sql = "
+            INSERT INTO dbo.asistencias_sync_log
+                (timestamp_ec, fecha, records, lookback, status, estadisticas, advertencias)
+            VALUES
+                (CAST(? AS DATETIME2(0)), CAST(? AS DATE), ?, ?, ?, ?, ?)
+        ";
+        $stmt = @sqlsrv_query($conn, $sql, [
+            $timestampEc,
+            $fechaEc,
+            $records,
+            $lookback,
+            $status,
+            $stats !== null ? json_encode($stats, JSON_UNESCAPED_UNICODE) : null,
+            json_encode($advertencias, JSON_UNESCAPED_UNICODE),
+        ]);
+        if ($stmt !== false) { sqlsrv_free_stmt($stmt); }
+        sqlsrv_close($conn);
+    }
+
     function syn_put_asistencias_wrap_exec(string $innerSql, bool $useExecAt, string $execAtServer): string
     {
         $innerSql = trim($innerSql);
@@ -342,4 +402,11 @@
         . ' resp=' . (is_string($resp) ? substr(preg_replace('/\s+/', ' ', $resp), 0, 5000) : '')
         . "\n";
     file_put_contents(tareas_log_path('syn_put_asistencias.log'), $logLine, FILE_APPEND);
+    asist_log_persist_entry(
+        date('Y-m-d H:i:s'),
+        $hoyGuayaquil,
+        count($asistencias),
+        $lookbackDays,
+        is_string($resp) ? $resp : ''
+    );
 ?>
