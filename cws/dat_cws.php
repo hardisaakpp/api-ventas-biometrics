@@ -92,7 +92,7 @@
 	if (!function_exists('koach360_config_connection')) {
 		function koach360_config_connection() {
 			$host = cws_env('STORE_EMPLOYEES_SQL_HOST', '210.17.1.54');
-			$db = cws_env('STORE_EMPLOYEES_SQL_DATABASE', 'store_control');
+			$db = cws_env('STORE_EMPLOYEES_SQL_DATABASE', 'sc_kliente');
 			$user = cws_env('STORE_EMPLOYEES_SQL_USER');
 			$pass = cws_env('STORE_EMPLOYEES_SQL_PASSWORD');
 			if ($host === '' || $db === '' || $user === '' || $pass === '') {

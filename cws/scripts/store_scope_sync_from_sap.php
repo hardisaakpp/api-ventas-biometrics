@@ -31,7 +31,7 @@ $sapPass = (string) cws_env('SQL_SERVER_SAP_PWD');
 $sapEncrypt = trim((string) cws_env('SQL_SERVER_SAP_ENCRYPT', '1')) !== '0';
 
 $cfgHost = trim((string) cws_env('STORE_EMPLOYEES_SQL_HOST', '210.17.1.54'));
-$cfgDb = trim((string) cws_env('STORE_EMPLOYEES_SQL_DATABASE', 'store_control'));
+$cfgDb = trim((string) cws_env('STORE_EMPLOYEES_SQL_DATABASE', 'sc_kliente'));
 $cfgUser = trim((string) cws_env('STORE_EMPLOYEES_SQL_USER'));
 $cfgPass = (string) cws_env('STORE_EMPLOYEES_SQL_PASSWORD');
 

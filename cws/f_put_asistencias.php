@@ -20,7 +20,7 @@
     }
 
     /**
-     * Trae cargo y correo por cédula desde SCNexus (store_control.store_employees).
+     * Trae cargo y correo por cédula desde sc_kliente (sc_kliente.store_employees).
      * Retorna mapa [cedula_identidad => ['cargo' => ..., 'correo' => ...]].
      *
      * Se lee la tabla completa (estado = 1) y el cruce se hace en PHP contra las
@@ -41,7 +41,7 @@
         }
 
         $host = cws_env('STORE_EMPLOYEES_SQL_HOST', '210.17.1.54');
-        $db   = cws_env('STORE_EMPLOYEES_SQL_DATABASE', 'store_control');
+        $db   = cws_env('STORE_EMPLOYEES_SQL_DATABASE', 'sc_kliente');
         $user = cws_env('STORE_EMPLOYEES_SQL_USER');
         $pass = cws_env('STORE_EMPLOYEES_SQL_PASSWORD');
         if ($host === '' || $db === '' || $user === '' || $pass === '') {

@@ -245,7 +245,7 @@
                         = LTRIM(RTRIM(CONVERT(NVARCHAR(64), R.IdUser)))
                 )";
 
-    $codigosAutorizados = store_scope_resolver_codigos('KOACH360_ASISTENCIAS', true);
+    $codigosAutorizados = store_scope_resolver_codigos('KOACH360_ASISTENCIAS');
     $descMapFiltrado = store_scope_desc_map_filtrado_por_codigos($codigosAutorizados);
     if ($descMapFiltrado === []) {
         fwrite(STDERR, "syn_put_asistencias: no hay mapeo de tiendas para Fase 1.\n");

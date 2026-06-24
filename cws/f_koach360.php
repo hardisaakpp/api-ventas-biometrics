@@ -43,20 +43,24 @@
         $response = '';
         $code = 0;
         $err = '';
+        $cainfo = cws_env('CURL_CAINFO', '/etc/ssl/certs/ca-certificates.crt');
         for ($attempt = 1; $attempt <= $maxAttempts; $attempt++) {
             $ch = curl_init($url);
-            curl_setopt_array($ch, [
+            $chOpts = [
                 CURLOPT_POST => true,
                 CURLOPT_POSTFIELDS => $body,
                 CURLOPT_RETURNTRANSFER => true,
-		CURLOPT_CAINFO => '/etc/ssl/certs/ca-certificates.crt',
                 CURLOPT_HTTPHEADER => [
                     'Content-Type: application/json',
                     'Accept: application/json',
                 ],
                 CURLOPT_TIMEOUT => $timeout,
                 CURLOPT_CONNECTTIMEOUT => $connectTimeout,
-            ]);
+            ];
+            if ($cainfo !== '' && file_exists($cainfo)) {
+                $chOpts[CURLOPT_CAINFO] = $cainfo;
+            }
+            curl_setopt_array($ch, $chOpts);
 
             $response = curl_exec($ch);
             $code = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -110,13 +114,13 @@
         $response = false;
         $http = 0;
         $cerr = '';
+        $cainfo = cws_env('CURL_CAINFO', '/etc/ssl/certs/ca-certificates.crt');
         for ($attempt = 1; $attempt <= $maxAttempts; $attempt++) {
             $ch = curl_init($url);
-            curl_setopt_array($ch, [
+            $chOpts = [
                 CURLOPT_POST => true,
                 CURLOPT_POSTFIELDS => $jsonBody,
                 CURLOPT_RETURNTRANSFER => true,
-		CURLOPT_CAINFO => '/etc/ssl/certs/ca-certificates.crt',
                 CURLOPT_HTTPHEADER => [
                     'Content-Type: application/json',
                     'Accept: application/json',
@@ -124,7 +128,11 @@
                 ],
                 CURLOPT_TIMEOUT => $timeout,
                 CURLOPT_CONNECTTIMEOUT => $connectTimeout,
-            ]);
+            ];
+            if ($cainfo !== '' && file_exists($cainfo)) {
+                $chOpts[CURLOPT_CAINFO] = $cainfo;
+            }
+            curl_setopt_array($ch, $chOpts);
 
             $response = curl_exec($ch);
             $http = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
