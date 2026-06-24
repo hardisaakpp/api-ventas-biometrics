@@ -10,7 +10,7 @@
     date_default_timezone_set('America/Guayaquil');
 
     /**
-     * Trae líder activo/encargado por código de tienda desde SCNexus (store_control).
+     * Trae líder activo/encargado por código de tienda desde sc_kliente.
      * Retorna mapa [codigo_tienda => ['nombre' => ..., 'cedula' => ..., 'correo' => ...]].
      */
     function obtener_lideres_scnexus_por_tienda_retro7(array $codigosTienda): array
@@ -28,7 +28,7 @@
         }
 
         $host = cws_env('STORE_EMPLOYEES_SQL_HOST', '210.17.1.54');
-        $db   = cws_env('STORE_EMPLOYEES_SQL_DATABASE', 'store_control');
+        $db   = cws_env('STORE_EMPLOYEES_SQL_DATABASE', 'sc_kliente');
         $user = cws_env('STORE_EMPLOYEES_SQL_USER');
         $pass = cws_env('STORE_EMPLOYEES_SQL_PASSWORD');
         if ($host === '' || $db === '' || $user === '' || $pass === '') {
@@ -86,7 +86,7 @@
         return $mapa;
     }
 
-    $codigosFase1 = store_scope_resolver_codigos('KOACH360_VENTAS', true);
+    $codigosFase1 = store_scope_resolver_codigos('KOACH360_VENTAS');
     if ($codigosFase1 === []) {
         fwrite(STDERR, "syn_put_ventas_retro7: no hay tiendas configuradas para Fase 1.\n");
         exit(1);

@@ -180,7 +180,7 @@
 
     $nominaDb = env_sql_identifier_prog('ASIST_NOMINA_DATABASE', 'BDDNOMINAMABEL19');
 
-    $tiendas = store_scope_resolver_codigos('KOACH360_ASISTENCIAS_PROGRAMADAS', true);
+    $tiendas = store_scope_resolver_codigos('KOACH360_ASISTENCIAS_PROGRAMADAS');
     if ($tiendas === []) {
         fwrite(STDERR, "syn_put_asistencias_prog: no hay códigos de tienda para Fase 1.\n");
         exit(1);

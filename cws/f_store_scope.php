@@ -1,16 +1,6 @@
 <?php
 require_once __DIR__ . '/dat_cws.php';
 
-if (!function_exists('store_scope_default_phase1_codes')) {
-    function store_scope_default_phase1_codes(): array
-    {
-        return [
-            'RL-CCI', 'RL-CON', 'RL-PSC', 'RL-QSN', 'RL-QSS2',
-            'RL-REC2', 'RL-SCA', 'RL-SNL', 'RL-MSO3', 'RL-BMB',
-        ];
-    }
-}
-
 if (!function_exists('store_scope_normalize_codes')) {
     function store_scope_normalize_codes(array $codes): array
     {
@@ -29,24 +19,9 @@ if (!function_exists('store_scope_normalize_codes')) {
     }
 }
 
-if (!function_exists('store_scope_fallback_codes')) {
-    function store_scope_fallback_codes(): array
-    {
-        $raw = trim((string) cws_env('TIENDAS_FASE1_CODIGOS', ''));
-        if ($raw !== '') {
-            $codes = store_scope_normalize_codes(explode(',', $raw));
-            if ($codes !== []) {
-                return $codes;
-            }
-        }
-        return store_scope_default_phase1_codes();
-    }
-}
-
 if (!function_exists('store_scope_connection')) {
     function store_scope_connection()
     {
-        // Reutiliza la misma conexión de configuración usada por KOACH360.
         if (!function_exists('koach360_config_connection')) {
             return null;
         }
@@ -70,47 +45,56 @@ if (!function_exists('store_scope_table_available')) {
 
 if (!function_exists('store_scope_resolver_codigos')) {
     /**
-     * Devuelve códigos autorizados según integración y fase.
+     * Devuelve los códigos de tienda activos para una integración dada.
+     * Fuente única: dbo.integration_store_scope (sc_kliente).
      *
-     * Tabla esperada (store_control): dbo.integration_store_scope
-     *  - codigo_tienda varchar(...)
-     *  - integration varchar(...): KOACH360_VENTAS / KOACH360_ASISTENCIAS / KOACH360_ASISTENCIAS_PROGRAMADAS / ALL
-     *  - es_fase1 bit
-     *  - activo bit
+     * Columnas relevantes:
+     *  - codigo_tienda  varchar   código bodega (ej. RL-CCI)
+     *  - nombre_tienda  nvarchar  nombre legible (opcional)
+     *  - integration    varchar   KOACH360_VENTAS / KOACH360_ASISTENCIAS / ALL / etc.
+     *  - activo         bit       1 = incluida en envíos automáticos
+     *
+     * Si la BD no está disponible o la tabla no existe, retorna [] y escribe
+     * en error_log — el proceso que llama debe decidir si abortar o continuar.
      */
-    function store_scope_resolver_codigos(string $integration, bool $fase1 = true): array
+    function store_scope_resolver_codigos(string $integration): array
     {
         static $cache = [];
         $integration = strtoupper(trim($integration));
         if ($integration === '') {
             $integration = 'ALL';
         }
-        $key = $integration . '|' . ($fase1 ? '1' : '0');
-        if (array_key_exists($key, $cache)) {
-            return $cache[$key];
+        if (array_key_exists($integration, $cache)) {
+            return $cache[$integration];
         }
 
-        $fallback = store_scope_fallback_codes();
         $conn = store_scope_connection();
-        if ($conn === null || !store_scope_table_available($conn)) {
-            $cache[$key] = $fallback;
-            return $fallback;
+        if ($conn === null) {
+            error_log("store_scope_resolver_codigos: no se pudo conectar a sc_kliente (integration={$integration})");
+            $cache[$integration] = [];
+            return [];
+        }
+
+        if (!store_scope_table_available($conn)) {
+            error_log("store_scope_resolver_codigos: tabla dbo.integration_store_scope no existe en sc_kliente");
+            sqlsrv_close($conn);
+            $cache[$integration] = [];
+            return [];
         }
 
         $sql = "
             SELECT DISTINCT UPPER(LTRIM(RTRIM(codigo_tienda))) AS codigo_tienda
             FROM dbo.integration_store_scope
             WHERE activo = 1
-              AND (? = 0 OR es_fase1 = 1)
               AND UPPER(ISNULL(integration, 'ALL')) IN ('ALL', ?)
             ORDER BY UPPER(LTRIM(RTRIM(codigo_tienda)));
         ";
-        $params = [$fase1 ? 1 : 0, $integration];
-        $stmt = @sqlsrv_query($conn, $sql, $params);
+        $stmt = @sqlsrv_query($conn, $sql, [$integration]);
         if ($stmt === false) {
+            error_log("store_scope_resolver_codigos: error al consultar integration_store_scope (integration={$integration})");
             sqlsrv_close($conn);
-            $cache[$key] = $fallback;
-            return $fallback;
+            $cache[$integration] = [];
+            return [];
         }
 
         $codes = [];
@@ -121,29 +105,53 @@ if (!function_exists('store_scope_resolver_codigos')) {
         sqlsrv_close($conn);
 
         $codes = store_scope_normalize_codes($codes);
-        if ($codes === []) {
-            $codes = $fallback;
-        }
-        $cache[$key] = $codes;
+        $cache[$integration] = $codes;
         return $codes;
     }
 }
 
 if (!function_exists('store_scope_desc_to_code_map')) {
+    /**
+     * Mapa nombre_tienda → codigo_tienda leído desde BD.
+     * Solo incluye registros con activo=1 y nombre_tienda no nulo.
+     * Retorna [] si la BD no está disponible.
+     */
     function store_scope_desc_to_code_map(): array
     {
-        return [
-            'ROLAND-QUITO-CCI' => 'RL-CCI',
-            'ROLAND-QUITO-CONDADO SHOPPING' => 'RL-CON',
-            'ROLAND-QUITO-PORTAL SHOPPING' => 'RL-PSC',
-            'ROLAND-QUITO-QUICENTRO NORTE' => 'RL-QSN',
-            'ROLAND-QUITO-QUICENTRO SUR' => 'RL-QSS2',
-            'ROLAND-QUITO-RECREO' => 'RL-REC2',
-            'ROLAND-QUITO-SAN LUIS' => 'RL-SNL',
-            'ROLAND-QUITO-SCALA SHOPPING' => 'RL-SCA',
-            'ROLAND-GUAYAQUIL-MALL DEL SOL3' => 'RL-MSO3',
-            'ROLAND-STO DOMINGO-BOMBOLI' => 'RL-BMB',
-        ];
+        $conn = store_scope_connection();
+        if ($conn === null) {
+            return [];
+        }
+
+        $sql = "
+            SELECT UPPER(LTRIM(RTRIM(codigo_tienda))) AS codigo_tienda,
+                   LTRIM(RTRIM(nombre_tienda))        AS nombre_tienda
+            FROM dbo.integration_store_scope
+            WHERE activo = 1
+              AND nombre_tienda IS NOT NULL
+              AND LTRIM(RTRIM(nombre_tienda)) <> ''
+            ORDER BY UPPER(LTRIM(RTRIM(codigo_tienda)));
+        ";
+        $stmt = @sqlsrv_query($conn, $sql);
+        if ($stmt === false) {
+            sqlsrv_close($conn);
+            return [];
+        }
+
+        $map = [];
+        $seen = [];
+        while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
+            $code = strtoupper(trim((string) ($row['codigo_tienda'] ?? '')));
+            $desc = trim((string) ($row['nombre_tienda'] ?? ''));
+            if ($code === '' || $desc === '' || isset($seen[$code])) {
+                continue;
+            }
+            $map[$desc] = $code;
+            $seen[$code] = true;
+        }
+        sqlsrv_free_stmt($stmt);
+        sqlsrv_close($conn);
+        return $map;
     }
 }
 
@@ -160,4 +168,3 @@ if (!function_exists('store_scope_desc_map_filtrado_por_codigos')) {
         return $out;
     }
 }
-
