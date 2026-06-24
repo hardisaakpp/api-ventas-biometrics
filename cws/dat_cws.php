@@ -91,8 +91,14 @@
 
 	if (!function_exists('koach360_config_connection')) {
 		function koach360_config_connection() {
-			$host = cws_env('STORE_EMPLOYEES_SQL_HOST', '210.17.1.54');
-			$db = cws_env('STORE_EMPLOYEES_SQL_DATABASE', 'sc_kliente');
+			$env = koach360_runtime_environment();
+			if ($env === 'PRODUCCION') {
+				$host = cws_env('STORE_EMPLOYEES_SQL_HOST_PRODUCCION', '192.168.2.211');
+				$db   = cws_env('STORE_EMPLOYEES_SQL_DATABASE_PRODUCCION', 'SCOdcsap');
+			} else {
+				$host = cws_env('STORE_EMPLOYEES_SQL_HOST', '210.17.1.54');
+				$db   = cws_env('STORE_EMPLOYEES_SQL_DATABASE', 'sc_kliente');
+			}
 			$user = cws_env('STORE_EMPLOYEES_SQL_USER');
 			$pass = cws_env('STORE_EMPLOYEES_SQL_PASSWORD');
 			if ($host === '' || $db === '' || $user === '' || $pass === '') {

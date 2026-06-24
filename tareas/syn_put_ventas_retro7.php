@@ -27,23 +27,8 @@
             return [];
         }
 
-        $host = cws_env('STORE_EMPLOYEES_SQL_HOST', '210.17.1.54');
-        $db   = cws_env('STORE_EMPLOYEES_SQL_DATABASE', 'sc_kliente');
-        $user = cws_env('STORE_EMPLOYEES_SQL_USER');
-        $pass = cws_env('STORE_EMPLOYEES_SQL_PASSWORD');
-        if ($host === '' || $db === '' || $user === '' || $pass === '') {
-            return [];
-        }
-
-        $cxScnexus = sqlsrv_connect($host, [
-            'Database' => $db,
-            'UID' => $user,
-            'PWD' => $pass,
-            'MultipleActiveResultSets' => true,
-            'TrustServerCertificate' => true,
-            'CharacterSet' => 'UTF-8',
-        ]);
-        if ($cxScnexus === false) {
+        $cxScnexus = koach360_config_connection();
+        if ($cxScnexus === null) {
             return [];
         }
 
