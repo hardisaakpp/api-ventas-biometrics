@@ -6,15 +6,7 @@
  * En historico lider_* van siempre como '-'.
  * Filtro SQL: ajustar fechas en WHERE.
  *
- * Carga puntual: Roland GYE tiendas GYE — enero 2026
- *   RL-SMA  Roland San Marino Guayaquil
- *   RL-RCD  Roland Dorado Guayaquil
- *   RL-MNO  Roland Mall del Norte Guayaquil
- *   RL-MSU  Roland Mall del Sur Guayaquil
- *   RL-CMA  Roland City Mall Guayaquil
- *   RL-RCE  Roland Ceibos Guayaquil
- *   RL-RNO  Roland Riocentro Norte Guayaquil
- *   RL-REN  Roland Riocentro Entre Rios Guayaquil
+ * Tiendas en el filtro: Fase 1 (mismo alcance que syn_put_ventas.php).
  *
  * Ejecucion: php tareas/syn_put_ventas_historico.php
  */
@@ -23,13 +15,6 @@ require_once __DIR__ . '/../cws/f_put_ventas.php';
 require_once __DIR__ . '/f_tareas.php';
 
 date_default_timezone_set('America/Guayaquil');
-
-// =====================================================================
-// CONFIGURAR ANTES DE CADA EJECUCION
-// =====================================================================
-$periodo_desde = '2025-06-01';   // primer día del mes
-$periodo_hasta = '2025-06-30';   // último día del mes
-// =====================================================================
 
 $query = "
         SELECT
@@ -40,9 +25,24 @@ $query = "
             asesor_nombre       = dv.NombreVendedor,
             asesor_cedula       = dv.DocumentoVendedor,
             asesor_correo       = '',
-            lider_nombre        = '-',
-            lider_cedula        = '9999999999',
-            lider_correo        = 'sin-lider@mabeltrading.com.ec',
+            lider_nombre        = CASE da.CodigoBodega
+                                    WHEN 'RL-PSC'  THEN 'GOMEZ IMBAQUINGO SILVIA ANDREA'
+                                    WHEN 'RL-QSS2' THEN 'CUEVA MESA CHRISTIAN ANTONIO'
+                                    WHEN 'RL-SCA'  THEN 'TUTILLO BENAVIDES DIGNA EVELIN'
+                                    ELSE '-'
+                                  END,
+            lider_cedula        = CASE da.CodigoBodega
+                                    WHEN 'RL-PSC'  THEN '1722759469'
+                                    WHEN 'RL-QSS2' THEN '1716633001'
+                                    WHEN 'RL-SCA'  THEN '1715033674'
+                                    ELSE '9999999999'
+                                  END,
+            lider_correo        = CASE da.CodigoBodega
+                                    WHEN 'RL-PSC'  THEN 'rolportjefe@mabeltrading.com.ec'
+                                    WHEN 'RL-QSS2' THEN 'rolquisurjefe@mabeltrading.com.ec'
+                                    WHEN 'RL-SCA'  THEN 'scala@mabeltrading.com.ec'
+                                    ELSE 'sin-lider@mabeltrading.com.ec'
+                                  END,
             local_nombre        = da.NombreBodega,
             local_codigo        = da.CodigoBodega,
             valor_transaccion   = CONVERT(DECIMAL(18,2), SUM(fv.TotalPagado)),
@@ -67,19 +67,23 @@ $query = "
             dv.CodigoInterno <> '114' AND
             dp.TipoProducto = 'PRODUCTO' AND
             -- =================================================================
-            -- Roland GYE tiendas GYE — carga puntual enero 2026
+            -- AJUSTAR TIENDAS: incluir o excluir codigos segun la tarea.
+            --   Quito (8)    : 'RL-CCI','RL-CON','RL-PSC','RL-QSN','RL-QSS2','RL-REC2','RL-SCA','RL-SNL'
+            --   GYE + SD (2) : 'RL-MSO3','RL-BMB'
+
+                --'RL-CCI','RL-CON','RL-PSC','RL-QSN','RL-QSS2','RL-REC2','RL-SCA','RL-SNL', -- Quito
+               -- 'RL-MSO3','RL-BMB'                                                           -- GYE + Santo Domingo
+		--	'RL-BHO','RL-MRC','RL-MDA','RL-RNO'
+		--	'RL-SMA','RL-RCD','RL-MNO','RL-MSU','RL-CMA','RL-RCE','RL-RNO','RL-REN'  --FASE 3
+
             -- =================================================================
             da.CodigoBodega IN (
-                'RL-SMA', -- Roland San Marino Guayaquil
-                'RL-RCD', -- Roland Dorado Guayaquil
-                'RL-MNO', -- Roland Mall del Norte Guayaquil
-                'RL-MSU', -- Roland Mall del Sur Guayaquil
-                'RL-CMA', -- Roland City Mall Guayaquil
-                'RL-RCE', -- Roland Ceibos Guayaquil
-                'RL-RNO', -- Roland Riocentro Norte Guayaquil
-                'RL-REN'  -- Roland Riocentro Entre Rios Guayaquil
+		'RL-BHO','RL-MRC','RL-MDA','RL-RNO'
             )
-            AND dt.Fecha >= '$periodo_desde' AND dt.Fecha <= '$periodo_hasta'
+            -- =================================================================
+            -- AJUSTAR FECHAS: cambiar el rango segun el periodo a reprocesar.
+            -- =================================================================
+            AND dt.Fecha >= '2026-06-01' AND dt.Fecha <= '2026-06-22'
         GROUP BY
             df.NumeroFactura,
             dt.Fecha,
@@ -102,9 +106,8 @@ if (!is_array($ventas)) {
 }
 
 $resp = enviarVentasKoach360($ventas);
-$periodo_log = substr($periodo_desde, 0, 7); // yyyy-mm
 $logLine = date('Y-m-d H:i:s')
-    . ' - ventas_historico tiendas=RL-SMA,RL-RCD,RL-MNO,RL-MSU,RL-CMA,RL-RCE,RL-RNO,RL-REN periodo=' . $periodo_log . ' filas=' . count($ventas)
+    . ' - ventas_historico filas=' . count($ventas)
     . ' clienteId=' . CLI_PVENTAS
     . ' resp=' . (is_string($resp) ? substr(preg_replace('/\s+/', ' ', $resp), 0, 5000) : '')
     . "\n";
