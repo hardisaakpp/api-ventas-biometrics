@@ -6,11 +6,15 @@
  * En historico lider_* van siempre como '-'.
  * Filtro SQL: ajustar fechas en WHERE.
  *
- * Carga puntual: Roland GYE nuevas tiendas junio 2026
- *   RL-BHO  Roland Babahoyo
- *   RL-MRC  Roland Mall del Rio
- *   RL-MDA  Roland Mall Del Alto
- *   RL-RNO  Roland Riocentro Norte
+ * Carga puntual: Roland GYE tiendas GYE — enero 2026
+ *   RL-SMA  Roland San Marino Guayaquil
+ *   RL-RCD  Roland Dorado Guayaquil
+ *   RL-MNO  Roland Mall del Norte Guayaquil
+ *   RL-MSU  Roland Mall del Sur Guayaquil
+ *   RL-CMA  Roland City Mall Guayaquil
+ *   RL-RCE  Roland Ceibos Guayaquil
+ *   RL-RNO  Roland Riocentro Norte Guayaquil
+ *   RL-REN  Roland Riocentro Entre Rios Guayaquil
  *
  * Ejecucion: php tareas/syn_put_ventas_historico.php
  */
@@ -19,6 +23,13 @@ require_once __DIR__ . '/../cws/f_put_ventas.php';
 require_once __DIR__ . '/f_tareas.php';
 
 date_default_timezone_set('America/Guayaquil');
+
+// =====================================================================
+// CONFIGURAR ANTES DE CADA EJECUCION
+// =====================================================================
+$periodo_desde = '2025-06-01';   // primer día del mes
+$periodo_hasta = '2025-06-30';   // último día del mes
+// =====================================================================
 
 $query = "
         SELECT
@@ -56,15 +67,19 @@ $query = "
             dv.CodigoInterno <> '114' AND
             dp.TipoProducto = 'PRODUCTO' AND
             -- =================================================================
-            -- Roland GYE nuevas tiendas — carga puntual junio 2026
+            -- Roland GYE tiendas GYE — carga puntual enero 2026
             -- =================================================================
             da.CodigoBodega IN (
-                'RL-BHO', -- Roland Babahoyo
-                'RL-MRC', -- Roland Mall del Rio
-                'RL-MDA', -- Roland Mall Del Alto
-                'RL-RNO'  -- Roland Riocentro Norte
+                'RL-SMA', -- Roland San Marino Guayaquil
+                'RL-RCD', -- Roland Dorado Guayaquil
+                'RL-MNO', -- Roland Mall del Norte Guayaquil
+                'RL-MSU', -- Roland Mall del Sur Guayaquil
+                'RL-CMA', -- Roland City Mall Guayaquil
+                'RL-RCE', -- Roland Ceibos Guayaquil
+                'RL-RNO', -- Roland Riocentro Norte Guayaquil
+                'RL-REN'  -- Roland Riocentro Entre Rios Guayaquil
             )
-            AND dt.Fecha >= '2026-06-01' AND dt.Fecha <= '2026-06-23'
+            AND dt.Fecha >= '$periodo_desde' AND dt.Fecha <= '$periodo_hasta'
         GROUP BY
             df.NumeroFactura,
             dt.Fecha,
@@ -87,8 +102,9 @@ if (!is_array($ventas)) {
 }
 
 $resp = enviarVentasKoach360($ventas);
+$periodo_log = substr($periodo_desde, 0, 7); // yyyy-mm
 $logLine = date('Y-m-d H:i:s')
-    . ' - ventas_historico tiendas=RL-BHO,RL-MRC,RL-MDA,RL-RNO periodo=2026-06 filas=' . count($ventas)
+    . ' - ventas_historico tiendas=RL-SMA,RL-RCD,RL-MNO,RL-MSU,RL-CMA,RL-RCE,RL-RNO,RL-REN periodo=' . $periodo_log . ' filas=' . count($ventas)
     . ' clienteId=' . CLI_PVENTAS
     . ' resp=' . (is_string($resp) ? substr(preg_replace('/\s+/', ' ', $resp), 0, 5000) : '')
     . "\n";

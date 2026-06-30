@@ -10,3 +10,6 @@ tareas/json/
 
 # Composer: este proyecto no requiere paquetes; si ejecutas composer install, no versionar vendor.
 cws/vendor/
+
+# Directorio interno de Claude Code
+.claude/
